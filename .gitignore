@@ -1,0 +1,40 @@
+# FiveM
+cache/
+*.log
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# macOS
+.DS_Store
+
+# IDEs
+.vscode/
+.idea/
+*.sublime-*
+
+# Backup files
+*.backup
+*.bak
+*~
+
+# Temp files
+*.tmp
+*.temp
+
+# Development tools (PowerShell scripts, etc.)
+*.ps1
+*.bat
+fix-*
+
+# Documentation files (keeping local only, not publishing)
+CHANGELOG-MURDERFACE.md
+CONFIGURATION.md
+CONTRIBUTING.md
+DEPLOYMENT.md
+FORK_SETUP.md
+GETTING_STARTED.md
+IMPROVEMENTS.md
+INSTALL.md
+SYNTAX_FIXES.md
