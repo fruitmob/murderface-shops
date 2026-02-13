@@ -789,6 +789,12 @@ lib.callback.register('renzu_shops:buyitem', function(source,data)
 	end)
 
 	-- SECURITY: Server-side shop validation
+	-- Validate shop identifier exists
+	if not data.shop then
+		print(string.format('[Renzu Shops Security] Player %s sent purchase with nil shop identifier', source))
+		return 'invalidamount'
+	end
+
 	-- Validate shop exists in configuration
 	local shopConfig = shared.Shops[data.shop]
 	local isValidShop = false

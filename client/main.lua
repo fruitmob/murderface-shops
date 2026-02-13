@@ -2320,7 +2320,7 @@ self.Handlers = function()
 						end
 						cb(true)
 					end
-				end,{owner = self.Owner, groups = self.Active?.shop?.groups, finance = financedata, items = data.items, data = itemdata, index = self.Active.index, type = data.type, shop = self.Active.shop.type or self.shopidentifier, moneytype = self.moneytype})
+				end,{owner = self.Owner, groups = self.Active?.shop?.groups, finance = financedata, items = data.items, data = itemdata, index = self.Active.index, type = data.type, shop = self.Active.shop.type or self.Active.type or self.shopidentifier, moneytype = self.moneytype})
 				self.Owner = nil
 			else
 				cb('cancel')
