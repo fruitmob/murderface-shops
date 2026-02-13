@@ -9,13 +9,17 @@
 
 ## 🔥 What's Different in Murderface Fork?
 
+### Compatibility
+- ✅ **Gabz MLOs** - Fully compatible with Gabz 24/7, Ammunation, mechanic shops, and other MLO interiors
+- ✅ **DRC Scripts** - Integrated with DRC Bean Machine items and compatible with DRC food/drink item packs
+- ✅ **Qbox Framework** - Built and tested specifically for QBX servers
+
 ### Major Enhancements
 - ✅ **Full QBX Integration** - Player wrapper, framework detection, proper money handling
 - ✅ **MySQL Caching System** - Optimized database queries for high-traffic servers
 - ✅ **Bug Fixes** - Fixed all syntax errors, SQL injection vulnerabilities, transaction locks
-- ✅ **Comprehensive Documentation** - 4 detailed guides for installation and configuration
 - ✅ **Enhanced Error Handling** - Debug logging and automatic recovery systems
-- ✅ **Custom Shops** - Bean Machine and other themed shops with vendor peds
+- ✅ **Custom Shops** - Bean Machine coffee shop with 29 DRC items and hipster barista vendor ped
 - ✅ **User-Friendly** - Designed for non-technical server owners
 
 ### Credits
