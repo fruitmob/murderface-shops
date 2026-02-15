@@ -2154,32 +2154,36 @@ self.Handlers = function()
 	end)
 	livery = false,
 	RegisterNUICallback('nuicb', function(data, cb)
-		print('[Renzu Shops Debug] NUI Callback received:', json.encode(data))
+		-- Handle messages that don't need shop inventory first
+		if data.msg == 'getAvailableAttachments' then
+			local componentitems = self.GetWeaponComponents(data.item)
+			cb(componentitems)
+			return
+		end
+		if data.msg == 'close' then
+			self.Closeui()
+			cb('ok')
+			return
+		end
+
+		-- Resolve the real shop type: self.Active.shop.type (set during OpenShop) takes
+		-- priority over self.Active.type which may be 'storeowner' for owned shops
+		local shopType = self.Active?.shop?.type or self.Active?.type
+
 		local shop = self.Active?.shop?.inventory
 		local itemdata = {}
 		if not shop or #shop == 0 then
-			print('[Renzu Shops ERROR] Shop inventory is nil or empty!')
-			print('[Renzu Shops Debug] Shop type:', self.Active?.type)
-			print('[Renzu Shops Debug] Shop name:', self.Active?.shop?.name)
-
-			-- Try to reload inventory from shared.Storeitems
-			if self.Active?.type and shared.Storeitems and shared.Storeitems[self.Active.type] then
-				print('[Renzu Shops] Attempting to reload inventory from storeitems...')
-				self.Active.shop.inventory = shared.Storeitems[self.Active.type]
+			-- Try to reload inventory using the real shop type
+			if shopType and shared.Storeitems and shared.Storeitems[shopType] then
+				self.Active.shop = self.Active.shop or {}
+				self.Active.shop.inventory = shared.Storeitems[shopType]
 				shop = self.Active.shop.inventory
-				if shop and #shop > 0 then
-					print('[Renzu Shops] Successfully reloaded inventory with', #shop, 'items')
-				else
-					print('[Renzu Shops ERROR] Reload failed - storeitems has no items for', self.Active.type)
-					self.Closeui()
-					cb('error')
-					return
-				end
-			else
-				print('[Renzu Shops ERROR] Cannot reload - shared.Storeitems not available')
-				print('[Renzu Shops Debug] self.Active:', json.encode(self.Active or 'nil'))
+			end
+
+			if not shop or #shop == 0 then
+				print('[Renzu Shops ERROR] Shop inventory is nil or empty for type:', tostring(shopType))
 				self.Closeui()
-				cb('error')
+				cb('ok')
 				return
 			end
 		end
@@ -2325,9 +2329,6 @@ self.Handlers = function()
 			else
 				cb('cancel')
 			end
-		elseif data.msg == 'close' then
-			self.Closeui()
-			cb('ok')
 		elseif data.msg == 'vehicle' then
 			self.VehicleCam()
 			Wait(1000)
@@ -2367,9 +2368,6 @@ self.Handlers = function()
 				SetVehicleMod(self.chosenvehicle, 48, tonumber(data.livery), false)
 			end
 			cb('ok')
-		elseif data.msg == 'getAvailableAttachments' then
-			local componentitems = self.GetWeaponComponents(data.item)
-			cb(componentitems)
 		elseif data.msg == 'testdrive' then
 			local model = GetHashKey(data.vehicle.model)
 			lib.requestModel(model)

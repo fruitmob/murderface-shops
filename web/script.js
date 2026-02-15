@@ -231,8 +231,9 @@ function ItemCallback(model,index) {
         getEl('metacontent').innerHTML = ''
         getEl('metaimg').src = `${imgpath}${model}.png`
         SendData({item:model, msg : 'getAvailableAttachments'}, function(cb){
-            let data = JSON.parse(cb)
-            if (!data[1]) { return }
+            let data
+            try { data = JSON.parse(cb) } catch(e) { return }
+            if (!data || !data[0]) { return }
             getEl('metadatas').style.display = 'block'
             itemcustomise = index
             metadatas = {}
