@@ -23,13 +23,15 @@ desktop.ini
 *.tmp
 *.temp
 
+# Node / Vue build tooling
+web/node_modules/
+
 # Development tools (PowerShell scripts, etc.)
 *.ps1
 *.bat
 fix-*
 
 # Documentation files (keeping local only, not publishing)
-CHANGELOG-MURDERFACE.md
 CONFIGURATION.md
 CONTRIBUTING.md
 DEPLOYMENT.md

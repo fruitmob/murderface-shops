@@ -321,6 +321,128 @@ end
 
 exports('isMovableShop', isMovableShop)
 
+-- ============================================================================
+-- SECURITY HELPERS (added 2026-02-19)
+-- ============================================================================
+
+--- Look up the server-authoritative price for an item.
+--- Checks: owned shop custom items → standard store items → movable shop items → vehicles.
+--- NEVER trust client-sent prices; always use this function's return value.
+---@param itemName string  The item name (or metadata.name)
+---@param shopType string  The shop type key (e.g. 'General', 'Ammunation')
+---@param shopIndex any    The shop index (numeric for default, label for owned)
+---@param isOwned boolean|string  false or the owned shop label
+---@return number|nil  The server-side price, or nil if item not found
+local function GetServerItemPrice(itemName, shopType, shopIndex, isOwned)
+	-- 1. Check owned shop custom items (owner-set prices)
+	if isOwned and isOwned ~= false then
+		local stores = GlobalState.Stores
+		if stores[isOwned] and stores[isOwned].customitems and stores[isOwned].customitems[itemName] then
+			return tonumber(stores[isOwned].customitems[itemName].price)
+		end
+	end
+
+	-- 2. Check standard store items config
+	local storeItems = shared.Storeitems[shopType]
+	if storeItems then
+		for _, item in pairs(storeItems) do
+			local name = item.metadata and item.metadata.name or item.name
+			if name == itemName then
+				return tonumber(item.price)
+			end
+		end
+	end
+
+	-- 3. Check movable shop menus
+	local movableShop = shared.MovableShops[shopType] or shared.MovableShops[shopIndex]
+	if movableShop and movableShop.menu then
+		for _, category in pairs(movableShop.menu) do
+			for _, item in pairs(category) do
+				local name = item.metadata and item.metadata.name or item.name
+				if name == itemName then
+					return tonumber(item.price)
+				end
+			end
+		end
+	end
+
+	-- 4. Check vehicles
+	if AllVehicles then
+		for _, v in pairs(AllVehicles) do
+			if v.name == itemName then
+				return tonumber(v.price)
+			end
+		end
+	end
+
+	return nil
+end
+
+--- Check if a player is within acceptable distance of a shop.
+--- Used to prevent remote purchase exploits.
+local MAX_SHOP_DISTANCE = 15.0
+
+---@param src number  Server ID of the player
+---@param shopType string  The shop type key
+---@param shopIndex any  The shop index or label
+---@return boolean  true if player is close enough
+local function IsPlayerNearShop(src, shopType, shopIndex)
+	local playerPed = GetPlayerPed(src)
+	if not playerPed or playerPed == 0 then return false end
+	local playerCoords = GetEntityCoords(playerPed)
+
+	-- Check default shops
+	local shop = shared.Shops[shopType]
+	if shop then
+		for _, loc in pairs(shop.locations or shop.targets or {}) do
+			local shopCoords = type(loc) == 'vector4' and vec3(loc.x, loc.y, loc.z) or vec3(loc.x, loc.y, loc.z)
+			if #(playerCoords - shopCoords) <= MAX_SHOP_DISTANCE then
+				return true
+			end
+		end
+	end
+
+	-- Check owned shops by label
+	for _, shops in pairs(shared.OwnedShops) do
+		for _, v in pairs(shops) do
+			if v.label == shopIndex or v.label == shopType then
+				if v.coord and #(playerCoords - vec3(v.coord.x, v.coord.y, v.coord.z)) <= MAX_SHOP_DISTANCE then
+					return true
+				end
+			end
+		end
+	end
+
+	-- Check movable shops (player entity position)
+	if shared.MovableShops[shopIndex] or shared.MovableShops[shopType] then
+		-- Movable shops move, so we can't check static coords.
+		-- Accept if movable — the entity proximity is handled client-side.
+		return true
+	end
+
+	return false
+end
+
+--- Per-player purchase rate limiting
+local purchaseCooldowns = {}
+local PURCHASE_COOLDOWN_MS = 2000 -- 2 seconds between purchases
+
+--- Per-player rob attempt cooldowns
+local robCooldowns = {}
+local ROB_COOLDOWN_SEC = 600 -- 10 minutes between rob attempts per player
+
+--- Cleanup player state on disconnect
+AddEventHandler('playerDropped', function()
+	local src = source
+	if not src then return end
+	purchaseCooldowns[src] = nil
+	if purchaseorders then purchaseorders[src] = nil end
+	robCooldowns[src] = nil
+	-- Note: robbers cleanup is handled in the rob store section where the local is defined
+end)
+
+-- ============================================================================
+
 CheckItemData = function(data)
 	local found = false
 	for k,v in pairs(shared.Storeitems[data.shop]) do
@@ -776,6 +898,21 @@ lib.callback.register('renzu_shops:buyitem', function(source,data)
 	local source = source
 	local xPlayer = GetPlayerFromId(source)
 
+	-- SECURITY: Rate limiting (2s cooldown per player)
+	local now = GetGameTimer()
+	if purchaseCooldowns[source] and (now - purchaseCooldowns[source]) < PURCHASE_COOLDOWN_MS then
+		print(('[Renzu Shops Security] Player %s rate-limited on purchase'):format(source))
+		return 'invalidamount'
+	end
+	purchaseCooldowns[source] = now
+
+	-- SECURITY: Statebag validation — player must have a shop UI open
+	local playerShop = Player(source).state.currentShop
+	if not playerShop then
+		print(('[Renzu Shops Security] Player %s attempted purchase without open shop'):format(source))
+		return 'invalidamount'
+	end
+
 	-- PROTECTION: Track purchase start time for timeout detection
 	local purchaseStartTime = os.time()
 	purchaseorders[source] = purchaseStartTime
@@ -833,6 +970,12 @@ lib.callback.register('renzu_shops:buyitem', function(source,data)
 	local movableshop = isMovableShop(data.index) -- check if this store is a movable type
 	local boothshop = string.find(data.shop, 'market')
 
+	-- SECURITY: Distance check — player must be near the shop
+	if not boothshop and not IsPlayerNearShop(source, data.shop, storeowned or data.index) then
+		print(('[Renzu Shops Security] Player %s too far from shop %s'):format(source, data.shop))
+		return 'invalidamount'
+	end
+
 	-- SECURITY: Transaction locking to prevent race conditions
 	local locks = GlobalState.ShopLocks or {}
 	local lockedItems = {}
@@ -873,14 +1016,25 @@ lib.callback.register('renzu_shops:buyitem', function(source,data)
 		hasitem = true
 		local name = v.data.metadata and v.data.metadata.name or v.data.name
 		if v.count > 0 then
-			if shared.inventory == 'ox_inventory' and data.shop ~= 'VehicleShop' then
+			-- SECURITY: Look up price from server config, NEVER trust client-sent price
+			local serverPrice = GetServerItemPrice(name, data.shop, storeowned or data.index, storeowned)
+			if not serverPrice then
+				print(('[Renzu Shops Security] Item %s not found in server config for shop %s (player %s)'):format(name, data.shop, source))
+				data.items[k] = nil
+			elseif shared.inventory == 'ox_inventory' and data.shop ~= 'VehicleShop' then
 				if not exports.ox_inventory:CanCarryItem(source, v.data.name, v.count, v.data.metadata)  then
 					data.items[k] = nil
 				else
-					total = total + tonumber(data.data[name].price) * tonumber(v.count)
+					if tonumber(data.data[name].price) ~= serverPrice then
+						print(('[Renzu Shops Security] Price mismatch for %s: client=%s server=%s (player %s)'):format(name, tostring(data.data[name].price), tostring(serverPrice), source))
+					end
+					total = total + serverPrice * tonumber(v.count)
 				end
 			else
-				total = total + tonumber(data.data[name].price) * tonumber(v.count)
+				if tonumber(data.data[name].price) ~= serverPrice then
+					print(('[Renzu Shops Security] Price mismatch for %s: client=%s server=%s (player %s)'):format(name, tostring(data.data[name].price), tostring(serverPrice), source))
+				end
+				total = total + serverPrice * tonumber(v.count)
 			end
 		else
 			data.items[k] = nil
@@ -1229,10 +1383,39 @@ exports('BuyStore', BuyStore)
 lib.callback.register("renzu_shops:buystore", function(source,data)
 	local source = source
 	local xPlayer = GetPlayerFromId(source)
-	if xPlayer.getAccount('money').money >= data.price then
+
+	-- SECURITY: Look up real price from server config, never trust client
+	local realPrice = nil
+	for _, shops in pairs(shared.OwnedShops) do
+		for _, shop in pairs(shops) do
+			if shop.label == data.label then
+				realPrice = shop.price
+				break
+			end
+		end
+		if realPrice then break end
+	end
+
+	if not realPrice then
+		print(('[Renzu Shops Security] Invalid store label from player %s: %s'):format(source, tostring(data.label)))
+		return
+	end
+
+	if tonumber(data.price) ~= realPrice then
+		print(('[Renzu Shops Security] Store price mismatch from player %s: client=%s server=%s'):format(source, tostring(data.price), tostring(realPrice)))
+	end
+
+	-- SECURITY: Distance check
+	if not IsPlayerNearShop(source, data.shopName or '', data.label) then
+		print(('[Renzu Shops Security] Player %s too far from store %s to purchase'):format(source, data.label))
+		return
+	end
+
+	if xPlayer.getAccount('money').money >= realPrice then
+		data.price = realPrice -- Override with server-verified price
 		data.identifier = xPlayer.identifier
 		if not isShopAlreadyOwned(data.label) then
-			xPlayer.removeAccountMoney('money', data.price)
+			xPlayer.removeAccountMoney('money', realPrice)
 			return BuyStore(data)
 		end
 	end
@@ -1254,6 +1437,13 @@ GlobalState.AvailableStore = {}
 lib.callback.register("renzu_shops:sellstore", function(source,store)
 	local source = source
 	local xPlayer = GetPlayerFromId(source)
+
+	-- SECURITY: Distance check
+	if not IsPlayerNearShop(source, '', store) then
+		print(('[Renzu Shops Security] Player %s too far from store %s to sell'):format(source, tostring(store)))
+		return
+	end
+
 	local stores = GlobalState.Stores
 	if stores[store] and stores[store].owner == xPlayer.identifier then
 		for k,shops in pairs(shared.OwnedShops) do
@@ -1409,10 +1599,32 @@ RobNotification = function(data) -- your custom Alert Notification
 end
 
 local robbers = {}
+
+-- Cleanup robbers state on player disconnect
+AddEventHandler('playerDropped', function()
+	local src = source
+	if src then robbers[src] = nil end
+end)
+
 lib.callback.register("renzu_shops:canrobstore", function(source,data)
+	-- SECURITY: Validate store identifier exists
+	if not data or not data.store then return false end
+
+	-- SECURITY: Per-player rob cooldown
+	if robCooldowns[source] and robCooldowns[source] > os.time() then
+		return false
+	end
+
+	-- SECURITY: Distance check — must be near the store
+	if not IsPlayerNearShop(source, data.store, data.store) then
+		print(('[Renzu Shops Security] Player %s too far from store %s to rob'):format(source, data.store))
+		return false
+	end
+
 	local rob = GlobalState.RobableStore
-	if not rob[data.store] and Priority() or rob[data.store] and rob[data.store] <= os.time() and Priority() then
+	if (not rob[data.store] or rob[data.store] <= os.time()) and Priority() then
 		robbers[source] = true
+		robCooldowns[source] = os.time() + ROB_COOLDOWN_SEC
 		data.coord = GetEntityCoords(GetPlayerPed(source))
 		RobNotification(data)
 		return true
@@ -2153,6 +2365,13 @@ end
 
 GlobalState.ShopCarts = {}
 lib.callback.register('renzu_shops:updateshopcart', function(source, data)
+	-- SECURITY: Validate payload
+	if not data or not data.shop then return end
+	local encoded = json.encode(data)
+	if #encoded > 8192 then -- 8KB max to prevent DoS via oversized payloads
+		print(('[Renzu Shops Security] Oversized cart payload from player %s (%d bytes)'):format(source, #encoded))
+		return
+	end
 	local carts = GlobalState.ShopCarts
 	carts[data.shop] = data
 	GlobalState.ShopCarts = carts

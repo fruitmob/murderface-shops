@@ -1,9 +1,9 @@
--- Shop Vendor Peds
--- Spawns peds at restaurant vendor locations
-
-print('^2^2^2 ========== SHOP PEDS SCRIPT LOADED ========== ^0')
+-- Shop Vendor Peds (Proximity-Based)
+-- Uses lib.points to spawn peds only when a player is nearby.
+-- Saves ~22 entity slots when no player is near these locations.
 
 local spawnedPeds = {}
+local PED_SPAWN_RADIUS = 40.0 -- Distance in meters to start loading ped
 
 local shopPeds = {
     -- Burgershot - Clown
@@ -171,81 +171,50 @@ local shopPeds = {
     {
         modelName = 'a_m_y_hipster_01',
         coords = vector4(123.27, -1035.99, 29.28, 76.69),
-        scenario = 'WORLD_HUMAN_AA_COFFEE'  -- Drinking coffee animation (perfect for a barista!)
+        scenario = 'WORLD_HUMAN_AA_COFFEE'
     },
 }
 
-local function SpawnShopPed(pedData)
-    local model = GetHashKey(pedData.modelName)
+-- Proximity-based ped spawning using lib.points
+-- Peds spawn when player enters radius, despawn when they leave
+for i, pedData in ipairs(shopPeds) do
+    lib.points.new({
+        coords = vec3(pedData.coords.x, pedData.coords.y, pedData.coords.z),
+        distance = PED_SPAWN_RADIUS,
+        onEnter = function()
+            local model = lib.requestModel(pedData.modelName)
+            if not model then return end
 
-    print('^3[Shop Peds]^0 Requesting model:', pedData.modelName)
-    RequestModel(model)
-
-    local timeout = 0
-    while not HasModelLoaded(model) and timeout < 100 do
-        Wait(100)
-        timeout = timeout + 1
-    end
-
-    if not HasModelLoaded(model) then
-        print('^1[Shop Peds]^0 ERROR: Failed to load ped model!')
-        return nil
-    end
-
-    print('^3[Shop Peds]^0 Creating ped at coords:', pedData.coords.x, pedData.coords.y, pedData.coords.z)
-    -- Subtract 1.0 from Z to place ped on ground (accounts for ped model height)
-    local ped = CreatePed(4, model, pedData.coords.x, pedData.coords.y, pedData.coords.z - 1.0, pedData.coords.w, false, true)
-
-    if not DoesEntityExist(ped) then
-        print('^1[Shop Peds]^0 ERROR: Failed to create ped!')
-        return nil
-    end
-
-    SetEntityAsMissionEntity(ped, true, true)
-    SetBlockingOfNonTemporaryEvents(ped, true)
-    SetEntityInvincible(ped, true)
-    FreezeEntityPosition(ped, true)
-
-    -- Make ped look natural
-    if pedData.scenario then
-        TaskStartScenarioInPlace(ped, pedData.scenario, 0, true)
-    end
-
-    SetModelAsNoLongerNeeded(model)
-
-    print('^2[Shop Peds]^0 Successfully spawned ped!')
-
-    return ped
+            local ped = CreatePed(4, model, pedData.coords.x, pedData.coords.y, pedData.coords.z - 1.0, pedData.coords.w, false, true)
+            if DoesEntityExist(ped) then
+                SetEntityAsMissionEntity(ped, true, true)
+                SetBlockingOfNonTemporaryEvents(ped, true)
+                SetEntityInvincible(ped, true)
+                FreezeEntityPosition(ped, true)
+                if pedData.scenario then
+                    TaskStartScenarioInPlace(ped, pedData.scenario, 0, true)
+                end
+                spawnedPeds[i] = ped
+            end
+            SetModelAsNoLongerNeeded(model)
+        end,
+        onExit = function()
+            local ped = spawnedPeds[i]
+            if ped and DoesEntityExist(ped) then
+                DeleteEntity(ped)
+            end
+            spawnedPeds[i] = nil
+        end,
+    })
 end
-
-CreateThread(function()
-    -- Wait for game to load
-    print('^3[Shop Peds]^0 Starting ped spawner...')
-    Wait(2000)
-
-    print('^3[Shop Peds]^0 Attempting to spawn ' .. #shopPeds .. ' peds')
-
-    -- Spawn all shop peds
-    for i, pedData in ipairs(shopPeds) do
-        print('^3[Shop Peds]^0 Spawning ped #' .. i)
-        local ped = SpawnShopPed(pedData)
-        if ped then
-            table.insert(spawnedPeds, ped)
-        end
-        Wait(500) -- Small delay between spawns
-    end
-
-    print('^2[Shop Peds]^0 Finished! Successfully spawned ' .. #spawnedPeds .. ' vendor peds')
-end)
 
 -- Cleanup on resource stop
 AddEventHandler('onResourceStop', function(resourceName)
-    if resourceName == GetCurrentResourceName() then
-        for _, ped in ipairs(spawnedPeds) do
-            if DoesEntityExist(ped) then
-                DeleteEntity(ped)
-            end
+    if resourceName ~= cache.resource then return end
+    for _, ped in pairs(spawnedPeds) do
+        if DoesEntityExist(ped) then
+            DeleteEntity(ped)
         end
-        spawnedPeds = {}
     end
+    spawnedPeds = {}
 end)

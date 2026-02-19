@@ -57,12 +57,23 @@ local function GetShopData(shopLabel)
     return parsed
 end
 
+-- SECURITY: Whitelist of allowed column names to prevent SQL injection
+local ALLOWED_FIELDS = {
+    owner = true, money = true, items = true,
+    employee = true, cashier = true, customitems = true, job = true,
+}
+
 ---Update shop data in cache and MySQL
 ---@param shopLabel string
----@param field string Column name
+---@param field string Column name (must be in ALLOWED_FIELDS whitelist)
 ---@param value any
 ---@return boolean success
 local function UpdateShopData(shopLabel, field, value)
+    if not ALLOWED_FIELDS[field] then
+        print(('[Renzu Shops Security] Blocked SQL update with invalid field: %s (shop: %s)'):format(field, shopLabel))
+        return false
+    end
+
     -- Update MySQL first
     local encodedValue = type(value) == 'table' and json.encode(value) or value
 
