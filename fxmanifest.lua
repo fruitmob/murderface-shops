@@ -15,7 +15,7 @@ shared_scripts {
     'data/*.lua',
 }
 ui_page {
-    'web/index.html',
+    'web/dist/nui.html',
 }
 
 client_scripts {
@@ -36,11 +36,7 @@ server_scripts {
 }
 
 files {
-    'web/index.html',
-    'web/script.js',
-    'web/style.css',
-    -- 'web/levelup.gif',          -- Commenting out this line
-    -- 'web/audio/*.ogg',          -- Commenting out this line
+    'web/dist/**/*',
     'config/ownedshops/*.lua',
     'config/locales/*.lua',
     'config/*.lua',

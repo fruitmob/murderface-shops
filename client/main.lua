@@ -12,6 +12,19 @@ self.PlayerData = {}
 self.JobSpheres = {}
 self.Store = 'Stores_%s'
 self.Blips = {}
+
+-- Native GTA sounds for shop interactions (cloud-shop pattern)
+local ShopSounds = {
+	open    = { 'WEAPON_SELECT_OTHER',  'HUD_AMMO_SHOP_SOUNDSET' },
+	add     = { 'WEAPON_SELECT_ARMOR',  'HUD_AMMO_SHOP_SOUNDSET' },
+	buy     = { 'WEAPON_PURCHASE',      'HUD_AMMO_SHOP_SOUNDSET' },
+	error   = { 'WEAPON_PURCHASE_FAIL', 'HUD_AMMO_SHOP_SOUNDSET' },
+}
+
+local function PlayShopSound(soundType)
+	local sound = ShopSounds[soundType]
+	if sound then PlaySoundFrontend(-1, sound[1], sound[2], false) end
+end
 self.StartUp = function()
 	self.PlayerData = self.GetPlayerData()
 	self.GetItems = function()
@@ -1821,6 +1834,11 @@ self.OpenShop = function(data)
 	SetNuiFocus(true,true)
 	SetNuiFocusKeepInput(false)
 	self.shopopen = true
+	PlayShopSound('open')
+
+	-- SECURITY: Set replicated statebag so server can verify shop is open
+	LocalPlayer.state:set('currentShop', data.type or self.Active?.type or 'unknown', true)
+	LocalPlayer.state:set('currentShopIndex', data.index or self.Active?.index or nil, true)
 end
 
 self.format_int = function(n)
@@ -1855,6 +1873,10 @@ self.Closeui = function()
 	if DoesEntityExist(self.chosenvehicle) then
 		self.DeleteEntity(self.chosenvehicle)
 	end
+
+	-- SECURITY: Clear replicated statebag so server knows shop is closed
+	LocalPlayer.state:set('currentShop', nil, true)
+	LocalPlayer.state:set('currentShopIndex', nil, true)
 end
 
 self.GetAccounts = function(name,item)
@@ -2153,130 +2175,203 @@ self.Handlers = function()
 		end
 	end)
 	livery = false,
-	RegisterNUICallback('nuicb', function(data, cb)
-		-- Handle messages that don't need shop inventory first
-		if data.msg == 'getAvailableAttachments' then
-			local componentitems = self.GetWeaponComponents(data.item)
-			cb(componentitems)
-			return
+
+	-- ──────────────────────────────────────────────────────────────
+	-- NUI Callback: shop:callback  (Vue 3 dispatch table)
+	-- Replaces the old RegisterNUICallback('nuicb') handler.
+	-- Vue sends { action: 'actionName', ...payload }.
+	-- ──────────────────────────────────────────────────────────────
+	RegisterNUICallback('shop:callback', function(data, cb)
+		--- Resolve the current shop inventory and find an item by name
+		local function resolveShopAndItem(itemName)
+			local shopType = self.Active?.shop?.type or self.Active?.type
+			local shop = self.Active?.shop?.inventory
+
+			if not shop or #shop == 0 then
+				if shopType and shared.Storeitems and shared.Storeitems[shopType] then
+					self.Active.shop = self.Active.shop or {}
+					self.Active.shop.inventory = shared.Storeitems[shopType]
+					shop = self.Active.shop.inventory
+				end
+				if not shop or #shop == 0 then
+					print('[Renzu Shops ERROR] Shop inventory is nil or empty for type:', tostring(shopType))
+					return nil, nil
+				end
+			end
+
+			if not itemName then return shop, nil end
+
+			local itemdata = {}
+			for _, v in pairs(shop) do
+				if itemName == v.name then
+					itemdata = v
+					break
+				end
+			end
+			return shop, itemdata
 		end
-		if data.msg == 'close' then
+		local action = data.action
+
+		-- ── Close ──
+		if action == 'closeShop' then
 			self.Closeui()
 			cb('ok')
 			return
 		end
 
-		-- Resolve the real shop type: self.Active.shop.type (set during OpenShop) takes
-		-- priority over self.Active.type which may be 'storeowner' for owned shops
-		local shopType = self.Active?.shop?.type or self.Active?.type
-
-		local shop = self.Active?.shop?.inventory
-		local itemdata = {}
-		if not shop or #shop == 0 then
-			-- Try to reload inventory using the real shop type
-			if shopType and shared.Storeitems and shared.Storeitems[shopType] then
-				self.Active.shop = self.Active.shop or {}
-				self.Active.shop.inventory = shared.Storeitems[shopType]
-				shop = self.Active.shop.inventory
-			end
-
-			if not shop or #shop == 0 then
-				print('[Renzu Shops ERROR] Shop inventory is nil or empty for type:', tostring(shopType))
-				self.Closeui()
-				cb('ok')
-				return
-			end
+		-- ── Weapon attachments ──
+		if action == 'getAttachments' then
+			local componentitems = self.GetWeaponComponents(data.item)
+			cb(componentitems)
+			return
 		end
-		for k,v in pairs(shop) do
-			if data.item == v.name then
-				itemdata = v
-			end
+
+		-- ── Play sound (from Vue) ──
+		if action == 'playSound' then
+			if data.sound then PlayShopSound(data.sound) end
+			cb('ok')
+			return
 		end
-		itemdata.amount = data.amount
-		local label = self.Items[itemdata.name] or itemdata.label or itemdata.name or 'Item'
-		if data.msg == 'outofstock' then
+
+		-- ── Out of stock ──
+		if action == 'outOfStock' then
+			local _, itemdata = resolveShopAndItem(data.item)
+			local label = self.Items[data.item] or (itemdata and itemdata.label) or data.item or 'Item'
+			PlayShopSound('error')
 			self.SetNotify({
 				title = 'Store Business',
-				description = label..' is Out of Stock',
+				description = label .. ' is Out of Stock',
 				type = 'error'
 			})
 			cb('ok')
-		elseif data.msg == 'limitreached' then
+			return
+		end
+
+		-- ── Stock limit reached ──
+		if action == 'limitReached' then
+			PlayShopSound('error')
 			self.SetNotify({
 				title = 'Store Business',
 				description = 'Your amount is greater than the current available stock',
 				type = 'error'
 			})
 			cb('ok')
-		elseif data.msg == 'invalidamount' then
+			return
+		end
+
+		-- ── Add to cart ──
+		if action == 'addToCart' then
+			PlayShopSound('add')
+			local _, itemdata = resolveShopAndItem(data.item)
+			local label = self.Items[data.item] or (itemdata and itemdata.label) or data.item or 'Item'
 			self.SetNotify({
 				title = 'Store Business',
-				description = 'Your amount is Funny',
-				type = 'error'
-			})
-			cb('ok')
-		elseif data.msg == 'cart' then
-			self.SetNotify({
-				title = 'Store Business',
-				description = 'You Added x'..itemdata.amount..' '..label..' to your cart',
+				description = 'You Added x' .. (data.amount or 1) .. ' ' .. label .. ' to your cart',
 				type = 'inform'
 			})
 			cb('ok')
-		elseif data.msg == 'playercarts' then
+			return
+		end
+
+		-- ── Sync cart to server ──
+		if action == 'syncCart' then
 			local playerid = GetPlayerServerId(PlayerId())
-				lib.callback.await('renzu_shops:updateshopcart',100, {playerid = playerid, cart = data.cart, bagname = 'player:', shop = self.Active?.shop?.StoreName})
+			lib.callback.await('renzu_shops:updateshopcart', 100, {
+				playerid = playerid,
+				cart = data.cart or {},
+				bagname = 'player:',
+				shop = self.Active?.shop?.StoreName
+			})
 			cb('ok')
-		elseif data.msg == 'buy' then
+			return
+		end
+
+		-- ── Pay / buy items ──
+		if action == 'payItems' then
+			local shop, _ = resolveShopAndItem(nil)
+			if not shop then
+				self.Closeui()
+				cb('ok')
+				return
+			end
+
 			local total = 0
 			local itemdata = {}
-			for k,v in pairs(shop) do
+			for _, v in pairs(shop) do
 				itemdata[v.metadata and v.metadata.name or v.name] = v
 			end
 			local totalamount = 0
 
-			for k,v in pairs(data.items) do
+			for _, v in pairs(data.items or {}) do
 				totalamount = totalamount + tonumber(v.count)
-				total = total + tonumber(itemdata[v.data.metadata and v.data.metadata.name or v.data.name].price) * tonumber(v.count)
+				local itemKey = v.data.metadata and v.data.metadata.name or v.data.name
+				local serverItem = itemdata[itemKey]
+				if serverItem then
+					total = total + tonumber(serverItem.price) * tonumber(v.count)
+				end
 			end
 
-			data.type = self.PaymentMethod({amount = total, total = totalamount, type = self.Active.shop.type, name = self.Active.shop.StoreName, money = self.Active?.shop?.moneytype or 'money'}) or self.Active?.shop?.moneytype or 'money'
-			if data.type == 'cancel' then cb('cancel') return end
+			-- Payment method: if client sent one, honour it; otherwise use the dialog
+			local paymentMethod = data.paymentMethod
+			if not paymentMethod or paymentMethod == '' then
+				paymentMethod = self.PaymentMethod({
+					amount = total,
+					total = totalamount,
+					type = self.Active.shop.type,
+					name = self.Active.shop.StoreName,
+					money = self.Active?.shop?.moneytype or 'money'
+				}) or self.Active?.shop?.moneytype or 'money'
+			end
+			if paymentMethod == 'cancel' then cb('cancel') return end
+
 			local financedata
-			if data.type == 'finance' then
-				finance, financedata = self.Finance({amount = total, total = totalamount, type = self.Active.shop.type, name = self.Active.shop.StoreName})
+			if paymentMethod == 'finance' then
+				local finance
+				finance, financedata = self.Finance({
+					amount = total,
+					total = totalamount,
+					type = self.Active.shop.type,
+					name = self.Active.shop.StoreName
+				})
 				total = financedata.downpayment
+				if finance == 'cancel' then
+					cb('cancel')
+					return
+				end
 			end
-			if data.type == 'finance' and finance == 'cancel' then
-				cb('cancel')
-				return
-			end
+
 			local confirm = lib.alertDialog({
 				header = 'Confirm Buy',
-				content = 'Are you sure you want to pay?   \n Amount : '..total..' $  \n Method : '..data.type,
+				content = 'Are you sure you want to pay?   \n Amount : ' .. total .. ' $  \n Method : ' .. paymentMethod,
 				centered = true,
 				cancel = true
 			})
+
 			if confirm ~= 'cancel' then
 				lib.callback("renzu_shops:buyitem", false, function(reason)
 					if reason == 'notenoughmoney' then
+						PlayShopSound('error')
 						self.SetNotify({
 							title = 'Store Business',
 							description = 'not enough money to purchase ',
 							type = 'error'
 						})
 					elseif reason == 'invalidamount' then
+						PlayShopSound('error')
 						self.SetNotify({
 							title = 'Store Business',
 							description = 'Invalid Amount to purchase ',
 							type = 'error'
 						})
 					elseif reason == 'license' then
+						PlayShopSound('error')
 						self.SetNotify({
 							title = 'Store Business',
 							description = 'You dont have a licensed to purchase ',
 							type = 'error'
 						})
 					else
+						PlayShopSound('buy')
 						self.SetNotify({
 							title = 'Store',
 							description = 'Successfully Purchase',
@@ -2285,7 +2380,7 @@ self.Handlers = function()
 						if self.Active.shop.type == 'VehicleShop' then
 							local chosen = nil
 							local plate = nil
-							for k,v in pairs(data.items) do
+							for _, v in pairs(data.items) do
 								chosen = v
 								plate = reason[v.data.name]
 								break
@@ -2293,11 +2388,10 @@ self.Handlers = function()
 							local model = GetHashKey(chosen.data.name)
 							lib.requestModel(model)
 							SetModelAsNoLongerNeeded(model)
-							local shopdata = self.GetShopData(self.Active.type,self.Active.index)
-							local vehicle = CreateVehicle(model, shopdata.purchase.x,shopdata.purchase.y,shopdata.purchase.z, shopdata.purchase.w, true, true)
+							local shopdata = self.GetShopData(self.Active.type, self.Active.index)
+							local vehicle = CreateVehicle(model, shopdata.purchase.x, shopdata.purchase.y, shopdata.purchase.z, shopdata.purchase.w, true, true)
 							while not DoesEntityExist(vehicle) do Wait(0) end
-							-- for server setter vehicle incase you dont owned the entity.
-							SetEntityAsMissionEntity(vehicle,true,true)
+							SetEntityAsMissionEntity(vehicle, true, true)
 							NetworkRequestControlOfEntity(vehicle)
 							local attempt = 0
 							while not NetworkHasControlOfEntity(vehicle) and attempt < 500 and DoesEntityExist(vehicle) do
@@ -2306,41 +2400,59 @@ self.Handlers = function()
 								attempt = attempt + 1
 							end
 							SetVehicleDirtLevel(vehicle, 0.0)
-							SetVehicleModKit(vehicle,0)
-							SetVehicleNumberPlateText(vehicle,plate)
+							SetVehicleModKit(vehicle, 0)
+							SetVehicleNumberPlateText(vehicle, plate)
 							if chosen.vehicle and tonumber(chosen.vehicle?.livery) and tonumber(chosen.vehicle?.livery) ~= -1 then
 								if chosen.vehicle.liverymod then
-									SetVehicleLivery(vehicle,tonumber(chosen.vehicle.livery))
+									SetVehicleLivery(vehicle, tonumber(chosen.vehicle.livery))
 								else
 									SetVehicleMod(vehicle, 48, tonumber(chosen.vehicle.livery), false)
 								end
 							end
 							local primary, secondary = GetVehicleColours(vehicle)
 							if chosen.vehicle?.color then
-								SetVehicleColours(vehicle,tonumber(chosen.vehicle?.color),secondary)
+								SetVehicleColours(vehicle, tonumber(chosen.vehicle?.color), secondary)
 							end
 							self.Closeui()
 							TaskWarpPedIntoVehicle(self.playerPed, vehicle, -1)
 						end
 						cb(true)
 					end
-				end,{owner = self.Owner, groups = self.Active?.shop?.groups, finance = financedata, items = data.items, data = itemdata, index = self.Active.index, type = data.type, shop = self.Active.shop.type or self.Active.type or self.shopidentifier, moneytype = self.moneytype})
+				end, {
+					owner = self.Owner,
+					groups = self.Active?.shop?.groups,
+					finance = financedata,
+					items = data.items,
+					data = itemdata,
+					index = self.Active.index,
+					type = paymentMethod,
+					shop = self.Active.shop.type or self.Active.type or self.shopidentifier,
+					moneytype = self.moneytype
+				})
 				self.Owner = nil
 			else
 				cb('cancel')
 			end
-		elseif data.msg == 'vehicle' then
+			return
+		end
+
+		-- ── Vehicle camera init ──
+		if action == 'vehicleCamera' then
 			self.VehicleCam()
 			Wait(1000)
 			TriggerScreenblurFadeOut(0)
 			self.view = true
 			cb('ok')
-		elseif data.msg == 'vehicleview' then
+			return
+		end
+
+		-- ── Vehicle view / spawn preview ──
+		if action == 'vehicleView' then
 			TriggerScreenblurFadeOut(0)
 			self.view = true
 			local vehicle = self.SpawnVehicleLocal(data.model)
 			self.livery = false
-			SetVehicleModKit(vehicle,0)
+			SetVehicleModKit(vehicle, 0)
 			local max = GetNumVehicleMods(vehicle, 48) + 1
 			if max == -1 then
 				max = GetVehicleLiveryCount(vehicle) + 1
@@ -2350,33 +2462,44 @@ self.Handlers = function()
 			if max > 0 then
 				for i = 0, max do
 					if self.livery and i >= 1 then
-						list[i] = GetLabelText(GetLiveryName(vehicle,i-1))
-					elseif GetLabelText(GetModTextLabel(vehicle, 48, i-1)) ~= 'NULL' and i >= 1 then
-						list[i] = GetLabelText(GetModTextLabel(vehicle, 48, i-1))
+						list[i] = GetLabelText(GetLiveryName(vehicle, i - 1))
+					elseif GetLabelText(GetModTextLabel(vehicle, 48, i - 1)) ~= 'NULL' and i >= 1 then
+						list[i] = GetLabelText(GetModTextLabel(vehicle, 48, i - 1))
 					end
 				end
 			end
-			cb({ livery = list,color = GetVehicleColours(self.chosenvehicle), liverymod = self.livery})
-		elseif data.msg == 'changecolor' then
+			cb({ livery = list, color = GetVehicleColours(self.chosenvehicle), liverymod = self.livery })
+			return
+		end
+
+		-- ── Change vehicle colour ──
+		if action == 'changeColor' then
 			local primary, secondary = GetVehicleColours(self.chosenvehicle)
-			SetVehicleColours(self.chosenvehicle,tonumber(data.color),secondary)
+			SetVehicleColours(self.chosenvehicle, tonumber(data.color), secondary)
 			cb('ok')
-		elseif data.msg == 'changelivery' then
+			return
+		end
+
+		-- ── Change vehicle livery ──
+		if action == 'changeLivery' then
 			if self.livery then
-				SetVehicleLivery(self.chosenvehicle,tonumber(data.livery))
+				SetVehicleLivery(self.chosenvehicle, tonumber(data.livery))
 			else
 				SetVehicleMod(self.chosenvehicle, 48, tonumber(data.livery), false)
 			end
 			cb('ok')
-		elseif data.msg == 'testdrive' then
+			return
+		end
+
+		-- ── Test drive ──
+		if action == 'testDrive' then
 			local model = GetHashKey(data.vehicle.model)
 			lib.requestModel(model)
 			SetModelAsNoLongerNeeded(model)
-			local shopdata = self.GetShopData(self.Active.type,self.Active.index)
-			local vehicle = CreateVehicle(model, shopdata.purchase.x,shopdata.purchase.y,shopdata.purchase.z, shopdata.purchase.w, true, true)
+			local shopdata = self.GetShopData(self.Active.type, self.Active.index)
+			local vehicle = CreateVehicle(model, shopdata.purchase.x, shopdata.purchase.y, shopdata.purchase.z, shopdata.purchase.w, true, true)
 			while not DoesEntityExist(vehicle) do Wait(0) end
-			-- for server setter vehicle incase you dont owned the entity.
-			SetEntityAsMissionEntity(vehicle,true,true)
+			SetEntityAsMissionEntity(vehicle, true, true)
 			self.Closeui()
 			TaskWarpPedIntoVehicle(self.playerPed, vehicle, -1)
 			local second = 60
@@ -2385,21 +2508,26 @@ self.Handlers = function()
 				type = 'inform'
 			})
 			while second > 0 do
-				self.OxlibTextUi("Test Drive: "..second, '<i class="fas fa-car"></i>')
+				self.OxlibTextUi("Test Drive: " .. second, '<i class="fas fa-car"></i>')
 				Wait(1000)
 				second = second - 1
 				if GetVehiclePedIsIn(self.playerPed) == 0 then break end
 			end
 			self.DeleteEntity(vehicle)
-			RequestCollisionAtCoord(self.playerPed,shopdata.purchase.x,shopdata.purchase.y,shopdata.purchase.z)
-			SetEntityCoords(self.playerPed,shopdata.purchase.x,shopdata.purchase.y,shopdata.purchase.z)
+			RequestCollisionAtCoord(self.playerPed, shopdata.purchase.x, shopdata.purchase.y, shopdata.purchase.z)
+			SetEntityCoords(self.playerPed, shopdata.purchase.x, shopdata.purchase.y, shopdata.purchase.z)
 			self.SetNotify({
 				title = 'Test Drive Complete',
 				type = 'inform'
 			})
 			lib.hideTextUI()
 			cb(true)
+			return
 		end
+
+		-- ── Unknown action fallback ──
+		print('[Renzu Shops] Unknown shop:callback action:', tostring(action))
+		cb('unknown')
 	end)
 end
 self.view = false
