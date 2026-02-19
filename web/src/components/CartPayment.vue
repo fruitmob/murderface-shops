@@ -35,7 +35,7 @@ const { pay } = useCart()
 
 <style scoped>
 .cart-payment {
-  padding: 12px 16px;
+  padding: 10px 12px;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
   flex-shrink: 0;
 }
@@ -44,7 +44,7 @@ const { pay } = useCart()
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .total-label {
@@ -54,7 +54,7 @@ const { pay } = useCart()
 }
 
 .total-value {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   color: #8bc34a;
   font-variant-numeric: tabular-nums;
@@ -70,11 +70,11 @@ const { pay } = useCart()
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  height: 38px;
+  gap: 5px;
+  height: 34px;
   border: none;
-  border-radius: 8px;
-  font-size: 12px;
+  border-radius: 6px;
+  font-size: 11px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;

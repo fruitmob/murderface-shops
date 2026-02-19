@@ -146,7 +146,7 @@ body {
 .shop-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(14, 16, 18, 0.78);
+  background: rgba(14, 16, 18, 0.58);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -159,17 +159,17 @@ body {
 
 .shop-container {
   width: 100%;
-  max-width: 1400px;
-  height: 92vh;
+  max-width: 1100px;
+  height: 80vh;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .shop-body {
   flex: 1;
   display: flex;
-  gap: 12px;
+  gap: 8px;
   min-height: 0;
 }
 
@@ -177,16 +177,16 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   min-height: 0;
 }
 
 .shop-right {
-  width: 360px;
+  width: 280px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   min-height: 0;
 }
 

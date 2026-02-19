@@ -41,11 +41,11 @@ async function selectCategory(name: string | null) {
 <style scoped>
 .category-bar {
   display: flex;
-  gap: 6px;
-  padding: 8px 12px;
+  gap: 5px;
+  padding: 6px 10px;
   background: linear-gradient(135deg, #1e1e24 0%, #252530 100%);
   border: 1px solid rgba(139, 71, 137, 0.2);
-  border-radius: 10px;
+  border-radius: 8px;
   overflow-x: auto;
   flex-shrink: 0;
   scrollbar-width: none;
@@ -58,17 +58,18 @@ async function selectCategory(name: string | null) {
 .cat-tab {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
+  gap: 5px;
+  padding: 6px 12px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 8px;
+  border-radius: 6px;
   color: rgba(255, 255, 255, 0.55);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
   white-space: nowrap;
   cursor: pointer;
   transition: all 0.2s;
+  text-transform: capitalize;
 }
 
 .cat-tab:hover {

@@ -7,6 +7,23 @@ All notable changes to the Murderface Fork of renzu_shops.
 
 ---
 
+## [2026-02-19] — renzu_shops — Visual Polish Pass (Phase 2.1)
+
+### What Changed
+- **[UI] Tighter layout**: Container max-width 1400→1100px, height 92→80vh, gap reductions throughout — feels like a cohesive panel instead of full-screen overlay
+- **[UI] Lighter overlay**: Background opacity 0.78→0.58 so more of the shop interior shows through
+- **[UI] Compact item cards**: Grid min-width 170→135px, image area 80→52px, padding 12→8px — denser grid, less dead space
+- **[UI] Inline stock display**: Stock pill moved inline next to price (e.g. "$12 ∞") instead of taking a separate row
+- **[UI] Narrower cart panel**: 360→280px width, tighter padding on cart rows, smaller empty state
+- **[UI] Category capitalization**: Added `text-transform: capitalize` so "food" → "Food", "beverages" → "Beverages"
+- **[UI] Wallet chip polish**: Slightly larger/bolder font, subtle border, tabular-nums for aligned digits
+- **[UI] Badge color fix**: Addon/Customise badges now use consistent purple tones instead of green-on-purple
+- **[UI] Inline SVG fallbacks**: Replaced external URLs (westerrands.websites.co.in, freeiconspng.com) with inline SVG data URIs — always render in NUI without external requests
+- **[UI] Image placeholder area**: Missing item images get a subtle background + dimmed box icon instead of blank white space
+- **[BUILD] Rebuilt web/dist/**
+
+---
+
 ## [2026-02-19] — renzu_shops — Vue 3 UI Rewrite (Phase 2)
 
 ### What Changed

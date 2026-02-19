@@ -90,7 +90,7 @@ function handleImgError(e: Event) {
   flex-direction: column;
   background: linear-gradient(135deg, #1e1e24 0%, #252530 100%);
   border: 1px solid rgba(139, 71, 137, 0.2);
-  border-radius: 10px;
+  border-radius: 8px;
   overflow: hidden;
   height: 100%;
 }
@@ -99,7 +99,7 @@ function handleImgError(e: Event) {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 16px;
+  padding: 10px 12px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
@@ -138,18 +138,18 @@ function handleImgError(e: Event) {
 .cart-items {
   flex: 1;
   overflow-y: auto;
-  padding: 8px;
+  padding: 6px;
 }
 
 .cart-row {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px;
+  gap: 6px;
+  padding: 6px;
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.04);
-  border-radius: 8px;
-  margin-bottom: 6px;
+  border-radius: 6px;
+  margin-bottom: 4px;
   transition: all 0.2s;
 }
 .cart-row:hover {
@@ -157,16 +157,16 @@ function handleImgError(e: Event) {
 }
 
 .cart-row-img {
-  width: 36px;
-  height: 36px;
+  width: 30px;
+  height: 30px;
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .cart-row-img img {
-  max-width: 32px;
-  max-height: 32px;
+  max-width: 28px;
+  max-height: 28px;
   object-fit: contain;
 }
 
@@ -252,10 +252,10 @@ function handleImgError(e: Event) {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
-  padding: 30px;
-  color: rgba(255, 255, 255, 0.25);
-  font-size: 12px;
+  gap: 6px;
+  padding: 24px 12px;
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 11px;
 }
 
 /* Transition group animations */

@@ -42,10 +42,10 @@ const shop = useShopStore()
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 20px;
+  padding: 10px 16px;
   background: linear-gradient(135deg, #1e1e24 0%, #252530 100%);
   border: 1px solid rgba(139, 71, 137, 0.3);
-  border-radius: 12px;
+  border-radius: 10px;
   flex-shrink: 0;
 }
 
@@ -56,18 +56,18 @@ const shop = useShopStore()
 }
 
 .shop-icon {
-  width: 40px;
-  height: 40px;
+  width: 34px;
+  height: 34px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: rgba(139, 71, 137, 0.2);
-  border-radius: 10px;
+  border-radius: 8px;
   color: #b57bb3;
 }
 
 .shop-name {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
   color: #fff;
   letter-spacing: 0.3px;
@@ -83,28 +83,30 @@ const shop = useShopStore()
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  padding: 4px 12px;
-  background: rgba(255, 255, 255, 0.04);
+  padding: 5px 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 8px;
 }
 
 .wallet-label {
-  font-size: 10px;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.4);
+  font-size: 9px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.45);
   text-transform: uppercase;
-  letter-spacing: 0.8px;
+  letter-spacing: 1px;
 }
 
 .wallet-value {
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 700;
   color: #8bc34a;
+  font-variant-numeric: tabular-nums;
 }
 
 .close-btn {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;

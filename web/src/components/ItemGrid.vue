@@ -80,13 +80,11 @@ function getGlobalIndex(item: ShopItem): number {
           <span v-if="item.component" class="badge badge-custom">Customise</span>
         </div>
 
-        <div class="item-info">
-          <span class="item-name">{{ item.label }}</span>
-          <span class="item-price">{{ formatPrice(item.price) }}</span>
-        </div>
+        <span class="item-name">{{ item.label }}</span>
 
-        <div class="item-stock">
-          Stock: <span>{{ item.stock ?? '\u221E' }}</span>
+        <div class="item-price-row">
+          <span class="item-price">{{ formatPrice(item.price) }}</span>
+          <span class="item-stock">{{ item.stock ?? '\u221E' }}</span>
         </div>
 
         <div class="item-actions" @click.stop>
@@ -119,32 +117,32 @@ function getGlobalIndex(item: ShopItem): number {
 .item-grid-wrapper {
   flex: 1;
   overflow-y: auto;
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
 .item-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-  gap: 10px;
-  padding: 4px;
+  grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
+  gap: 6px;
+  padding: 2px;
 }
 
 .item-card {
-  background: linear-gradient(135deg, #1e2124 0%, #252830 50%, #1e2124 100%);
-  border: 1px solid rgba(139, 71, 137, 0.25);
-  border-radius: 10px;
-  padding: 12px;
+  background: linear-gradient(145deg, #1e2124 0%, #252830 100%);
+  border: 1px solid rgba(139, 71, 137, 0.2);
+  border-radius: 8px;
+  padding: 8px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .item-card:hover {
   border-color: rgba(171, 103, 169, 0.5);
-  box-shadow: 0 0 20px rgba(139, 71, 137, 0.2);
-  transform: translateY(-2px);
+  box-shadow: 0 0 14px rgba(139, 71, 137, 0.18);
+  transform: translateY(-1px);
 }
 
 .item-img-wrap {
@@ -152,90 +150,98 @@ function getGlobalIndex(item: ShopItem): number {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80px;
+  height: 52px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 6px;
 }
 
 .item-img {
-  max-height: 72px;
-  max-width: 100%;
+  max-height: 46px;
+  max-width: 90%;
   object-fit: contain;
   transition: transform 0.3s;
 }
 
+/* Fallback styling for broken images */
+.item-img[src*="data:image/svg"] {
+  opacity: 0.5;
+  max-height: 36px;
+}
+
 .item-card:hover .item-img {
-  transform: scale(1.08);
+  transform: scale(1.06);
 }
 
 .badge {
   position: absolute;
   top: 2px;
   right: 2px;
-  font-size: 9px;
-  font-weight: 600;
-  padding: 2px 6px;
-  border-radius: 4px;
+  font-size: 8px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 3px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
 }
 .badge-addon {
-  background: rgba(139, 71, 137, 0.5);
-  color: #e8d0e7;
+  background: rgba(139, 71, 137, 0.6);
+  color: #edd6ec;
 }
 .badge-custom {
-  background: rgba(76, 175, 80, 0.4);
-  color: #b5e5b7;
+  background: rgba(139, 71, 137, 0.35);
+  color: #d4b3d3;
   top: auto;
   bottom: 2px;
 }
 
-.item-info {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
 .item-name {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   color: #e0e0e0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  line-height: 1.3;
+}
+
+.item-price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
 }
 
 .item-price {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   color: #8bc34a;
 }
 
 .item-stock {
-  font-size: 10px;
-  color: rgba(255, 255, 255, 0.45);
-  padding: 3px 8px;
-  background: linear-gradient(135deg, #323b42 0%, #3a2f42 100%);
-  border: 1px solid rgba(139, 71, 137, 0.3);
-  border-radius: 5px;
-  text-align: center;
-}
-.item-stock span {
-  color: #d3d4d5;
+  font-size: 9px;
   font-weight: 600;
+  color: rgba(255, 255, 255, 0.35);
+  padding: 1px 5px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
 }
 
 .item-actions {
   display: flex;
-  gap: 6px;
+  gap: 5px;
   align-items: center;
+  margin-top: 2px;
 }
 
 .qty-input {
-  width: 40px;
-  height: 30px;
+  width: 36px;
+  height: 28px;
   text-align: center;
   background: rgba(62, 66, 70, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 6px;
+  border-radius: 5px;
   color: #fff;
-  font-size: 12px;
+  font-size: 11px;
   -moz-appearance: textfield;
 }
 .qty-input::-webkit-inner-spin-button,
@@ -250,16 +256,16 @@ function getGlobalIndex(item: ShopItem): number {
 
 .add-btn {
   flex: 1;
-  height: 30px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 4px;
   background: rgba(107, 53, 105, 0.4);
   border: 1px solid rgba(139, 71, 137, 0.3);
-  border-radius: 6px;
+  border-radius: 5px;
   color: #e0c8df;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
@@ -274,6 +280,6 @@ function getGlobalIndex(item: ShopItem): number {
   text-align: center;
   padding: 40px;
   color: rgba(255, 255, 255, 0.3);
-  font-size: 14px;
+  font-size: 13px;
 }
 </style>

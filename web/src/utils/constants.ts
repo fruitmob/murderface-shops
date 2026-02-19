@@ -6,9 +6,10 @@ export const DEFAULT_IMG_PATH = `nui://ox_inventory/web/images/`
 
 export const VEHICLE_IMG_BASE = 'https://raw.githubusercontent.com/renzuzu/carmap/main/carmap/vehicle/'
 
-export const VEHICLE_FALLBACK_IMG = 'https://www.freeiconspng.com/uploads/vehicle-icon-png-car-sedan-4.png'
+export const VEHICLE_FALLBACK_IMG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 24 24' fill='none' stroke='%237a7a7a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 17h14v-5l-2-5H7L5 12z'/%3E%3Ccircle cx='7.5' cy='17.5' r='1.5'/%3E%3Ccircle cx='16.5' cy='17.5' r='1.5'/%3E%3C/svg%3E"
 
-export const ITEM_FALLBACK_IMG = 'https://westerrands.websites.co.in/e-store/img/defaults/product-default.png'
+// Inline SVG data URI — always works in NUI without external requests
+export const ITEM_FALLBACK_IMG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 24 24' fill='none' stroke='%237a7a7a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z'/%3E%3Cpolyline points='3.27 6.96 12 12.01 20.73 6.96'/%3E%3Cline x1='12' y1='22.08' x2='12' y2='12'/%3E%3C/svg%3E"
 
 export const CATEGORY_ICONS: Record<string, string> = {
   Food: 'mdi:food-drumstick',
