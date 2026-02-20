@@ -66,7 +66,7 @@ CreateThread(function()
 	end
 
 	-- shared.ox_Shops = true . try ox_inventory single create shop
-	-- this logic will only work on my forked ox_inventory https://github.com/renzuzu/ox_inventory
+	-- this logic will only work on a forked ox_inventory https://github.com/renzuzu/ox_inventory
 	if shared.oxShops and canregister then -- replace datas from default and ignore if shops is not owned
 		local stores = GetAllShops() -- REFACTORED: Use cache instead of GlobalState
 		for shopname,shops in pairs(shared.Shops) do
@@ -95,7 +95,7 @@ CreateThread(function()
 			end
 		end
 	elseif shared.inventory == 'ox_inventory' then -- if above condition is not possible , we will override ox_inventory shops
-		if GetResourceState('ox_inventory') ~= 'started' then print('^1ox_inventory is not started or this resource started before ox_inventory^0') StopResource('renzu_shops') end
+		if GetResourceState('ox_inventory') ~= 'started' then print('^1ox_inventory is not started or this resource started before ox_inventory^0') StopResource('murderface-shops') end
 		for k,v in pairs(shared.Shops) do -- overide default ox inventory shops. temporary logic
 			exports.ox_inventory:RegisterShop(k, {
 				name = k, 
@@ -147,15 +147,15 @@ CreateThread(function()
 		-- Log warnings for invalid items
 		if next(invalidItemsFound) then
 			local shopCount = 0
-			print('^3[Renzu Shops] WARNING: Found invalid items in shop configurations:^0')
+			print('^3[Murderface Shops] WARNING: Found invalid items in shop configurations:^0')
 			for shopName, items in pairs(invalidItemsFound) do
 				shopCount = shopCount + 1
 				print(string.format('^3  Shop "%s" has %d invalid items: %s^0', shopName, #items, table.concat(items, ', ')))
 			end
-			print('^3[Renzu Shops] These items will not appear in shops. Add them to your inventory system or remove from storeitems.lua^0')
-			print(string.format('^3[Renzu Shops] Total shops with invalid items: %d^0', shopCount))
+			print('^3[Murderface Shops] These items will not appear in shops. Add them to your inventory system or remove from storeitems.lua^0')
+			print(string.format('^3[Murderface Shops] Total shops with invalid items: %d^0', shopCount))
 		else
-			print('^2[Renzu Shops] All shop items validated successfully!^0')
+			print('^2[Murderface Shops] All shop items validated successfully!^0')
 		end
 
 		-- Update shop configurations with validated items only
@@ -255,7 +255,7 @@ Inventory.GetItems = function()
 		elseif QBCore and QBCore.Shared then
 			return QBCore.Shared.Items
 		else
-			print('[Renzu Shops] Warning: Unable to get items - framework not detected')
+			print('[Murderface Shops] Warning: Unable to get items - framework not detected')
 			return {}
 		end
 	else
@@ -464,7 +464,7 @@ CheckItemData = function(data)
 	return false
 end
 
--- REMOVED: was registering 'ox_inventory:openShop' to redirect to renzu_shop:OpenShops,
+-- REMOVED: was registering 'ox_inventory:openShop' to redirect to murderface-shops:OpenShops,
 -- but ox_inventory v2.44.1+ owns that callback name itself. On FMRP this was dead code
 -- anyway — shops open via lib.zones.sphere + self.OpenShop() directly, not this callback.
 
@@ -474,10 +474,10 @@ if shared.inventory == 'ox_inventory' then
 		local conf = shared.OwnedShops[data.ShopName]
 		local stores = GlobalState.Stores
 
-		-- SECURITY: Only process renzu_shops owned shops, not default ox_inventory shops
+		-- SECURITY: Only process murderface-shops owned shops, not default ox_inventory shops
 		-- This prevents race conditions and stock sync issues
 		if not conf then
-			-- Not a renzu_shops owned shop type, skip processing
+			-- Not a murderface-shops owned shop type, skip processing
 			return
 		end
 
@@ -519,7 +519,7 @@ RemoveStockFromStore = function(data)
 
 	-- Check if item is locked by another transaction
 	if locks[lockKey] then
-		print(string.format('[Renzu Shops] Transaction blocked - item %s is locked', lockKey))
+		print(string.format('[Murderface Shops] Transaction blocked - item %s is locked', lockKey))
 		return false
 	end
 
@@ -543,7 +543,7 @@ RemoveStockFromStore = function(data)
 					local currentStock = tonumber(stores[v.label].items[itemtype][itemname].stock) or 0
 					if currentStock >= data.amount then
 						stores[v.label].items[itemtype][itemname].stock = currentStock - data.amount
-						sql.update('renzu_stores','items','shop',v.label,json.encode(stores[v.label].items))
+						sql.update('renzu_stores','items','shop',v.label,json.encode(stores[v.label].items)) -- NOTE: 'renzu_stores' is the legacy DB table name — kept to avoid SQL migration
 						local price = not data.originalprice and stores[v.label].items[itemtype][itemname].price and tonumber(stores[v.label].items[itemtype][itemname].price) or CheckItemData(data)
 						if price then
 							if shared.SendtoBank and data.money == 'bank' then
@@ -569,7 +569,7 @@ RemoveStockFromStore = function(data)
 						success = true
 					else
 						-- Insufficient stock
-						print(string.format('[Renzu Shops] Insufficient stock for %s - requested: %d, available: %d', lockKey, data.amount, currentStock))
+						print(string.format('[Murderface Shops] Insufficient stock for %s - requested: %d, available: %d', lockKey, data.amount, currentStock))
 					end
 					break
 				end
@@ -756,10 +756,10 @@ CreateShop = function(data)
 		local StoreItem = 'shared.Storeitems.'..data.type
 		local ownedshops = 'return '
 		ownedshops = ownedshops..tprint(ownedshop,nil,StoreItem)
-		SaveResourceFile('renzu_shops', path, ownedshops, -1)
+		SaveResourceFile('murderface-shops', path, ownedshops, -1)
 		local default = 'return '
 		default = default..tprint(defaultshops,nil,StoreItem)
-		SaveResourceFile('renzu_shops', path2, default, -1)
+		SaveResourceFile('murderface-shops', path2, default, -1)
 		GlobalState.CreateShop = {
 			loc = vec3(data.config.Shop.x,data.config.Shop.y,data.config.Shop.z),
 			coord = data.config.Storeowner,
@@ -800,11 +800,11 @@ end
 
 exports('CreateShop', CreateShop)
 
-lib.callback.register('renzu_shops:createShop', function(source,data)
+lib.callback.register('murderface-shops:createShop', function(source,data)
 	return CreateShop(data)
 end)
 
-lib.callback.register('renzu_shops:addstock', function(source,data)
+lib.callback.register('murderface-shops:addstock', function(source,data)
 	-- lets secure by adding group check? not now another framework shit. is there a way to check ACL groups via libs? not yet?
 	return AddStockInternal(data.shop,data.index,data.count,data.item)
 end)
@@ -825,7 +825,7 @@ RemoveStock = function(data)
 					end
 				end
 				GlobalState.ShopCarts = carts
-				TriggerClientEvent('renzu_shops:removecart',data.customer,data.serialid)
+				TriggerClientEvent('murderface-shops:removecart',data.customer,data.serialid)
 				return true
 			elseif removed then
 				return true
@@ -833,8 +833,8 @@ RemoveStock = function(data)
 				return false
 			end
 		else
-			TriggerClientEvent('renzu_shops:removecart',data.customer,data.serialid,true)
-			TriggerClientEvent('renzu_shops:customernomoney',source,data.serialid,true)
+			TriggerClientEvent('murderface-shops:removecart',data.customer,data.serialid,true)
+			TriggerClientEvent('murderface-shops:customernomoney',source,data.serialid,true)
 		end
 	else
 		return RemoveStockFromStash({identifier = data.identifier, metadata = data.metadata, item = data.name, amount = tonumber(data.count), price = data.price, type = data.type, money = 'money'})
@@ -843,7 +843,7 @@ end
 
 exports('RemoveStock', RemoveStock)
 
-lib.callback.register('renzu_shops:shopduty', function(source,data)
+lib.callback.register('murderface-shops:shopduty', function(source,data)
 	local store = GlobalState['Stores_'..data.id]
 	if store then
 		store.duty = data.duty
@@ -851,7 +851,7 @@ lib.callback.register('renzu_shops:shopduty', function(source,data)
 	GlobalState['Stores_'..data.id] = store
 end)
 
-lib.callback.register('renzu_shops:removestock', function(source,data)
+lib.callback.register('murderface-shops:removestock', function(source,data)
 	local source = source
 	local xPlayer = GetPlayerFromId(source)
 	data.identifier = data.type..':'..xPlayer.identifier
@@ -861,7 +861,7 @@ end)
 -- COMPATIBILITY: Unified license checking across all frameworks
 function hasLicense(name, xPlayer)
 	if not name or not xPlayer then
-		print('[Renzu Shops] hasLicense called with missing parameters')
+		print('[Murderface Shops] hasLicense called with missing parameters')
 		return false
 	end
 
@@ -882,21 +882,21 @@ function hasLicense(name, xPlayer)
 		end
 		return false
 	else
-		print(string.format('[Renzu Shops] Unknown framework for license check: %s', shared.framework))
+		print(string.format('[Murderface Shops] Unknown framework for license check: %s', shared.framework))
 		return false
 	end
 end
 
 exports('hasLicense', hasLicense)
 
-lib.callback.register('renzu_shops:buyitem', function(source,data)
+lib.callback.register('murderface-shops:buyitem', function(source,data)
 	local source = source
 	local xPlayer = GetPlayerFromId(source)
 
 	-- SECURITY: Rate limiting (2s cooldown per player)
 	local now = GetGameTimer()
 	if purchaseCooldowns[source] and (now - purchaseCooldowns[source]) < PURCHASE_COOLDOWN_MS then
-		print(('[Renzu Shops Security] Player %s rate-limited on purchase'):format(source))
+		print(('[Murderface Shops Security] Player %s rate-limited on purchase'):format(source))
 		return 'invalidamount'
 	end
 	purchaseCooldowns[source] = now
@@ -904,7 +904,7 @@ lib.callback.register('renzu_shops:buyitem', function(source,data)
 	-- SECURITY: Statebag validation — player must have a shop UI open
 	local playerShop = Player(source).state.currentShop
 	if not playerShop then
-		print(('[Renzu Shops Security] Player %s attempted purchase without open shop'):format(source))
+		print(('[Murderface Shops Security] Player %s attempted purchase without open shop'):format(source))
 		return 'invalidamount'
 	end
 
@@ -915,7 +915,7 @@ lib.callback.register('renzu_shops:buyitem', function(source,data)
 	-- Set timeout cleanup (2 minutes) - prevents stuck transactions
 	SetTimeout(120000, function()
 		if purchaseorders[source] == purchaseStartTime then
-			print(string.format('[Renzu Shops] Purchase timeout for player %s - cleaning up', source))
+			print(string.format('[Murderface Shops] Purchase timeout for player %s - cleaning up', source))
 			purchaseorders[source] = nil
 		end
 	end)
@@ -923,7 +923,7 @@ lib.callback.register('renzu_shops:buyitem', function(source,data)
 	-- SECURITY: Server-side shop validation
 	-- Validate shop identifier exists
 	if not data.shop then
-		print(string.format('[Renzu Shops Security] Player %s sent purchase with nil shop identifier', source))
+		print(string.format('[Murderface Shops Security] Player %s sent purchase with nil shop identifier', source))
 		return 'invalidamount'
 	end
 
@@ -946,7 +946,7 @@ lib.callback.register('renzu_shops:buyitem', function(source,data)
 			end
 
 			if not hasAccess then
-				print(string.format('[Renzu Shops Security] Player %s attempted to access restricted shop %s without proper job', source, data.shop))
+				print(string.format('[Murderface Shops Security] Player %s attempted to access restricted shop %s without proper job', source, data.shop))
 				return 'invalidamount' -- Client-compatible error code
 			end
 		end
@@ -956,7 +956,7 @@ lib.callback.register('renzu_shops:buyitem', function(source,data)
 		local movableshop = isMovableShop(data.index)
 
 		if not storeowned and not movableshop and not string.find(data.shop, 'market') then
-			print(string.format('[Renzu Shops Security] Player %s attempted to purchase from invalid shop: %s', source, data.shop))
+			print(string.format('[Murderface Shops Security] Player %s attempted to purchase from invalid shop: %s', source, data.shop))
 			return 'invalidamount' -- Client-compatible error code
 		end
 	end
@@ -967,7 +967,7 @@ lib.callback.register('renzu_shops:buyitem', function(source,data)
 
 	-- SECURITY: Distance check — player must be near the shop
 	if not boothshop and not IsPlayerNearShop(source, data.shop, storeowned or data.index) then
-		print(('[Renzu Shops Security] Player %s too far from shop %s'):format(source, data.shop))
+		print(('[Murderface Shops Security] Player %s too far from shop %s'):format(source, data.shop))
 		return 'invalidamount'
 	end
 
@@ -981,7 +981,7 @@ lib.callback.register('renzu_shops:buyitem', function(source,data)
 		local lockKey = data.shop .. "_" .. (data.index or "default") .. "_" .. itemName
 
 		if locks[lockKey] then
-			print(string.format('[Renzu Shops Security] Player %s attempted to purchase locked item: %s from shop %s', source, itemName, data.shop))
+			print(string.format('[Murderface Shops Security] Player %s attempted to purchase locked item: %s from shop %s', source, itemName, data.shop))
 			return 'invalidamount' -- Client-compatible error code (item currently being purchased by another player)
 		end
 
@@ -1014,20 +1014,20 @@ lib.callback.register('renzu_shops:buyitem', function(source,data)
 			-- SECURITY: Look up price from server config, NEVER trust client-sent price
 			local serverPrice = GetServerItemPrice(name, data.shop, storeowned or data.index, storeowned)
 			if not serverPrice then
-				print(('[Renzu Shops Security] Item %s not found in server config for shop %s (player %s)'):format(name, data.shop, source))
+				print(('[Murderface Shops Security] Item %s not found in server config for shop %s (player %s)'):format(name, data.shop, source))
 				data.items[k] = nil
 			elseif shared.inventory == 'ox_inventory' and data.shop ~= 'VehicleShop' then
 				if not exports.ox_inventory:CanCarryItem(source, v.data.name, v.count, v.data.metadata)  then
 					data.items[k] = nil
 				else
 					if tonumber(data.data[name].price) ~= serverPrice then
-						print(('[Renzu Shops Security] Price mismatch for %s: client=%s server=%s (player %s)'):format(name, tostring(data.data[name].price), tostring(serverPrice), source))
+						print(('[Murderface Shops Security] Price mismatch for %s: client=%s server=%s (player %s)'):format(name, tostring(data.data[name].price), tostring(serverPrice), source))
 					end
 					total = total + serverPrice * tonumber(v.count)
 				end
 			else
 				if tonumber(data.data[name].price) ~= serverPrice then
-					print(('[Renzu Shops Security] Price mismatch for %s: client=%s server=%s (player %s)'):format(name, tostring(data.data[name].price), tostring(serverPrice), source))
+					print(('[Murderface Shops Security] Price mismatch for %s: client=%s server=%s (player %s)'):format(name, tostring(data.data[name].price), tostring(serverPrice), source))
 				end
 				total = total + serverPrice * tonumber(v.count)
 			end
@@ -1121,7 +1121,7 @@ lib.callback.register('renzu_shops:buyitem', function(source,data)
 	}
 
 	if not validCurrencies[moneytype:lower()] then
-		print(string.format('[Renzu Shops Security] Player %s attempted to use invalid currency: %s', source, moneytype))
+		print(string.format('[Murderface Shops Security] Player %s attempted to use invalid currency: %s', source, moneytype))
 		releaseLocks()
 		return 'invalidamount' -- Client-compatible error code
 	end
@@ -1244,10 +1244,10 @@ lib.callback.register('renzu_shops:buyitem', function(source,data)
 		end
 
 		-- Trigger logging event (can be picked up by logging resources)
-		TriggerEvent('renzu_shops:purchaseCompleted', purchaseLog)
+		TriggerEvent('murderface-shops:purchaseCompleted', purchaseLog)
 
 		-- Console log for server monitoring
-		print(string.format('[Renzu Shops] Purchase: %s (%s) bought %d items from %s for $%d via %s',
+		print(string.format('[Murderface Shops] Purchase: %s (%s) bought %d items from %s for $%d via %s',
 			purchaseLog.playerName, purchaseLog.player, #purchaseLog.items, data.shop, total, moneytype))
 
 		releaseLocks()
@@ -1375,7 +1375,7 @@ end
 
 exports('BuyStore', BuyStore)
 
-lib.callback.register("renzu_shops:buystore", function(source,data)
+lib.callback.register("murderface-shops:buystore", function(source,data)
 	local source = source
 	local xPlayer = GetPlayerFromId(source)
 
@@ -1392,17 +1392,17 @@ lib.callback.register("renzu_shops:buystore", function(source,data)
 	end
 
 	if not realPrice then
-		print(('[Renzu Shops Security] Invalid store label from player %s: %s'):format(source, tostring(data.label)))
+		print(('[Murderface Shops Security] Invalid store label from player %s: %s'):format(source, tostring(data.label)))
 		return
 	end
 
 	if tonumber(data.price) ~= realPrice then
-		print(('[Renzu Shops Security] Store price mismatch from player %s: client=%s server=%s'):format(source, tostring(data.price), tostring(realPrice)))
+		print(('[Murderface Shops Security] Store price mismatch from player %s: client=%s server=%s'):format(source, tostring(data.price), tostring(realPrice)))
 	end
 
 	-- SECURITY: Distance check
 	if not IsPlayerNearShop(source, data.shopName or '', data.label) then
-		print(('[Renzu Shops Security] Player %s too far from store %s to purchase'):format(source, data.label))
+		print(('[Murderface Shops Security] Player %s too far from store %s to purchase'):format(source, data.label))
 		return
 	end
 
@@ -1429,13 +1429,13 @@ end
 exports('RemoveStore', RemoveStore)
 
 GlobalState.AvailableStore = {}
-lib.callback.register("renzu_shops:sellstore", function(source,store)
+lib.callback.register("murderface-shops:sellstore", function(source,store)
 	local source = source
 	local xPlayer = GetPlayerFromId(source)
 
 	-- SECURITY: Distance check
 	if not IsPlayerNearShop(source, '', store) then
-		print(('[Renzu Shops Security] Player %s too far from store %s to sell'):format(source, tostring(store)))
+		print(('[Murderface Shops Security] Player %s too far from store %s to sell'):format(source, tostring(store)))
 		return
 	end
 
@@ -1483,7 +1483,7 @@ end
 
 exports('CreateCustomItem', CreateCustomItem)
 
-lib.callback.register("renzu_shops:createitem", function(source,data)
+lib.callback.register("murderface-shops:createitem", function(source,data)
 	local source = source
 	local xPlayer = GetPlayerFromId(source)
 	local stores = GlobalState.Stores
@@ -1492,7 +1492,7 @@ lib.callback.register("renzu_shops:createitem", function(source,data)
 	end
 end)
 
-lib.callback.register("renzu_shops:work", function(source,data)
+lib.callback.register("murderface-shops:work", function(source,data)
 	local source = source
 	local xPlayer = GetPlayerFromId(source)
 	if GetJobFromData(data.groups,xPlayer) == xPlayer.job.name then
@@ -1500,7 +1500,7 @@ lib.callback.register("renzu_shops:work", function(source,data)
 	end
 end)
 
-lib.callback.register("renzu_shops:proccessed", function(source,data)
+lib.callback.register("murderface-shops:proccessed", function(source,data)
 	local source = source
 	local xPlayer = GetPlayerFromId(source)
 	local amount = 1
@@ -1537,7 +1537,7 @@ lib.callback.register("renzu_shops:proccessed", function(source,data)
 	return false
 end)
 
-lib.callback.register("renzu_shops:transfershop", function(source,data)
+lib.callback.register("murderface-shops:transfershop", function(source,data)
 	local source = source
 	local xPlayer = GetPlayerFromId(source)
 	local toPlayer = GetPlayerFromId(data.id)
@@ -1567,7 +1567,7 @@ ModifyJobAccess = function(data)
 end
 
 GlobalState.JobShopNotify = {}
-lib.callback.register("renzu_shops:shopjobaccess", function(source,store,add)
+lib.callback.register("murderface-shops:shopjobaccess", function(source,store,add)
 	local source = source
 	local xPlayer = GetPlayerFromId(source)
 	local stores = GlobalState.Stores
@@ -1601,7 +1601,7 @@ AddEventHandler('playerDropped', function()
 	if src then robbers[src] = nil end
 end)
 
-lib.callback.register("renzu_shops:canrobstore", function(source,data)
+lib.callback.register("murderface-shops:canrobstore", function(source,data)
 	-- SECURITY: Validate store identifier exists
 	if not data or not data.store then return false end
 
@@ -1612,7 +1612,7 @@ lib.callback.register("renzu_shops:canrobstore", function(source,data)
 
 	-- SECURITY: Distance check — must be near the store
 	if not IsPlayerNearShop(source, data.store, data.store) then
-		print(('[Renzu Shops Security] Player %s too far from store %s to rob'):format(source, data.store))
+		print(('[Murderface Shops Security] Player %s too far from store %s to rob'):format(source, data.store))
 		return false
 	end
 
@@ -1627,7 +1627,7 @@ lib.callback.register("renzu_shops:canrobstore", function(source,data)
 	return false
 end)
 
-lib.callback.register("renzu_shops:robstore", function(source,data)
+lib.callback.register("murderface-shops:robstore", function(source,data)
 	if robbers[source] then
 		robbers[source] = nil
 		local rob = GlobalState.RobableStore
@@ -1654,7 +1654,7 @@ lib.callback.register("renzu_shops:robstore", function(source,data)
 	return false
 end)
 
-lib.callback.register("renzu_shops:GetInventoryData", function(source,identifier)
+lib.callback.register("murderface-shops:GetInventoryData", function(source,identifier)
 	return GetInventoryData(identifier)
 end)
 
@@ -1757,7 +1757,7 @@ end
 
 exports('GetStashData', GetStashData)
 
-lib.callback.register("renzu_shops:getStashData", function(source,data)
+lib.callback.register("murderface-shops:getStashData", function(source,data)
 	local source = source
 	local xPlayer = GetPlayerFromId(source)
 	local identifier = data.identifier
@@ -1806,7 +1806,7 @@ end
 
 exports('CraftItems', CraftItems)
 
-lib.callback.register("renzu_shops:craftitem", function(source,data)
+lib.callback.register("murderface-shops:craftitem", function(source,data)
 	local source = source
 	local items = not data.items and shared.MovableShops[data.type].menu[data.menu] or data.items
 	local xPlayer = GetPlayerFromId(source)
@@ -1816,7 +1816,7 @@ lib.callback.register("renzu_shops:craftitem", function(source,data)
 	return CraftItems(data)
 end)
 
-lib.callback.register("renzu_shops:getmovableshopdata", function(source,data)
+lib.callback.register("murderface-shops:getmovableshopdata", function(source,data)
 	local source = source
 	local xPlayer = GetPlayerFromId(source)
 	local identifier = data.type..':'..xPlayer.identifier
@@ -1890,7 +1890,7 @@ end
 
 exports('AddMovableShopToPlayer', AddMovableShopToPlayer)
 
-lib.callback.register("renzu_shops:buymovableshop", function(source,data)
+lib.callback.register("murderface-shops:buymovableshop", function(source,data)
 	local source = source
 	local xPlayer = GetPlayerFromId(source)
 	local identifier = data.type..':'..xPlayer.identifier
@@ -1910,7 +1910,7 @@ lib.callback.register("renzu_shops:buymovableshop", function(source,data)
 	end
 end)
 
-lib.callback.register("renzu_shops:getMovableVehicle", function(source,plate)
+lib.callback.register("murderface-shops:getMovableVehicle", function(source,plate)
 	local plate = string.gsub(tostring(plate), '^%s*(.-)%s*$', '%1'):upper()
 	local vehicle = SqlFunc('oxmysql','fetchAll','SELECT * FROM '..vehicletable..' WHERE TRIM(plate) = ? ',{plate})
 	if vehicle[1] then
@@ -1944,7 +1944,7 @@ AddEventHandler('entityCreated', function(entity)
 end)
 
 local deliver = {}
-lib.callback.register("renzu_shops:createshoporder", function(source,data)
+lib.callback.register("murderface-shops:createshoporder", function(source,data)
 	local source = source
 	local xPlayer = GetPlayerFromId(source)
 	local stores = GlobalState.Stores
@@ -1972,7 +1972,7 @@ lib.callback.register("renzu_shops:createshoporder", function(source,data)
 end)
 
 GlobalState.OngoingShip = {}
-lib.callback.register("renzu_shops:startdelivery", function(source,data)
+lib.callback.register("murderface-shops:startdelivery", function(source,data)
 	local source = source
 	local xPlayer = GetPlayerFromId(source)
 	for k,v in pairs(deliver) do
@@ -1993,7 +1993,7 @@ lib.callback.register("renzu_shops:startdelivery", function(source,data)
 	return false
 end)
 
-lib.callback.register("renzu_shops:stockdelivered", function(source,data)
+lib.callback.register("murderface-shops:stockdelivered", function(source,data)
 	local shipping = GlobalState.Shipping
 	local add = false
 	for k3,v in pairs(shipping) do
@@ -2016,7 +2016,7 @@ lib.callback.register("renzu_shops:stockdelivered", function(source,data)
 	return false
 end)
 
-lib.callback.register("renzu_shops:jobdone", function(source,data)
+lib.callback.register("murderface-shops:jobdone", function(source,data)
 	local source = source
 	local xPlayer = GetPlayerFromId(source)
 	local found = false
@@ -2038,7 +2038,7 @@ lib.callback.register("renzu_shops:jobdone", function(source,data)
 end)
 
 local requests = {}
-lib.callback.register("renzu_shops:confirmationfeedback", function(source,data)
+lib.callback.register("murderface-shops:confirmationfeedback", function(source,data)
 	local source = source
 	requests[source] = data.answer
 	Wait(1000)
@@ -2047,7 +2047,7 @@ lib.callback.register("renzu_shops:confirmationfeedback", function(source,data)
 	player:set('confirmation',nil,true)
 end)
 
-lib.callback.register("renzu_shops:removeemployee", function(source,data)
+lib.callback.register("murderface-shops:removeemployee", function(source,data)
 	local stores = GlobalState.Stores
 	if stores[data.store].employee[data.id] then
 		stores[data.store].employee[data.id] = nil
@@ -2058,7 +2058,7 @@ lib.callback.register("renzu_shops:removeemployee", function(source,data)
 	end
 end)
 
-lib.callback.register("renzu_shops:addemployee", function(source,data)
+lib.callback.register("murderface-shops:addemployee", function(source,data)
 	local player = Player(data.id).state
 	local data = data
 	local employee = GetPlayerFromId(data.id)
@@ -2275,7 +2275,7 @@ RemoveAccount = function(xPlayer, name, total, item)
 	return xPlayer.removeAccountMoney(name,total)
 end
 
-lib.callback.register('renzu_shops:editstore', function(source,data)
+lib.callback.register('murderface-shops:editstore', function(source,data)
 	local source = source
 	local xPlayer = GetPlayerFromId(source)
 	local stores = GlobalState.Stores
@@ -2306,7 +2306,7 @@ lib.callback.register('renzu_shops:editstore', function(source,data)
 		end
 
 		if not itemExists then
-			print(string.format('[Renzu Shops Security] Player %s attempted to deposit invalid item: %s', source, itemName))
+			print(string.format('[Murderface Shops Security] Player %s attempted to deposit invalid item: %s', source, itemName))
 			return 'invalid_item'
 		end
 
@@ -2359,12 +2359,12 @@ getShopName = function(data)
 end
 
 GlobalState.ShopCarts = {}
-lib.callback.register('renzu_shops:updateshopcart', function(source, data)
+lib.callback.register('murderface-shops:updateshopcart', function(source, data)
 	-- SECURITY: Validate payload
 	if not data or not data.shop then return end
 	local encoded = json.encode(data)
 	if #encoded > 8192 then -- 8KB max to prevent DoS via oversized payloads
-		print(('[Renzu Shops Security] Oversized cart payload from player %s (%d bytes)'):format(source, #encoded))
+		print(('[Murderface Shops Security] Oversized cart payload from player %s (%d bytes)'):format(source, #encoded))
 		return
 	end
 	local carts = GlobalState.ShopCarts
@@ -2373,7 +2373,7 @@ lib.callback.register('renzu_shops:updateshopcart', function(source, data)
 end)
 
 --DeleteResourceKvp('itemshowcase')
-lib.callback.register('renzu_shops:editshowcase', function(source, method, name, data)
+lib.callback.register('murderface-shops:editshowcase', function(source, method, name, data)
 	local showcases = GlobalState.ItemShowCase
 	local shop = getShopName(data.shop)
 	if shop then
@@ -2409,7 +2409,7 @@ lib.callback.register('renzu_shops:editshowcase', function(source, method, name,
 	end
 end)
 
-lib.callback.register('renzu_shops:ondemandpay', function(source,data)
+lib.callback.register('murderface-shops:ondemandpay', function(source,data)
 	local source = source
 	local total = 0
 	if purchaseorders[source] then
@@ -2432,7 +2432,7 @@ lib.callback.register('renzu_shops:ondemandpay', function(source,data)
 end)
 
 local movableentity = {}
-lib.callback.register('renzu_shops:playerStateBags', function(source,value)
+lib.callback.register('murderface-shops:playerStateBags', function(source,value)
 	local entity = NetworkGetEntityFromNetworkId(value.entity)
 	local state = Entity(entity).state
 	value.data.ts = os.time()
@@ -2648,11 +2648,11 @@ end
 AddEventHandler('onResourceStop', function(re)
 	if re == 'ox_inventory' and shared.inventory == 'ox_inventory' then
 		print("^1ox_inventory is stopped, ox_inventory is a dependency, make sure this resource is always started before ox_inventory^0")
-		StopResource('renzu_shops')
+		StopResource('murderface-shops')
 	end
 end)
 
 
 
 exports('Inventory', Inventory)
-lib.versionCheck('renzuzu/renzu_shops')
+lib.versionCheck('fruitmob/murderface-shops')

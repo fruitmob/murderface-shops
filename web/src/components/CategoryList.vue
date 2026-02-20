@@ -39,13 +39,15 @@ async function selectCategory(name: string | null) {
 </template>
 
 <style scoped>
+/* Phase 3.3 — glass pills with neon active */
 .category-bar {
   display: flex;
   gap: 5px;
-  padding: 6px 10px;
-  background: linear-gradient(135deg, #1e1e24 0%, #252530 100%);
-  border: 1px solid rgba(139, 71, 137, 0.2);
-  border-radius: 8px;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.01);
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  border-radius: 0;
   overflow-x: auto;
   flex-shrink: 0;
   scrollbar-width: none;
@@ -60,28 +62,30 @@ async function selectCategory(name: string | null) {
   align-items: center;
   gap: 5px;
   padding: 6px 12px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: var(--ms-r-sm);
   color: rgba(255, 255, 255, 0.55);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
   white-space: nowrap;
   cursor: pointer;
-  transition: all 0.2s;
-  text-transform: capitalize;
+  transition: all 0.25s var(--ms-ease);
 }
 
 .cat-tab:hover {
-  background: rgba(139, 71, 137, 0.12);
-  color: rgba(255, 255, 255, 0.8);
-  border-color: rgba(139, 71, 137, 0.3);
+  background: rgba(139, 71, 137, 0.1);
+  color: rgba(255, 255, 255, 0.85);
+  border-color: rgba(139, 71, 137, 0.2);
+  transform: translateY(-1px);
 }
 
 .cat-tab.active {
-  background: rgba(139, 71, 137, 0.25);
-  border-color: rgba(139, 71, 137, 0.5);
+  background: var(--ms-accent);
+  border-color: var(--ms-accent-border);
   color: #e0b8de;
   font-weight: 600;
+  box-shadow: 0 0 14px rgba(139, 71, 137, 0.12),
+              inset 0 0 14px rgba(139, 71, 137, 0.04);
 }
 </style>

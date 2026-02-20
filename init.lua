@@ -12,7 +12,7 @@ shared.lang = 'en'
 -- UI CONFIGURATION
 -- ========================================
 -- Use ox_inventory's built-in shop UI (experimental)
--- false = Use Renzu's full-featured custom UI (recommended)
+-- false = Use the full-featured custom UI (recommended)
 -- true = Use ox_inventory UI (requires specific ox_inventory fork)
 shared.oxShops = false
 
@@ -86,7 +86,7 @@ shared.VehicleKeys = function(plate,source) -- vehicle keys
 				return sendvehiclekeys(nil,plate,source)
 			end
 		elseif shared.VehicleKeysType['client'] and shared.VehicleKeysType['export'] then -- do not edit this condition
-			TriggerClientEvent('renzu_shops:Vehiclekeys', source, plate)
+			TriggerClientEvent('murderface-shops:Vehiclekeys', source, plate)
 
 		elseif shared.VehicleKeysType['client'] then -- client events from server   edit this if your using client events vehicle keys
 			-- Server Events Keys
@@ -132,25 +132,25 @@ shared.inventory = 'ox_inventory'
 if GetResourceState('es_extended') == 'started' then
 	shared.framework = 'ESX'
 	ESX = exports['es_extended']:getSharedObject()
-	print('[Renzu Shops] ESX Legacy detected')
+	print('[Murderface Shops] ESX Legacy detected')
 elseif GetResourceState('qbx_core') == 'started' then
 	shared.framework = 'QBX'
 	-- QBX uses exports differently - no GetCoreObject needed
 	-- Functions are accessed directly via exports.qbx_core
-	print('[Renzu Shops] QBX Core detected')
+	print('[Murderface Shops] QBX Core detected')
 elseif GetResourceState('qb-core') == 'started' then
 	shared.framework = 'QBCORE'
 	QBCore = exports['qb-core']:GetCoreObject()
-	print('[Renzu Shops] QB-Core detected')
+	print('[Murderface Shops] QB-Core detected')
 end
 
 -- Automatically detects inventory system
 if GetResourceState('ox_inventory') == 'started' then
 	shared.inventory = 'ox_inventory'
-	print('[Renzu Shops] ox_inventory detected')
+	print('[Murderface Shops] ox_inventory detected')
 elseif GetResourceState('qb-inventory') == 'started' then
 	shared.inventory = 'qb-inventory'
-	print('[Renzu Shops] qb-inventory detected')
+	print('[Murderface Shops] qb-inventory detected')
 end
 
 MultiCategory = function(blacklist,whitelist,data,...)
@@ -206,7 +206,7 @@ request('config/shipping')
 -- shared.Storeitems.SonsAuto = shared.Storeitems.AutomotiveSupply
 
 -- DISABLED: ox_inventory handles weapon components natively; injecting the
--- renzu_shops Components table creates hundreds of broken shop entries
+-- murderface-shops Components table creates hundreds of broken shop entries
 -- (at_skin_perseus, at_skin_camo, etc.) with no item defs or images.
 -- Ammunation/BlackMarketArms items are defined in storeitems.lua instead.
 -- if shared.inventory == 'ox_inventory' then
@@ -221,7 +221,7 @@ if shared.inventory == 'qb-inventory' then
 		Wait(1000)
 		-- SAFETY: Check QBCore exists before accessing
 		if not QBCore or not QBCore.Shared or not QBCore.Shared.Weapons then
-			print('[Renzu Shops] Warning: QBCore.Shared.Weapons not available, skipping weapon components loading')
+			print('[Murderface Shops] Warning: QBCore.Shared.Weapons not available, skipping weapon components loading')
 			return
 		end
 		local weaponshared = QBCore.Shared.Weapons
@@ -277,7 +277,7 @@ if not IsDuplicityVersion() then
 				car = true,
 			}
 		})
-		local callback = lib.callback.await('renzu_shops:proccessed',100, data)
+		local callback = lib.callback.await('murderface-shops:proccessed',100, data)
 		if not callback then
 			lib.notify({
 				title = 'Not Enough Ingredients',

@@ -1,3 +1,5 @@
+-- NOTE: The 'renzu_stores' table name is a legacy DB name kept to avoid SQL migration.
+-- The resource has been rebranded to murderface-shops but the database table remains renzu_stores.
 local dbdata = {['financedata'] = {['columns'] = '`identifier`,`max`,`financed`',['values'] = '?,?,?'},['renzu_stores'] = {['columns'] = '`shop`,`owner`,`money`,`items`,`employee`,`cashier`,`customitems`,`job`',['values'] = '?,?,?,?,?,?,?,?'},['movableshops'] = {['columns'] = '`identifier`,`owner`,`money`,`items`,`plate`,`type`,`shopname`',['values'] = '?,?,?,?,?,?,?'},}
 
 local db = setmetatable({},{

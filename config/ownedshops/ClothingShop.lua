@@ -256,7 +256,7 @@ return {
 		-- 					car = true,
 		-- 				}
 		-- 			})
-		-- 			lib.callback.await('renzu_shops:proccessed',100, data)
+		-- 			lib.callback.await('murderface-shops:proccessed',100, data)
 		-- 		end
 		-- 	},
 		-- 	{
@@ -285,7 +285,7 @@ return {
 		-- 					car = true,
 		-- 				}
 		-- 			})
-		-- 			lib.callback.await('renzu_shops:proccessed',100, data)
+		-- 			lib.callback.await('murderface-shops:proccessed',100, data)
 		-- 		end
 		-- 	},
 		-- }

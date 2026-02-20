@@ -44,7 +44,7 @@ function GetPlayerFromId(src)
         player.addMoney = function(value)
             -- Use player object's Functions table
             if qbxPlayer.Functions and qbxPlayer.Functions.AddMoney then
-                return qbxPlayer.Functions.AddMoney('cash', tonumber(value), 'renzu_shops')
+                return qbxPlayer.Functions.AddMoney('cash', tonumber(value), 'murderface-shops')
             end
             return false
         end
@@ -52,7 +52,7 @@ function GetPlayerFromId(src)
         player.removeMoney = function(value)
             -- Use player object's Functions table
             if qbxPlayer.Functions and qbxPlayer.Functions.RemoveMoney then
-                return qbxPlayer.Functions.RemoveMoney('cash', tonumber(value), 'renzu_shops')
+                return qbxPlayer.Functions.RemoveMoney('cash', tonumber(value), 'murderface-shops')
             end
             return false
         end
@@ -68,7 +68,7 @@ function GetPlayerFromId(src)
             type = type == 'money' and 'cash' or type
             -- Use player object's Functions table
             if qbxPlayer.Functions and qbxPlayer.Functions.AddMoney then
-                return qbxPlayer.Functions.AddMoney(type, tonumber(value), 'renzu_shops')
+                return qbxPlayer.Functions.AddMoney(type, tonumber(value), 'murderface-shops')
             end
             return false
         end
@@ -77,7 +77,7 @@ function GetPlayerFromId(src)
             type = type == 'money' and 'cash' or type
             -- Use player object's Functions table
             if qbxPlayer.Functions and qbxPlayer.Functions.RemoveMoney then
-                return qbxPlayer.Functions.RemoveMoney(type, tonumber(val), 'renzu_shops')
+                return qbxPlayer.Functions.RemoveMoney(type, tonumber(val), 'murderface-shops')
             end
             return false
         end

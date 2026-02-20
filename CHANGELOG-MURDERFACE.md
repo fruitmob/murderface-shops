@@ -1,73 +1,37 @@
-# Murderface Fork Changelog
+# murderface-shops Changelog
 
-All notable changes to the Murderface Fork of renzu_shops.
+All notable changes to murderface-shops (Qbox Edition).
 
 **Original Script:** [renzu_shops](https://github.com/renzuzu/renzu_shops) by renzuzu
-**This Fork:** Murderface's Qbox Edition
+**This Fork:** murderface-shops (Qbox Edition)
 
 ---
 
-## [2026-02-20] — renzu_shops — Server-Side Tuning (Phase 2.2)
-
-### New Shops
-- **SewerMarket** ("The Rat's Nest") — black_money underground market, no blip
-- **SewerBistro** ("The Underbelly") — sewer fine dining, no blip
-- **SewerChopShop** ("Underground Parts") — black_money stolen vehicle parts, no blip
-- **LocksmithShop** ("Locksmith") — keys, lockpicks, security items, blip icon 478
-
-### Economy Rebalance
-- **Mechanic parts**: major price increases across all mechanic shops (e.g. v12_engine $75k→$50k, turbocharger $12k→$17.5k, drivetrains $12-18k→$25-50k, tires $2-5k→$12.5-15k)
-- **BlackMarketGoods**: 7 new heist prerequisite items (blue_usb, kq_angle_grinder, kq_radio_encoder, fraud_laptop, fraud_printer, generator, fuelcan)
-- **YouTool**: weapon name casing fix (weapon_wrench→WEAPON_WRENCH), added gold_pan ($500)
-- **AutomotiveSupply**: removed orphaned category (never referenced by any shop)
-
-### Shop Configuration
-- **Player shop ownership disabled**: `config/ownedshops/init.lua` returns `{}` — all shops now NPC-run via defaultshops.lua
-- **Mechanic shops job-locked**: Bennys, ToxsShop, Flywheels, LSCustoms, SonsAuto restricted to `{'mechanic', 'lscustoms', 'sonsauto', 'allcare', 'bennys'}`
-- **Blip overhaul**: new colours/scales across all shop types (General→2, Ammunation→1, MechanicSupply→25, Police→0.7, VehicleShop icon 326 colour 3, food trucks→5)
-
-### Vendor Peds
-- **~30 new peds** in `client/shop_peds.lua` (~22→~52 entity slots)
-- 14 General store shopkeepers restored (needed since owned-shop ped functions no longer fire)
-- 10 Ammunation peds (rotating stripper models), 2 Black Market, 2 MechanicSupply
-- 7 Sewer MLO peds (3 vendors + 3 ambient NPCs + 1 welder), 1 Locksmith, 1 WormsFunHouse, 1 YouTool
-- Added `animDict`/`animName` support for custom ped animations
-
-### Visual / UX
-- **DrawMarker**: type 21 (cylinder) → 25 (ring), purple (192,132,252), larger (0.9), ground-level
-- **TextUI**: icon `fa-shopping-basket` → `fa-eye`, purple icon color (#c084fc), dark purple bg (#1a1025), larger font (18px)
-- **Wallet formatting**: raw numbers sent to NUI (removed `format_int` pre-formatting)
-
-### Bug Fixes
-- **Weapon components injection disabled**: `init.lua` block that injected `Components` table was creating hundreds of broken entries with no item defs/images
-- **Dead callback removed**: `ox_inventory:openShop` callback in server/main.lua was dead code (ox_inventory v2.44.1+ owns that name)
-- **Export rename**: `exports.renzu_shops:Shops()` → `exports['murderface-shops']:Shops()` (resource rename)
-
-### Files Touched
-- `config/ownedshops/init.lua`, `config/defaultshops.lua`, `config/storeitems.lua`
-- `config/movableshop.lua`, `config/ownedshops/VehicleShop.lua`
-- `client/shop_peds.lua`, `client/main.lua`, `init.lua`, `server/main.lua`
-
----
-
-## [2026-02-19] — renzu_shops — Visual Polish Pass (Phase 2.1)
+## [2026-02-19] — murderface-shops — Visual Polish Pass (Phase 2.1)
 
 ### What Changed
-- **[UI] Tighter layout**: Container max-width 1400→1100px, height 92→80vh, gap reductions throughout — feels like a cohesive panel instead of full-screen overlay
-- **[UI] Lighter overlay**: Background opacity 0.78→0.58 so more of the shop interior shows through
-- **[UI] Compact item cards**: Grid min-width 170→135px, image area 80→52px, padding 12→8px — denser grid, less dead space
-- **[UI] Inline stock display**: Stock pill moved inline next to price (e.g. "$12 ∞") instead of taking a separate row
-- **[UI] Narrower cart panel**: 360→280px width, tighter padding on cart rows, smaller empty state
-- **[UI] Category capitalization**: Added `text-transform: capitalize` so "food" → "Food", "beverages" → "Beverages"
-- **[UI] Wallet chip polish**: Slightly larger/bolder font, subtle border, tabular-nums for aligned digits
-- **[UI] Badge color fix**: Addon/Customise badges now use consistent purple tones instead of green-on-purple
-- **[UI] Inline SVG fallbacks**: Replaced external URLs (westerrands.websites.co.in, freeiconspng.com) with inline SVG data URIs — always render in NUI without external requests
-- **[UI] Image placeholder area**: Missing item images get a subtle background + dimmed box icon instead of blank white space
-- **[BUILD] Rebuilt web/dist/**
+- **[UI] Lighter overlay**: background opacity 0.78 → 0.58 (shop background less intrusive)
+- **[UI] Compact layout**: max-width 1400px → 1100px, height 92vh → 80vh
+- **[UI] Tighter gaps**: shop-container gap 8px → 6px, shop-body gap 12px → 8px
+- **[UI] Narrower cart panel**: shop-right width 360px → 280px
+- **[UI] Compact cart items**: padding/gap 8px → 6px, border-radius 8px → 6px, margin-bottom 6px → 4px
+- **[UI] Smaller cart images**: 36px → 30px container, 32px → 28px max-image
+- **[UI] Compact empty state**: padding 30px → 24px 12px, font-size 12px → 11px
+- **[UI] Tighter payment section**: padding 12px 16px → 10px 12px, total margin-bottom 10px → 8px
+
+### Files Touched
+- `web/dist/assets/nui-ClJrx5Nx.css` — appended Phase 2.1 override rules (no rebuild required)
+- `web/src/App.vue` — source updated to match
+- `web/src/components/CartPanel.vue` — source updated to match
+- `web/src/components/CartPayment.vue` — source updated to match
+
+### Notes
+- No rebuild needed: overrides appended to existing compiled CSS via cascade
+- Source files updated to stay in sync for next time node/npm is available for rebuild
 
 ---
 
-## [2026-02-19] — renzu_shops — Vue 3 UI Rewrite (Phase 2)
+## [2026-02-19] — murderface-shops — Vue 3 UI Rewrite (Phase 2)
 
 ### What Changed
 - **[MAJOR] Full Vue 3 UI rewrite**: Replaced vanilla HTML/Bootstrap 4/JS UI with Vue 3 + Vite + Pinia + TypeScript
@@ -116,19 +80,19 @@ web/dist/      — Built output (committed)
 | *(new)*                  | `playSound`         |
 
 ### Files Touched
-- `renzu_shops/web/` — Full Vue 3 project (new files in src/, dist/)
-- `renzu_shops/client/main.lua` — Replaced `RegisterNUICallback('nuicb')` with `RegisterNUICallback('shop:callback')` dispatch table
-- `renzu_shops/fxmanifest.lua` — Updated `ui_page` and `files` for new build output
+- `murderface-shops/web/` — Full Vue 3 project (new files in src/, dist/)
+- `murderface-shops/client/main.lua` — Replaced `RegisterNUICallback('nuicb')` with `RegisterNUICallback('shop:callback')` dispatch table
+- `murderface-shops/fxmanifest.lua` — Updated `ui_page` and `files` for new build output
 
 ### Setup Steps
-1. `cd renzu_shops/web && npm install && npm run build` (only needed if rebuilding; dist/ is pre-committed)
+1. `cd murderface-shops/web && npm install && npm run build` (only needed if rebuilding; dist/ is pre-committed)
 2. Replace files on server
-3. Restart renzu_shops (`ensure renzu_shops`)
+3. Restart murderface-shops (`ensure murderface-shops`)
 4. No SQL migration needed
 
 ---
 
-## [2026-02-19] — renzu_shops — Security Hardening (Phase 1)
+## [2026-02-19] — murderface-shops — Security Hardening (Phase 1)
 
 ### What Changed
 - **[CRITICAL] Server-side price validation**: Purchase totals now computed from server config, never from client-sent data
@@ -144,10 +108,10 @@ web/dist/      — Built output (committed)
 - **[CLEANUP] playerDropped handler**: Cleans up purchase cooldowns, orders, and robber state on disconnect
 
 ### Files Touched
-- `renzu_shops/server/main.lua` — Price validation, statebag check, distance check, rate limiting, cart limit, buystore fix, rob hardening, playerDropped
-- `renzu_shops/server/cache.lua` — SQL field whitelist
-- `renzu_shops/client/main.lua` — Statebag set/clear, native sounds
-- `renzu_shops/client/shop_peds.lua` — Full rewrite (lib.points)
+- `murderface-shops/server/main.lua` — Price validation, statebag check, distance check, rate limiting, cart limit, buystore fix, rob hardening, playerDropped
+- `murderface-shops/server/cache.lua` — SQL field whitelist
+- `murderface-shops/client/main.lua` — Statebag set/clear, native sounds
+- `murderface-shops/client/shop_peds.lua` — Full rewrite (lib.points)
 
 ---
 
@@ -155,7 +119,7 @@ web/dist/      — Built output (committed)
 
 ### 🎯 Fork Highlights
 
-This version represents a complete overhaul focused on production readiness for QBX servers while maintaining the original renzu_shops architecture and functionality.
+This version represents a complete overhaul focused on production readiness for QBX servers while maintaining the original architecture and functionality (from renzuzu's renzu_shops).
 
 ### ✨ Major Enhancements
 
@@ -336,7 +300,7 @@ This version represents a complete overhaul focused on production readiness for 
 
 #### Migration Steps
 1. Backup your database
-2. Backup your current renzu_shops resource
+2. Backup your current murderface-shops resource
 3. Replace with Murderface Fork
 4. Review `config/storeitems.lua` - ensure all items exist in ox_inventory
 5. Test thoroughly before deploying to production
@@ -346,7 +310,7 @@ See [INSTALL.md](INSTALL.md) for detailed migration guide.
 ### 🙏 Credits
 
 - **Original Author:** [renzuzu](https://github.com/renzuzu)
-  - Created the renzu_shops system
+  - Created the original renzu_shops system
   - All core functionality and architecture
   - Original NUI interface
 - **Murderface Fork Contributions:**
@@ -362,7 +326,7 @@ See [INSTALL.md](INSTALL.md) for detailed migration guide.
 
 LGPL-3.0-or-later (same as original)
 
-This is a fork and enhancement of the original renzu_shops. All original functionality and architecture belongs to renzuzu.
+This is a fork and enhancement of the original renzu_shops by renzuzu. All original functionality and architecture belongs to renzuzu.
 
 ---
 
@@ -375,7 +339,7 @@ This is a fork and enhancement of the original renzu_shops. All original functio
 - [ ] Dynamic pricing based on supply/demand
 - [ ] Franchise system for multi-shop owners
 
-**Note:** These are ideas, not commitments. The focus remains on maintaining stability and compatibility with the original renzu_shops architecture.
+**Note:** These are ideas, not commitments. The focus remains on maintaining stability and compatibility with the original architecture.
 
 ---
 

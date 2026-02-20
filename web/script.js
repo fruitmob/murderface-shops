@@ -12,7 +12,7 @@
             }
         }
     }
-    xhr.open("POST", 'https://renzu_shops/nuicb', true)
+    xhr.open("POST", 'https://murderface-shops/nuicb', true)
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify(data))
 }

@@ -70,7 +70,7 @@ local ALLOWED_FIELDS = {
 ---@return boolean success
 local function UpdateShopData(shopLabel, field, value)
     if not ALLOWED_FIELDS[field] then
-        print(('[Renzu Shops Security] Blocked SQL update with invalid field: %s (shop: %s)'):format(field, shopLabel))
+        print(('[Murderface Shops Security] Blocked SQL update with invalid field: %s (shop: %s)'):format(field, shopLabel))
         return false
     end
 
@@ -191,11 +191,11 @@ local function ModifyShopData(shopLabel, callback)
 end
 
 -- Callbacks for client requests
-lib.callback.register('renzu_shops:getShopData', function(source, shopLabel)
+lib.callback.register('murderface-shops:getShopData', function(source, shopLabel)
     return GetShopData(shopLabel)
 end)
 
-lib.callback.register('renzu_shops:getShopStock', function(source, shopLabel)
+lib.callback.register('murderface-shops:getShopStock', function(source, shopLabel)
     local shop = GetShopData(shopLabel)
     if not shop then return nil end
 
@@ -205,7 +205,7 @@ lib.callback.register('renzu_shops:getShopStock', function(source, shopLabel)
     }
 end)
 
-lib.callback.register('renzu_shops:getShopMoney', function(source, shopLabel, moneyType)
+lib.callback.register('murderface-shops:getShopMoney', function(source, shopLabel, moneyType)
     local shop = GetShopData(shopLabel)
     if not shop then return 0 end
 

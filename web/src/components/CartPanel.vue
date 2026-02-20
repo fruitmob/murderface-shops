@@ -72,11 +72,12 @@ function handleImgError(e: Event) {
       </TransitionGroup>
 
       <div v-if="cart.totalCount === 0" class="cart-empty">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.3">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.2">
           <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
           <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
         </svg>
         <p>Cart is empty</p>
+        <span class="cart-hint">Browse items and click Add</span>
       </div>
     </div>
 
@@ -85,12 +86,14 @@ function handleImgError(e: Event) {
 </template>
 
 <style scoped>
+/* Phase 3.3 — glass cart with neon accents */
 .cart-panel {
   display: flex;
   flex-direction: column;
-  background: linear-gradient(135deg, #1e1e24 0%, #252530 100%);
-  border: 1px solid rgba(139, 71, 137, 0.2);
-  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.008);
+  border: none;
+  border-left: 1px solid rgba(139, 71, 137, 0.1);
+  border-radius: 0;
   overflow: hidden;
   height: 100%;
 }
@@ -99,15 +102,15 @@ function handleImgError(e: Event) {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(139, 71, 137, 0.06);
 }
 
 .cart-header h3 {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   color: #e0e0e0;
 }
@@ -124,49 +127,51 @@ function handleImgError(e: Event) {
   padding: 4px 10px;
   background: rgba(255, 88, 88, 0.1);
   border: 1px solid rgba(255, 88, 88, 0.2);
-  border-radius: 6px;
-  color: #ff5858;
+  border-radius: var(--ms-r-sm);
+  color: var(--ms-danger);
   font-size: 10px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s var(--ms-ease);
 }
 .empty-btn:hover {
   background: rgba(255, 88, 88, 0.25);
+  box-shadow: 0 0 10px rgba(255, 88, 88, 0.1);
 }
 
 .cart-items {
   flex: 1;
   overflow-y: auto;
-  padding: 6px;
+  padding: 8px 10px;
 }
 
 .cart-row {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  border-radius: 6px;
+  gap: 8px;
+  padding: 7px 10px;
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  border-radius: var(--ms-r-sm);
   margin-bottom: 4px;
-  transition: all 0.2s;
+  transition: all 0.2s var(--ms-ease);
 }
 .cart-row:hover {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.035);
+  border-color: rgba(139, 71, 137, 0.12);
 }
 
 .cart-row-img {
-  width: 30px;
-  height: 30px;
+  width: 38px;
+  height: 38px;
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .cart-row-img img {
-  max-width: 28px;
-  max-height: 28px;
+  max-width: 34px;
+  max-height: 34px;
   object-fit: contain;
 }
 
@@ -177,7 +182,7 @@ function handleImgError(e: Event) {
 
 .cart-row-name {
   display: block;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
   color: #e0e0e0;
   overflow: hidden;
@@ -186,7 +191,7 @@ function handleImgError(e: Event) {
 }
 
 .cart-row-price {
-  font-size: 10px;
+  font-size: 11px;
   color: rgba(255, 255, 255, 0.35);
 }
 
@@ -197,26 +202,28 @@ function handleImgError(e: Event) {
 }
 
 .qty-btn {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(107, 53, 105, 0.3);
-  border: 1px solid rgba(139, 71, 137, 0.3);
-  border-radius: 5px;
+  background: rgba(139, 71, 137, 0.14);
+  border: 1px solid rgba(139, 71, 137, 0.22);
+  border-radius: var(--ms-r-sm);
   color: #e0c8df;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.2s var(--ms-ease);
 }
 .qty-btn:hover {
-  background: rgba(139, 71, 137, 0.5);
+  background: rgba(139, 71, 137, 0.35);
+  border-color: rgba(139, 71, 137, 0.5);
+  box-shadow: 0 0 10px rgba(139, 71, 137, 0.15);
 }
 
 .qty-val {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   color: #fff;
   min-width: 20px;
@@ -224,11 +231,12 @@ function handleImgError(e: Event) {
 }
 
 .cart-row-total {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
-  color: #8bc34a;
-  min-width: 48px;
+  color: var(--ms-price);
+  min-width: 56px;
   text-align: right;
+  text-shadow: 0 0 8px rgba(139, 195, 74, 0.15);
 }
 
 .remove-btn {
@@ -239,31 +247,41 @@ function handleImgError(e: Event) {
   justify-content: center;
   background: rgba(255, 88, 88, 0.08);
   border: none;
-  border-radius: 5px;
-  color: #ff5858;
+  border-radius: var(--ms-r-sm);
+  color: var(--ms-danger);
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.2s var(--ms-ease);
 }
 .remove-btn:hover {
   background: rgba(255, 88, 88, 0.3);
+  box-shadow: 0 0 10px rgba(255, 88, 88, 0.15);
 }
 
+/* Empty cart: vertically centered with hint */
 .cart-empty {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  padding: 24px 12px;
+  justify-content: center;
+  flex: 1;
+  gap: 8px;
+  padding: 24px 16px;
   color: rgba(255, 255, 255, 0.2);
-  font-size: 11px;
+  font-size: 12px;
+}
+
+.cart-hint {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.12);
+  font-style: italic;
 }
 
 /* Transition group animations */
 .cart-item-enter-active {
-  transition: all 0.25s ease;
+  transition: all 0.25s var(--ms-ease);
 }
 .cart-item-leave-active {
-  transition: all 0.2s ease;
+  transition: all 0.2s var(--ms-ease);
 }
 .cart-item-enter-from {
   opacity: 0;
@@ -274,6 +292,6 @@ function handleImgError(e: Event) {
   transform: translateX(-20px);
 }
 .cart-item-move {
-  transition: transform 0.25s ease;
+  transition: transform 0.25s var(--ms-ease);
 }
 </style>

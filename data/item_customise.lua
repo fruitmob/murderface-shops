@@ -29,7 +29,7 @@ Status = { -- registered any status name here
 -- 		prop = 'burger',
 -- 		usetime = 2500,
 -- 		notification = 'You ate a delicious burger',
--- 		export = 'renzu_shops.ItemUse'
+-- 		export = 'murderface-shops.ItemUse'
 -- 	},
 -- },
 

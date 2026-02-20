@@ -60,12 +60,12 @@ ModifyFromBankOffline = function(id, amount, minus, type)
 
 	-- SECURITY: Validate table/column names
 	if not ALLOWED_TABLES[playertable] then
-		print('[Renzu Shops] SECURITY: Invalid table name blocked: '..tostring(playertable))
+		print('[Murderface Shops] SECURITY: Invalid table name blocked: '..tostring(playertable))
 		return false
 	end
 
 	if not ALLOWED_COLUMNS[playeraccounts] then
-		print('[Renzu Shops] SECURITY: Invalid column name blocked: '..tostring(playeraccounts))
+		print('[Murderface Shops] SECURITY: Invalid column name blocked: '..tostring(playeraccounts))
 		return false
 	end
 

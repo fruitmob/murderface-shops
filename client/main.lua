@@ -388,7 +388,7 @@ self.Cashier = function(data)
 				local input = lib.inputDialog(shared.locales.withdrawcashiermoney, {shared.locales.cashierhowmany})
 				if not input then return end
 				local value = tonumber(input[1]) or 1
-				local reason = lib.callback.await('renzu_shops:editstore', false, {store = data.label, type = 'withdraw_cashier', item = data.moneytype, value = value})
+				local reason = lib.callback.await('murderface-shops:editstore', false, {store = data.label, type = 'withdraw_cashier', item = data.moneytype, value = value})
 				if reason == 'success' then
 					self.SetNotify({
 						title = shared.locales.notify_title,
@@ -421,10 +421,10 @@ self.Cashier = function(data)
 			onSelect = function(args)
 				self.duty[data.label] = false
 				self.OnDemand(data,'store',storedatas)
-				lib.callback.await('renzu_shops:shopduty', 100, {id = data.label, duty = false})
+				lib.callback.await('murderface-shops:shopduty', 100, {id = data.label, duty = false})
 			end
 		})
-		lib.callback.await('renzu_shops:shopduty', 100, {id = data.label, duty = true})
+		lib.callback.await('murderface-shops:shopduty', 100, {id = data.label, duty = true})
 	elseif not self.duty[data.label] and storedata?.owner == self.PlayerData.identifier
 		or storedata and storedata?.employee[self.PlayerData.identifier]
 		or storedata and storedata?.job == self.PlayerData.job.name then
@@ -456,7 +456,7 @@ self.Cashier = function(data)
 					cancel = true
 				})
 				if confirm ~= 'cancel' then
-					local canrob = lib.callback.await('renzu_shops:canrobstore', false, {store = data.label, item = data.moneytype})
+					local canrob = lib.callback.await('murderface-shops:canrobstore', false, {store = data.label, item = data.moneytype})
 					if canrob then
 						local success = lib.skillCheck({'normal', 'normal', {areaSize = 60, speedMultiplier = 2}, 'hard'})
 						if success then
@@ -470,7 +470,7 @@ self.Cashier = function(data)
 									car = true,
 								},
 							})
-							local rob = lib.callback.await('renzu_shops:robstore', false, {store = data.label, item = data.moneytype})
+							local rob = lib.callback.await('murderface-shops:robstore', false, {store = data.label, item = data.moneytype})
 							if rob then
 								self.SetNotify({
 									title = shared.locales.notify_title,
@@ -533,7 +533,7 @@ self.StoreManage = function(store)
 						cancel = true
 					})
 					if confirm ~= 'cancel' then
-						local reason = lib.callback.await('renzu_shops:sellstore', false, store)
+						local reason = lib.callback.await('murderface-shops:sellstore', false, store)
 						if reason then
 							self.SetNotify({
 								title = shared.locales.notify_title,
@@ -641,7 +641,7 @@ self.RemoveEmployee = function(data)
 			description = shared.locales.firedesc:format(v),
 			arrow = true,
 			onSelect = function(args)
-				local reason = lib.callback.await('renzu_shops:removeemployee', false, {store = data.store, id = k})
+				local reason = lib.callback.await('murderface-shops:removeemployee', false, {store = data.store, id = k})
 				self.SetNotify({title = shared.locales.notify_title,description = shared.locales.successfiredesc:format(v),type = 'success'})
 			end
 		})
@@ -666,7 +666,7 @@ self.AddEmployee = function(data)
 			description = shared.locales.citizenid:format(GetPlayerServerId(v.id)),
 			arrow = true,
 			onSelect = function(args)
-				local reason = lib.callback.await('renzu_shops:addemployee', false, {store = data.store, id = GetPlayerServerId(v.id)})
+				local reason = lib.callback.await('murderface-shops:addemployee', false, {store = data.store, id = GetPlayerServerId(v.id)})
 				if reason == true then
 					self.SetNotify({
 						title = shared.locales.notify_title,
@@ -729,7 +729,7 @@ self.EmployeeManage = function(store)
 			description = shared.locales.addjobtocurrent:format(self.PlayerData.job.name),
 			arrow = true,
 			onSelect = function(args)
-				local reason = lib.callback.await('renzu_shops:shopjobaccess', false, store, true)
+				local reason = lib.callback.await('murderface-shops:shopjobaccess', false, store, true)
 				if reason then
 					self.SetNotify({
 						title = shared.locales.notify_title,
@@ -745,7 +745,7 @@ self.EmployeeManage = function(store)
 			title = 'Remove Current Job Access',
 			arrow = true,
 			onSelect = function(args)
-				local reason = lib.callback.await('renzu_shops:shopjobaccess', false, store, false)
+				local reason = lib.callback.await('murderface-shops:shopjobaccess', false, store, false)
 				if reason then
 					self.SetNotify({
 						title = 'Job access has been removed',
@@ -785,7 +785,7 @@ self.FinanceManage = function(store,money)
 					local input = lib.inputDialog(shared.locales.withdrawvault, {shared.locales.cashierhowmany})
 					if not input then return end
 					local value = tonumber(input[1]) or 1
-					local reason = lib.callback.await('renzu_shops:editstore', false, {store = store, type = 'withdraw_money', item = money, value = value})
+					local reason = lib.callback.await('murderface-shops:editstore', false, {store = store, type = 'withdraw_money', item = money, value = value})
 					if reason == 'success' then
 						self.SetNotify({
 							title = shared.locales.notify_title,
@@ -809,7 +809,7 @@ self.FinanceManage = function(store,money)
 					local input = lib.inputDialog(shared.locales.deposittostore, {shared.locales.cashierhowmany})
 					if not input then return end
 					local value = tonumber(input[1]) or 1
-					local reason = lib.callback.await('renzu_shops:editstore', false, {store = store, type = 'deposit_money', item = money, value = value})
+					local reason = lib.callback.await('murderface-shops:editstore', false, {store = store, type = 'deposit_money', item = money, value = value})
 					if reason == 'success' then
 						self.SetNotify({
 							title = shared.locales.notify_title,
@@ -863,7 +863,7 @@ self.EditItem = function(data, store, cat)
 				})
 				if confirm ~= 'cancel' then
 					local shop, index = self.getShopTypeAndIndex(store)
-					local data = lib.callback.await('renzu_shops:addstock', false, {shop = shop, index = index, count = amount, item = data.nameindex})
+					local data = lib.callback.await('murderface-shops:addstock', false, {shop = shop, index = index, count = amount, item = data.nameindex})
 					if data then
 						self.SetNotify({
 							title = 'Store Business',
@@ -900,7 +900,7 @@ self.EditItem = function(data, store, cat)
 					cancel = true
 				})
 				if confirm ~= 'cancel' then
-					local data = lib.callback.await('renzu_shops:createshoporder', false, {moneytype = self.moneytype, item = data, store = store, metadata = data.metadata, amount = wholesaleorder, type = self.shoptype})
+					local data = lib.callback.await('murderface-shops:createshoporder', false, {moneytype = self.moneytype, item = data, store = store, metadata = data.metadata, amount = wholesaleorder, type = self.shoptype})
 					if data then
 						if data.moneytype == 'money' then
 							self.SetNotify({
@@ -935,7 +935,7 @@ self.EditItem = function(data, store, cat)
 				local input = lib.inputDialog('Edit Price :'..item, {'Current value: '..data.pricing.shop..'$'})
 				if not input then return end
 				local newprice = tonumber(input[1]) or 1
-				local reason = lib.callback.await('renzu_shops:editstore', false, {store = store, type = 'price', item = data.name, value = newprice, metadata = data.metadata})
+				local reason = lib.callback.await('murderface-shops:editstore', false, {store = store, type = 'price', item = data.name, value = newprice, metadata = data.metadata})
 				if reason == 'success' then
 					self.SetNotify({
 						title = 'Store Business',
@@ -958,7 +958,7 @@ self.EditItem = function(data, store, cat)
 					local input = lib.inputDialog('Deposit :'..item, {'How many:'})
 					if not input then return end
 					local value = tonumber(input[1]) or 1
-					local reason = lib.callback.await('renzu_shops:editstore', false, {store = store, type = 'deposit_item', item = data.name, value = value, metadata = data.metadata})
+					local reason = lib.callback.await('murderface-shops:editstore', false, {store = store, type = 'deposit_item', item = data.name, value = value, metadata = data.metadata})
 					if reason == 'success' then
 						self.SetNotify({
 							title = 'Store Business',
@@ -976,7 +976,7 @@ self.EditItem = function(data, store, cat)
 					local input = lib.inputDialog('Withdraw :'..item, {'How many:'})
 					if not input then return end
 					local value = tonumber(input[1]) or 1
-					local reason = lib.callback.await('renzu_shops:editstore', false, {store = store, type = 'withdraw_item', item = data.name, value = value, metadata = data.metadata})
+					local reason = lib.callback.await('murderface-shops:editstore', false, {store = store, type = 'withdraw_item', item = data.name, value = value, metadata = data.metadata})
 					if reason == 'success' then
 						self.SetNotify({
 							title = 'Store Business',
@@ -1001,7 +1001,7 @@ self.EditItem = function(data, store, cat)
 					cancel = true
 				})
 				if confirm ~= 'cancel' then
-					local reason = lib.callback.await('renzu_shops:editstore', false, {store = store, type = 'listing_edit', item = data.name, value = 'enable', metadata = data.metadata})
+					local reason = lib.callback.await('murderface-shops:editstore', false, {store = store, type = 'listing_edit', item = data.name, value = 'enable', metadata = data.metadata})
 					if reason == 'success' then
 						self.SetNotify({
 							title = 'Store Business',
@@ -1026,7 +1026,7 @@ self.EditItem = function(data, store, cat)
 					cancel = true
 				})
 				if confirm ~= 'cancel' then
-					local reason = lib.callback.await('renzu_shops:editstore', false, {store = store, type = 'listing_edit', item = data.name, value = 'disable', metadata = data.metadata})
+					local reason = lib.callback.await('murderface-shops:editstore', false, {store = store, type = 'listing_edit', item = data.name, value = 'disable', metadata = data.metadata})
 					if reason == 'success' then
 						self.SetNotify({
 							title = 'Store Business',
@@ -1137,7 +1137,7 @@ self.CreateItem = function(data)
 			})
 			return false
 		end
-		local success = lib.callback.await('renzu_shops:createitem', false, data)
+		local success = lib.callback.await('murderface-shops:createitem', false, data)
 		self.SetNotify({
 			title = 'Store Business',
 			description = 'Successfully Added new Item to Store',
@@ -1319,7 +1319,7 @@ self.StartDelivery = function(var)
 	self.deliverydata = var
 	CreateThread(function()
 		local data = var.data
-		local success = lib.callback.await('renzu_shops:startdelivery', false, var)
+		local success = lib.callback.await('murderface-shops:startdelivery', false, var)
 		if success == 'alreadyongoing' then
 			self.SetNotify({
 				title = 'Store Business',
@@ -1546,7 +1546,7 @@ self.DeliverDone = function(data)
 	if DoesEntityExist(self.trailertransport) then
 		self.DeleteEntity(self.trailertransport)
 	end
-	local delivered = lib.callback.await('renzu_shops:stockdelivered', false, data)
+	local delivered = lib.callback.await('murderface-shops:stockdelivered', false, data)
 	if data.selfdeliver then
 		self.SetNotify({
 			title = 'Store Business',
@@ -1576,7 +1576,7 @@ self.JobDone = function(data)
 	self.DeleteEntity(self.Vehicle)
 	self.delivery = false
 	lib.hideTextUI()
-	local success = lib.callback.await('renzu_shops:jobdone', false, data)
+	local success = lib.callback.await('murderface-shops:jobdone', false, data)
 	if success then
 		self.SetNotify({
 			title = 'Store Business',
@@ -1643,7 +1643,7 @@ self.BuyStore = function(data)
 		cancel = true
 	})
 	if confirm ~= 'cancel' then
-		local success = lib.callback.await('renzu_shops:buystore', false, data)
+		local success = lib.callback.await('murderface-shops:buystore', false, data)
 		if success then
 			self.SetNotify({
 				title = 'Store Business',
@@ -1678,11 +1678,11 @@ self.OpenShop = function(data)
 	if not self.Active or  not self.Active.shop then return end
 
 	-- Debug: Log what we're trying to load
-	print('[Renzu Shops Debug] Opening shop type:', data.type)
-	print('[Renzu Shops Debug] shared.Storeitems exists?', shared.Storeitems ~= nil)
-	print('[Renzu Shops Debug] shared.Storeitems[' .. tostring(data.type) .. '] exists?', shared.Storeitems and shared.Storeitems[data.type] ~= nil)
+	print('[Murderface Shops Debug] Opening shop type:', data.type)
+	print('[Murderface Shops Debug] shared.Storeitems exists?', shared.Storeitems ~= nil)
+	print('[Murderface Shops Debug] shared.Storeitems[' .. tostring(data.type) .. '] exists?', shared.Storeitems and shared.Storeitems[data.type] ~= nil)
 	if shared.Storeitems and shared.Storeitems[data.type] then
-		print('[Renzu Shops Debug] Inventory item count:', #shared.Storeitems[data.type])
+		print('[Murderface Shops Debug] Inventory item count:', #shared.Storeitems[data.type])
 	end
 
 	data.shop.inventory = data.shop.inventory or shared.Storeitems[data.type] or {}
@@ -1690,8 +1690,8 @@ self.OpenShop = function(data)
 
 	-- Verify inventory was loaded
 	if not self.Active.shop.inventory or #self.Active.shop.inventory == 0 then
-		print('[Renzu Shops ERROR] Failed to load inventory for shop type:', data.type)
-		print('[Renzu Shops ERROR] This usually means the shop has no items defined in storeitems.lua')
+		print('[Murderface Shops ERROR] Failed to load inventory for shop type:', data.type)
+		print('[Murderface Shops ERROR] This usually means the shop has no items defined in storeitems.lua')
 		return -- Don't open shop if there's no inventory
 	end
 	self.Active.shop.type = data.type
@@ -1804,11 +1804,11 @@ self.OpenShop = function(data)
 
 	-- CRITICAL FIX: Ensure inventory is always set, even if owned shop wasn't found
 	if not self.Active.shop.inventory or #self.Active.shop.inventory == 0 then
-		print('[Renzu Shops] WARNING: Shop inventory was empty, using fallback')
+		print('[Murderface Shops] WARNING: Shop inventory was empty, using fallback')
 		self.Active.shop.inventory = data.shop.inventory or {}
 		if #self.Active.shop.inventory == 0 then
-			print('[Renzu Shops] ERROR: No inventory available for shop:', data.shop.label or data.shop.name or 'Unknown')
-			print('[Renzu Shops] Shop type:', data.type, 'Index:', data.index)
+			print('[Murderface Shops] ERROR: No inventory available for shop:', data.shop.label or data.shop.name or 'Unknown')
+			print('[Murderface Shops] Shop type:', data.type, 'Index:', data.index)
 		end
 	end
 
@@ -1919,7 +1919,7 @@ self.Handlers = function()
 	lib.onCache('ped', function(ped)
 		self.playerPed = ped
 	end)
-	RegisterNetEvent('renzu_shops:removecart', function(id,nomoney)
+	RegisterNetEvent('murderface-shops:removecart', function(id,nomoney)
 		SendNUIMessage({removecart = id})
 		if nomoney then
 			lib.defaultNotify({
@@ -1928,7 +1928,7 @@ self.Handlers = function()
 			})
 		end
 	end)
-	RegisterNetEvent('renzu_shops:customernomoney', function(id,nomoney)
+	RegisterNetEvent('murderface-shops:customernomoney', function(id,nomoney)
 		if nomoney then
 			lib.defaultNotify({
 				title = 'Customer dont have enough money',
@@ -1936,10 +1936,10 @@ self.Handlers = function()
 			})
 		end
 	end)
-	RegisterNetEvent('renzu_shop:Vehiclekeys', function(plate)
+	RegisterNetEvent('murderface-shops:Vehiclekeys', function(plate)
 		return shared.VehicleKeys(plate)
 	end)
-	RegisterNetEvent('renzu_shop:OpenShops', function(data)
+	RegisterNetEvent('murderface-shops:OpenShops', function(data)
 		Wait(500)
 		local ownedshopdata = self.GetShopData(data.type,data.id)
 		local group = ownedshopdata?.groups or shared.Shops[data.type].groups
@@ -2150,7 +2150,7 @@ self.Handlers = function()
 				centered = true,
 				cancel = true
 			})
-			local reason = lib.callback.await('renzu_shops:confirmationfeedback', false, {store = value.store, id = net, answer = confirm})
+			local reason = lib.callback.await('murderface-shops:confirmationfeedback', false, {store = value.store, id = net, answer = confirm})
 			if confirm ~= 'cancel' and confirm ~= nil then
 				self.SetNotify({
 					title = 'Store Business',
@@ -2197,7 +2197,7 @@ self.Handlers = function()
 					shop = self.Active.shop.inventory
 				end
 				if not shop or #shop == 0 then
-					print('[Renzu Shops ERROR] Shop inventory is nil or empty for type:', tostring(shopType))
+					print('[Murderface Shops ERROR] Shop inventory is nil or empty for type:', tostring(shopType))
 					return nil, nil
 				end
 			end
@@ -2279,7 +2279,7 @@ self.Handlers = function()
 		-- ── Sync cart to server ──
 		if action == 'syncCart' then
 			local playerid = GetPlayerServerId(PlayerId())
-			lib.callback.await('renzu_shops:updateshopcart', 100, {
+			lib.callback.await('murderface-shops:updateshopcart', 100, {
 				playerid = playerid,
 				cart = data.cart or {},
 				bagname = 'player:',
@@ -2351,7 +2351,7 @@ self.Handlers = function()
 			})
 
 			if confirm ~= 'cancel' then
-				lib.callback("renzu_shops:buyitem", false, function(reason)
+				lib.callback("murderface-shops:buyitem", false, function(reason)
 					if reason == 'notenoughmoney' then
 						PlayShopSound('error')
 						self.SetNotify({
@@ -2529,7 +2529,7 @@ self.Handlers = function()
 		end
 
 		-- ── Unknown action fallback ──
-		print('[Renzu Shops] Unknown shop:callback action:', tostring(action))
+		print('[Murderface Shops] Unknown shop:callback action:', tostring(action))
 		cb('unknown')
 	end)
 end
@@ -2706,7 +2706,7 @@ end
 
 self.MovableShop = function(data)
 	self.movabletype = data.type
-	local owned = lib.callback.await('renzu_shops:getmovableshopdata', false, data)
+	local owned = lib.callback.await('murderface-shops:getmovableshopdata', false, data)
 	if owned and not DoesEntityExist(self.movableentity[self.movabletype]) then
 		local options = {}
 		table.insert(options,{
@@ -2737,7 +2737,7 @@ self.MovableShop = function(data)
 			cancel = true
 		})
 		if confirm ~= 'cancel' then
-			local success = lib.callback.await('renzu_shops:buymovableshop', false, data)
+			local success = lib.callback.await('murderface-shops:buymovableshop', false, data)
 			if success then
 				self.SetNotify({
 					title = 'Store Business',
@@ -2936,7 +2936,7 @@ self.SpawnMovableEntity = function(data)
 	if data.type == 'vehicle' then
 		local identifier = self.movabletype..':'..self.PlayerData.identifier
 		local movabledata = GlobalState.MovableShops
-		local vehicledata = lib.callback.await('renzu_shops:getMovableVehicle', false, movabledata[identifier].plate)
+		local vehicledata = lib.callback.await('murderface-shops:getMovableVehicle', false, movabledata[identifier].plate)
 		if not vehicledata then
 			self.SetNotify({
 				title = 'Store Business',
@@ -2966,13 +2966,13 @@ self.SetClientStateBags = function(value)
 	if value.data.bagname == 'player:' then
 		entity = value.entity
 	end
-	local setState = lib.callback.await('renzu_shops:playerStateBags', false, {
+	local setState = lib.callback.await('murderface-shops:playerStateBags', false, {
 		entity = entity,
 		name = value.name,
 		data = value.data,
 		ts = GetGameTimer()+math.random(1,999)
 	})
-	-- LocalPlayer.state:set('renzu_shops:playerStateBags', {
+	-- LocalPlayer.state:set('murderface-shops:playerStateBags', {
 	-- 	entity = entity,
 	-- 	name = value.name,
 	-- 	data = value.data,
@@ -3132,7 +3132,7 @@ self.ServePurchaseOrder = function(var,i,storedata,player)
 				clip = 'petting_franklin'
 			}
 		})
-		local removed = lib.callback.await('renzu_shops:removestock', false, {serialid = var.serialid, type = type, name = var.name, count = var.count or 1, price = var.data.price, metadata = var.data.metadata, index = storedata and storedata.index, money = storedata and storedata.money, customer = player and var.customer})
+		local removed = lib.callback.await('murderface-shops:removestock', false, {serialid = var.serialid, type = type, name = var.name, count = var.count or 1, price = var.data.price, metadata = var.data.metadata, index = storedata and storedata.index, money = storedata and storedata.money, customer = player and var.customer})
 		if removed then
 			lib.progressBar({
 				duration = 1000,
@@ -3332,7 +3332,7 @@ self.OnDemand = function(items,type,storedata)
 					local purchaseorder = self.ondemand and self.CreateOndemandOrder(items,self.peds[i],type,storedata)
 					if purchaseorder then
 						-- payment
-						lib.callback.await('renzu_shops:ondemandpay', false, purchasedata)
+						lib.callback.await('murderface-shops:ondemandpay', false, purchasedata)
 						self.SetNotify({
 							title = 'Store Business',
 							description = 'You Serve Successfully',
@@ -3452,7 +3452,7 @@ self.StartCook = function(data,item,title,dontreceive,identifier,storeitems)
 	for k,v in pairs(data.ingredients or {}) do
 		table.insert(items,{name = k, count = v})
 	end
-	local ingredients = lib.callback.await('renzu_shops:getStashData', false, {items = items, type = self.movabletype, identifier = identifier})
+	local ingredients = lib.callback.await('murderface-shops:getStashData', false, {items = items, type = self.movabletype, identifier = identifier})
 	for k,v in pairs(items or {}) do
 		if ingredients[v.name] <= v.count then
 			cancook = false
@@ -3497,7 +3497,7 @@ self.StartCook = function(data,item,title,dontreceive,identifier,storeitems)
 			SetEntityCoordsNoOffset(self.playerPed,GetEntityCoords(self.playerPed))
 		end
 		if not success then return end
-		local item = lib.callback.await('renzu_shops:craftitem', false, {identifier = identifier, items = storeitems, metadata = data.metadata, item = item, type = self.movabletype, menu = title, shop = 'movableshop', dontreceive = dontreceive, stash = true})
+		local item = lib.callback.await('murderface-shops:craftitem', false, {identifier = identifier, items = storeitems, metadata = data.metadata, item = item, type = self.movabletype, menu = title, shop = 'movableshop', dontreceive = dontreceive, stash = true})
 		self.SetNotify({
 			title = 'Store Business',
 			description = 'Successfully Cooked a '..data.label,
@@ -3539,7 +3539,7 @@ end
 self.CookMenuList = function(items,title,data,store)
 	local options = {}
 	local identifier = not store and self.movabletype..':'..self.PlayerData.identifier or data.label..'_storage'
-	local itemdata = lib.callback.await('renzu_shops:getStashData', false, {items = items, identifier = identifier})
+	local itemdata = lib.callback.await('murderface-shops:getStashData', false, {items = items, identifier = identifier})
 	local movabledata = GlobalState.MovableShops[identifier]
 	for k,v in pairs(items) do
 		local item = v.name
@@ -3594,7 +3594,7 @@ self.OpenShopMovable = function(data)
 		end
 	end
 	local inventory = {}
-	local itemdata = lib.callback.await('renzu_shops:getStashData', false, {items = items, type = data.type, identifier = data.identifier})
+	local itemdata = lib.callback.await('murderface-shops:getStashData', false, {items = items, type = data.type, identifier = data.identifier})
 	for category,v in pairs(shopdata) do
 		for k,v in pairs(v) do
 			local name = v.metadata and v.metadata.name or v.name
@@ -3606,8 +3606,8 @@ self.OpenShopMovable = function(data)
 	local money = self.GetAccounts(self.moneytype or 'money')
 	local black_money = self.GetAccounts('black_money')
 	local bank = self.GetAccounts('bank')
-	print('[Renzu Shops Debug] Opening shop with inventory items:', #(data.shop.inventory or {}))
-	print('[Renzu Shops Debug] self.Active.shop.inventory items:', #(self.Active.shop.inventory or {}))
+	print('[Murderface Shops Debug] Opening shop with inventory items:', #(data.shop.inventory or {}))
+	print('[Murderface Shops Debug] self.Active.shop.inventory items:', #(self.Active.shop.inventory or {}))
 	SendNUIMessage({
 		type = 'shop',
 		data = {imgpath = self.ImagesPath(), moneytype = self.moneytype, type = data.type, open = true, shop = data.shop, label = data.shop.label or data.shop.name, wallet = {money = self.format_int(money), black_money = self.format_int(black_money), bank = self.format_int(bank)}}
@@ -3630,7 +3630,7 @@ self.OpenShopBooth = function(data)
 	local booths = GlobalState.Booths
 	local inventory = {}
 	local boothdata = GlobalState.BoothItems[data.identifier]
-	local stash = lib.callback.await('renzu_shops:GetInventoryData', false, data.identifier)
+	local stash = lib.callback.await('murderface-shops:GetInventoryData', false, data.identifier)
 	for category,v in pairs(stash) do
 		local name = v.metadata and v.metadata.name or v.name
 		local label = self.Items[name]
@@ -3850,7 +3850,7 @@ self.CreateConfig = function(conf,type)
 end
 
 self.CreateShop = function(data)
-	local created = lib.callback.await('renzu_shops:createShop', false, data)
+	local created = lib.callback.await('murderface-shops:createShop', false, data)
 	if created then
 		self.SetNotify({
 			title = 'Store Business',
@@ -3882,7 +3882,7 @@ self.TransferOwnerShip = function(store)
 					cancel = true
 				})
 				if confirm ~= 'cancel' then
-					local reason = lib.callback.await('renzu_shops:transfershop', false, {store = store, id = GetPlayerServerId(v.id)})
+					local reason = lib.callback.await('murderface-shops:transfershop', false, {store = store, id = GetPlayerServerId(v.id)})
 					if reason == true then
 						self.SetNotify({
 							title = 'Store Business',
@@ -4176,7 +4176,7 @@ self.MenuCallback = function(selected, scrollIndex, args, data, owner, edit)
 	if owner then
 		local purchase = false
 		if not self.DoesItemExistinSpot(data, args[scrollIndex].name) then
-			purchase = lib.callback.await('renzu_shops:editshowcase', false, 'add', false, {
+			purchase = lib.callback.await('murderface-shops:editshowcase', false, 'add', false, {
 				item = args[scrollIndex],
 				index = data.index,
 				shop = data.shop,
@@ -4228,7 +4228,7 @@ self.MenuCallback = function(selected, scrollIndex, args, data, owner, edit)
 			title = 'Edit Product',
 			position = 'top-right',
 			onCheck = function(selected, checked, _)
-				lib.callback.await('renzu_shops:editshowcase', false, 'modify', 'priority', {
+				lib.callback.await('murderface-shops:editshowcase', false, 'modify', 'priority', {
 					shop = data.shop,
 					name = args[scrollIndex].name,
 					value = checked,
@@ -4252,7 +4252,7 @@ self.MenuCallback = function(selected, scrollIndex, args, data, owner, edit)
 				})
 				if not input then return end
 				local price = tonumber(input[1])
-				lib.callback.await('renzu_shops:editshowcase', false, 'modify', 'price', {
+				lib.callback.await('murderface-shops:editshowcase', false, 'modify', 'price', {
 					shop = data.shop,
 					name = args[scrollIndex].name,
 					value = price,
@@ -4262,7 +4262,7 @@ self.MenuCallback = function(selected, scrollIndex, args, data, owner, edit)
 					type = 'inform'
 				})
 			elseif selected == 3 then
-				lib.callback.await('renzu_shops:editshowcase', false, 'modify', 'remove', {
+				lib.callback.await('murderface-shops:editshowcase', false, 'modify', 'remove', {
 					shop = data.shop,
 					name = args[scrollIndex].name,
 				})
@@ -4376,7 +4376,7 @@ self.Work = function(data)
 					clip = data.animation.clip
 				}
 			})
-			lib.callback.await('renzu_shops:work',100, data)
+			lib.callback.await('murderface-shops:work',100, data)
 		end
 		exports.ox_target:disableTargeting(false)
 	end)
@@ -4392,21 +4392,21 @@ self.Proccessed = function(data)
 			car = true,
 		}
 	})
-	lib.callback.await('renzu_shops:proccessed',100, data)
+	lib.callback.await('murderface-shops:proccessed',100, data)
 end
 
 -- Debug: Verify client/main.lua loaded completely
-print('^3[Renzu Shops]^0 client/main.lua loaded successfully')
+print('^3[Murderface Shops]^0 client/main.lua loaded successfully')
 
 -- Initialize the shops after all functions are defined
 CreateThread(function()
 	Wait(500) -- Small delay to ensure all scripts are loaded
-	print('^3[Renzu Shops]^0 Initializing Handlers and StartUp...')
+	print('^3[Murderface Shops]^0 Initializing Handlers and StartUp...')
 	if self.Handlers then
 		self.Handlers()
 	end
 	if self.StartUp then
 		self.StartUp()
 	end
-	print('^2[Renzu Shops]^0 Initialization complete!')
+	print('^2[Murderface Shops]^0 Initialization complete!')
 end)

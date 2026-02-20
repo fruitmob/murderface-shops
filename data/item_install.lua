@@ -10,7 +10,7 @@ return {
 			anim = { dict = 'mini@repair', clip = 'fixing_a_ped' },
 			usetime = 2500,
 			notification = 'Setup your Stall',
-			export = 'renzu_shops.playerbooth'
+			export = 'murderface-shops.playerbooth'
 		},
 	},
 	['burger'] = {

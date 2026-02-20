@@ -1,5 +1,5 @@
 export function formatPrice(value: number | string): string {
-  const num = typeof value === 'string' ? parseFloat(value) : value
+  const num = typeof value === 'string' ? parseFloat(value.replace(/,/g, '')) : value
   if (isNaN(num)) return '$0'
   return '$' + num.toLocaleString('en-US', {
     minimumFractionDigits: 0,

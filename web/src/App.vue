@@ -106,6 +106,29 @@ function closeWeaponModal() {
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
+/* --- Phase 3.3 design tokens --- */
+:root {
+  --ms-shell: rgba(10, 12, 16, 0.78);
+  --ms-shell-border: rgba(255, 255, 255, 0.04);
+  --ms-overlay: transparent;
+  --ms-divider: rgba(255, 255, 255, 0.06);
+  --ms-divider-soft: rgba(255, 255, 255, 0.04);
+  --ms-surface: rgba(255, 255, 255, 0.02);
+  --ms-surface-hover: rgba(255, 255, 255, 0.045);
+  --ms-border: rgba(255, 255, 255, 0.05);
+  --ms-border-hover: rgba(139, 71, 137, 0.35);
+  --ms-accent: rgba(139, 71, 137, 0.18);
+  --ms-accent-border: rgba(139, 71, 137, 0.4);
+  --ms-accent-hover: rgba(139, 71, 137, 0.22);
+  --ms-price: #8bc34a;
+  --ms-danger: #ff5858;
+  --ms-r-sm: 4px;
+  --ms-r-md: 6px;
+  --ms-r-lg: 8px;
+  --ms-cart-w: 380px;
+  --ms-ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -121,18 +144,18 @@ body {
 }
 
 ::-webkit-scrollbar {
-  width: 4px;
+  width: 5px;
 }
 ::-webkit-scrollbar-track {
   background: rgba(0, 0, 0, 0.2);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(139, 71, 137, 0.6);
+  background: rgba(139, 71, 137, 0.25);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(139, 71, 137, 0.9);
+  background: rgba(139, 71, 137, 0.45);
 }
 </style>
 
@@ -143,33 +166,50 @@ body {
   position: relative;
 }
 
+/* Overlay: very subtle dim behind panel */
 .shop-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(14, 16, 18, 0.58);
+  background: transparent;
   display: flex;
   justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+.shop-overlay.vehicle-mode {
+  background: transparent;
   align-items: center;
   padding: 2vh 2vw;
 }
 
-.shop-overlay.vehicle-mode {
-  background: rgba(14, 16, 18, 0.12);
-}
-
+/* Shell container */
 .shop-container {
-  width: 100%;
-  max-width: 1100px;
-  height: 80vh;
+  width: 75vw;
+  max-width: 1800px;
+  height: 75vh;
+  max-height: none;
+  min-height: 480px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 0;
+  background: linear-gradient(
+    160deg,
+    rgba(16, 18, 24, 0.92) 0%,
+    rgba(12, 14, 20, 0.95) 50%,
+    rgba(20, 14, 24, 0.92) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 8px;
+  box-shadow: 0 8px 48px rgba(0, 0, 0, 0.4);
+  /* backdrop-filter removed — causes black render in FiveM NUI CEF */
+  overflow: hidden;
 }
 
 .shop-body {
   flex: 1;
   display: flex;
-  gap: 8px;
+  gap: 0;
   min-height: 0;
 }
 
@@ -177,16 +217,16 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 0;
   min-height: 0;
 }
 
 .shop-right {
-  width: 280px;
+  width: var(--ms-cart-w);
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 0;
   min-height: 0;
 }
 

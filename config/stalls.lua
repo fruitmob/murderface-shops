@@ -109,7 +109,7 @@ if IsDuplicityVersion() then
 	local applications = {}
 	GlobalState.Booths = json.decode(GetResourceKvpString('Booths') or '[]') or {}
 
-	lib.callback.register('renzu_shops:createbooth', function(source,data)
+	lib.callback.register('murderface-shops:createbooth', function(source,data)
 		return CreateBooth(source,data)
 	end)
 
@@ -190,7 +190,7 @@ if IsDuplicityVersion() then
 		return application, appid
 	end
 
-	lib.callback.register('renzu_shops:placeapplication', function(source,data)
+	lib.callback.register('murderface-shops:placeapplication', function(source,data)
 		for k,v in pairs(PlayerBooth.objects) do
 			if k == data.model then
 				local application = CreateApp(data, v.fn)
@@ -199,7 +199,7 @@ if IsDuplicityVersion() then
 		end
 	end)
 	
-	lib.callback.register('renzu_shops:removeapp', function(source,data)
+	lib.callback.register('murderface-shops:removeapp', function(source,data)
 		local booths = GlobalState.Booths
 		if booths[data.id] then
 			for k,v in pairs(booths[data.id].placedapplications) do
@@ -214,7 +214,7 @@ if IsDuplicityVersion() then
 	end)
 
 	GlobalState.UninstallBooth = {}
-	lib.callback.register('renzu_shops:uninstallbooth', function(source,id)
+	lib.callback.register('murderface-shops:uninstallbooth', function(source,id)
 		if DoesEntityExist(gazebo[id]) then
 			DeleteEntity(gazebo[id])
 		end
@@ -241,7 +241,7 @@ if IsDuplicityVersion() then
 
 	GlobalState.BoothShops = {}
 
-	lib.callback.register('renzu_shops:boothshop', function(source,id)
+	lib.callback.register('murderface-shops:boothshop', function(source,id)
 		local booths = GlobalState.BoothShops
 		booths[id] = not booths[id]
 		GlobalState.BoothShops = booths
@@ -249,7 +249,7 @@ if IsDuplicityVersion() then
 
 	GlobalState.BoothItems = json.decode(GetResourceKvpString('BoothItems') or '[]') or {}
 	
-	lib.callback.register('renzu_shops:boothitems', function(source,data)
+	lib.callback.register('murderface-shops:boothitems', function(source,data)
 		local boothitems = GlobalState.BoothItems
 		if not boothitems[data.id] then boothitems[data.id] = {} end
 		if not boothitems[data.id][data.item] then boothitems[data.id][data.item] = {} end
@@ -281,7 +281,7 @@ else
 	RegisterNetEvent('playerbooth', function(data) -- compatibility with server usable callbacks
 		if data then
 			local app = PlaceApplications({model = data.metadata.model, id = data.boothid}, true)
-			local booth = lib.callback.await('renzu_shops:createbooth', false, {
+			local booth = lib.callback.await('murderface-shops:createbooth', false, {
 				boothid = data.metadata?.boothid,
 				metadata = data.metadata,
 				coords = app.coord,
@@ -301,7 +301,7 @@ else
 			exports.ox_inventory:useItem(data, function(data)
 				if data then
 					local app = PlaceApplications({model = data.metadata.model, id = data.boothid}, true)
-					local booth = lib.callback.await('renzu_shops:createbooth', false, {
+					local booth = lib.callback.await('murderface-shops:createbooth', false, {
 						boothid = data.metadata?.boothid,
 						metadata = data.metadata,
 						coords = app.coord,
@@ -310,7 +310,7 @@ else
 				end
 			end)
 		else
-			local Shops = exports.renzu_shops:Shops()
+			local Shops = exports['murderface-shops']:Shops()
 			Shops.SetNotify({
 				description = 'You cant install booth in this place',
 				type = 'error'
@@ -320,7 +320,7 @@ else
 
 	AddStateBagChangeHandler('playerbooth' --[[key filter]], nil --[[bag filter]], function(bagName, key, value, _unused, replicated)
 		Wait(0)
-		local Shops = exports.renzu_shops:Shops()
+		local Shops = exports['murderface-shops']:Shops()
 		local player = Shops.GetPlayerData()
 		if not value then return end
 		local net = tonumber(bagName:gsub('entity:', ''), 10)
@@ -350,7 +350,7 @@ else
 
 	AddStateBagChangeHandler('boothapplication' --[[key filter]], nil --[[bag filter]], function(bagName, key, value, _unused, replicated)
 		Wait(0)
-		local Shops = exports.renzu_shops:Shops()
+		local Shops = exports['murderface-shops']:Shops()
 		local player = Shops.GetPlayerData()
 		if not value then return end
 		local net = tonumber(bagName:gsub('entity:', ''), 10)
@@ -399,7 +399,7 @@ else
 	end
 
 	Uninstall = function(data)
-		local net = lib.callback.await('renzu_shops:uninstallbooth', false, data.boothid)
+		local net = lib.callback.await('murderface-shops:uninstallbooth', false, data.boothid)
 
 	end
 
@@ -442,7 +442,7 @@ else
 			description = 'Start or Stop Selling',
 			arrow = true,
 			onSelect = function(args)
-				lib.callback.await('renzu_shops:boothshop', false, data.boothid)
+				lib.callback.await('murderface-shops:boothshop', false, data.boothid)
 			end
 		})
 		lib.registerContext({
@@ -463,7 +463,7 @@ else
 				description = 'remove '..v.label,
 				arrow = true,
 				onSelect = function(args)
-					local removed = lib.callback.await('renzu_shops:removeapp', false, {id = data.boothid, appid = k, net = v.net})
+					local removed = lib.callback.await('murderface-shops:removeapp', false, {id = data.boothid, appid = k, net = v.net})
 				end
 			})
 		end
@@ -502,9 +502,9 @@ else
 	end
 
 	OrganizeItems = function(data)
-		local Shops = exports.renzu_shops:Shops()
+		local Shops = exports['murderface-shops']:Shops()
 		local options = {}
-		local stash = lib.callback.await('renzu_shops:GetInventoryData', false, data.boothid)
+		local stash = lib.callback.await('murderface-shops:GetInventoryData', false, data.boothid)
 		for category,v in pairs(stash) do
 			if string.find(v.name:upper(),'WEAPON') then
 				v.name = v.name:upper()
@@ -525,7 +525,7 @@ else
 					table.insert(options,{ type = "input", label = "Category", placeholder = 'Food' , disabled = false})
 					local input = lib.inputDialog('Modify '..label, options)
 					if input and input[1] then
-						lib.callback.await('renzu_shops:boothitems', false, {id = data.boothid, item = name, price = input[1] or 50, category = input[2] or 'Default'})
+						lib.callback.await('murderface-shops:boothitems', false, {id = data.boothid, item = name, price = input[1] or 50, category = input[2] or 'Default'})
 					end
 				end
 			})
@@ -541,7 +541,7 @@ else
 	end
 
 	PlaceApplications = function(data,booth)
-		local Shops = exports.renzu_shops:Shops()
+		local Shops = exports['murderface-shops']:Shops()
 		Shops.OxlibTextUi("Press [E] to Install  \n  Press [NUM4] Left  \n  Press [NUM6] right  \n  Press [NUM5] forward  \n  Press [NUM8] Downward  \n  Press [Mouse Scroll] Height  \n  Press [Caps] - Speed")
 		local model = joaat(data.model)
 		lib.requestModel(model)
@@ -587,7 +587,7 @@ else
 					return {coord = coord, heading = heading} 
 				end
 				local offset = GetEntityCoords(appliance) - GetEntityCoords(gazebo[data.id])
-				local net = lib.callback.await('renzu_shops:placeapplication', false, {id = data.id , model = data.model, coord = offset, heading = heading, new = true})
+				local net = lib.callback.await('murderface-shops:placeapplication', false, {id = data.id , model = data.model, coord = offset, heading = heading, new = true})
 				DeleteEntity(appliance)
 				Wait(500)
 				local entity = NetworkGetEntityFromNetworkId(net)

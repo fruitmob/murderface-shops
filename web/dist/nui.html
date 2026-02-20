@@ -3,11 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>renzu_shops</title>
-  <script type="module" crossorigin src="./assets/nui-FIbqT3ww.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/nui-Bf9HoRSO.css">
+  <title>murderface-shops</title>
+  <script type="module" crossorigin src="./assets/nui-FO-h8o1S.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/nui-ClJrx5Nx.css?v=20260220c">
+  <style>
+    /*
+     * FMRP NUI-safe overrides (inline — bypasses CEF CSS cache)
+     * backdrop-filter is BROKEN in FiveM NUI CEF: it renders black
+     * where the game world should show through. Nuking it fixes
+     * both the dark-overlay appearance and scroll flash artifacts.
+     */
+    html, body {
+      background: transparent !important;
+    }
+    .shop-overlay,
+    .shop-overlay.vehicle-mode {
+      background: transparent !important;
+    }
+    /* Kill ALL backdrop-filter — CEF can't blur the game render target */
+    *,
+    *::before,
+    *::after {
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+  </style>
 </head>
 <body>
-  <div id="app"></div>
+  <div id="app"></div>
 </body>
 </html>

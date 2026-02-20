@@ -34,9 +34,10 @@ const { pay } = useCart()
 </template>
 
 <style scoped>
+/* Phase 3.3 — neon total + vibrant payment buttons */
 .cart-payment {
-  padding: 10px 12px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 10px 16px;
+  border-top: 1px solid rgba(139, 71, 137, 0.08);
   flex-shrink: 0;
 }
 
@@ -54,10 +55,11 @@ const { pay } = useCart()
 }
 
 .total-value {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
-  color: #8bc34a;
+  color: var(--ms-price);
   font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 18px rgba(139, 195, 74, 0.25);
 }
 
 .payment-buttons {
@@ -70,31 +72,35 @@ const { pay } = useCart()
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
-  height: 34px;
+  gap: 6px;
+  height: 38px;
   border: none;
-  border-radius: 6px;
-  font-size: 11px;
+  border-radius: var(--ms-r-sm);
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.25s var(--ms-ease);
 }
 
 .pay-cash {
-  background: linear-gradient(135deg, #2d5a2d 0%, #3a7c3a 100%);
+  background: linear-gradient(135deg, #264a26 0%, #367836 100%);
   color: #c8e6c9;
+  box-shadow: 0 2px 12px rgba(76, 175, 80, 0.1);
 }
 .pay-cash:hover {
-  background: linear-gradient(135deg, #3a7c3a 0%, #4caf50 100%);
-  box-shadow: 0 0 12px rgba(76, 175, 80, 0.3);
+  background: linear-gradient(135deg, #2e6e2e 0%, #42a042 100%);
+  box-shadow: 0 4px 24px rgba(76, 175, 80, 0.25);
+  transform: translateY(-1px);
 }
 
 .pay-bank {
-  background: linear-gradient(135deg, #2d3d5a 0%, #3a5c8c 100%);
+  background: linear-gradient(135deg, #263a5e 0%, #35609e 100%);
   color: #c8d6e6;
+  box-shadow: 0 2px 12px rgba(74, 124, 192, 0.1);
 }
 .pay-bank:hover {
-  background: linear-gradient(135deg, #3a5c8c 0%, #4a7cc0 100%);
-  box-shadow: 0 0 12px rgba(74, 124, 192, 0.3);
+  background: linear-gradient(135deg, #2e508e 0%, #4280c8 100%);
+  box-shadow: 0 4px 24px rgba(74, 124, 192, 0.25);
+  transform: translateY(-1px);
 }
 </style>

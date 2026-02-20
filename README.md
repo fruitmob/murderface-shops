@@ -4,7 +4,7 @@
 
 Converted and enhanced for the **Qbox + ox_lib + ox_inventory + ox_target** stack. Gabz MLO compatible, MySQL caching, SQL injection fixes, and custom shop support.
 
-> Forked from [renzuzu/renzu_shops](https://github.com/renzuzu/renzu_shops) — original by renzuzu
+> Forked from [renzuzu/renzu_shops](https://github.com/renzuzu/renzu_shops) -- original by renzuzu
 
 ---
 
@@ -24,11 +24,11 @@ Converted and enhanced for the **Qbox + ox_lib + ox_inventory + ox_target** stac
 
 ## Quick Start
 
-**1.** Download and extract to your resources as `renzu_shops`
+**1.** Download and extract to your resources as `murderface-shops`
 
 **2.** Add to `server.cfg`:
 ```cfg
-ensure renzu_shops
+ensure murderface-shops
 ```
 
 **3.** Restart server — walk to any 24/7, press target key, buy something. Done.
@@ -147,11 +147,15 @@ See [DEPLOYMENT.md](DEPLOYMENT.md) for full testing checklist and [CONFIGURATION
 
 ## Preview
 
+![Store UI](https://user-images.githubusercontent.com/82306584/200500266-2028d8f3-bc95-4131-888f-0d07935f90be.png)
 
+![Shop Management](https://user-images.githubusercontent.com/82306584/200500860-ab032c2a-5829-47f8-a4ce-eb9685117767.png)
+
+![Food Truck](https://user-images.githubusercontent.com/82306584/200501834-de161c46-08ca-4065-9bfa-4094828dd05f.png)
 
 ## Credits
 
-- **Original script**: [renzuzu](https://github.com/renzuzu) (renzu_shops)
+- **Original script**: [renzuzu](https://github.com/renzuzu) (original renzu_shops)
 - **Qbox conversion & enhancements**: [FruitMob RP](https://github.com/fruitmob)
 
 ## License

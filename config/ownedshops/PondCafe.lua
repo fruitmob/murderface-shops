@@ -38,7 +38,7 @@ return {
 										required = 'jetskiticket',
 										value = 1
 									}
-									local hasticket = lib.callback.await('renzu_shops:proccessed',100, data)
+									local hasticket = lib.callback.await('murderface-shops:proccessed',100, data)
 									if hasticket then
 										local model = `seashark`
 										lib.requestModel(model)
@@ -89,7 +89,7 @@ return {
 							car = true,
 						}
 					})
-					lib.callback.await('renzu_shops:proccessed',100, data)
+					lib.callback.await('murderface-shops:proccessed',100, data)
 				end
 			},
 
@@ -119,7 +119,7 @@ return {
 							car = true,
 						}
 					})
-					lib.callback.await('renzu_shops:proccessed',100, data)
+					lib.callback.await('murderface-shops:proccessed',100, data)
 				end
 			},
 			{
@@ -148,7 +148,7 @@ return {
 							car = true,
 						}
 					})
-					lib.callback.await('renzu_shops:proccessed',100, data)
+					lib.callback.await('murderface-shops:proccessed',100, data)
 				end
 			},
 			{
@@ -177,7 +177,7 @@ return {
 							car = true,
 						}
 					})
-					lib.callback.await('renzu_shops:proccessed',100, data)
+					lib.callback.await('murderface-shops:proccessed',100, data)
 				end
 			},
 			{
@@ -206,7 +206,7 @@ return {
 							car = true,
 						}
 					})
-					lib.callback.await('renzu_shops:proccessed',100, data)
+					lib.callback.await('murderface-shops:proccessed',100, data)
 				end
 			},
 			{
@@ -235,7 +235,7 @@ return {
 							car = true,
 						}
 					})
-					lib.callback.await('renzu_shops:proccessed',100, data)
+					lib.callback.await('murderface-shops:proccessed',100, data)
 				end
 			},
 			{
@@ -264,7 +264,7 @@ return {
 							car = true,
 						}
 					})
-					lib.callback.await('renzu_shops:proccessed',100, data)
+					lib.callback.await('murderface-shops:proccessed',100, data)
 				end
 			},
 			{
@@ -293,7 +293,7 @@ return {
 							car = true,
 						}
 					})
-					lib.callback.await('renzu_shops:proccessed',100, data)
+					lib.callback.await('murderface-shops:proccessed',100, data)
 				end
 			},
 			{
@@ -326,7 +326,7 @@ return {
 							car = true,
 						}
 					})
-					lib.callback.await('renzu_shops:proccessed',100, data)
+					lib.callback.await('murderface-shops:proccessed',100, data)
 				end
 			},
 			{
