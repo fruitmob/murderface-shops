@@ -4,7 +4,7 @@ game 'gta5'
 --use_experimental_fxv2_oal 'yes'
 
 author       'Murderface (Original by renzuzu)'
-version      '2.0.0-murderface-qbx'
+version      '3.0.0'
 license      'LGPL-3.0-or-later'
 repository   'https://github.com/renzuzu/renzu_shops'
 description  'Renzu Shops - Murderface Fork (Qbox Edition) - Enhanced and maintained version with QBX support, bug fixes, MySQL caching, comprehensive documentation, and custom shops.'
