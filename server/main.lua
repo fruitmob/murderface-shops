@@ -801,11 +801,28 @@ end
 exports('CreateShop', CreateShop)
 
 lib.callback.register('murderface-shops:createShop', function(source,data)
+	-- Security: only admins can create new shops
+	if not IsPlayerAceAllowed(source, 'command') then
+		print(('[Murderface Shops Security] Player %s attempted createShop without admin permission'):format(source))
+		return false
+	end
 	return CreateShop(data)
 end)
 
 lib.callback.register('murderface-shops:addstock', function(source,data)
-	-- lets secure by adding group check? not now another framework shit. is there a way to check ACL groups via libs? not yet?
+	-- Security: only admin or shop owner/employee can add stock
+	if not IsPlayerAceAllowed(source, 'command') then
+		local xPlayer = GetPlayerFromId(source)
+		if not xPlayer then return false end
+		local stores = GlobalState.Stores
+		if not stores[data.shop] then return false end
+		local isOwner = stores[data.shop].owner == xPlayer.identifier
+		local isEmployee = stores[data.shop].employee and stores[data.shop].employee[xPlayer.identifier]
+		if not isOwner and not isEmployee then
+			print(('[Murderface Shops Security] Player %s attempted addstock without permission (shop: %s)'):format(source, tostring(data.shop)))
+			return false
+		end
+	end
 	return AddStockInternal(data.shop,data.index,data.count,data.item)
 end)
 
@@ -1896,8 +1913,16 @@ lib.callback.register("murderface-shops:buymovableshop", function(source,data)
 	local identifier = data.type..':'..xPlayer.identifier
 	local movable = GlobalState.MovableShops
 	if not movable[identifier] then
-		if xPlayer.getAccount('money').money >= data.price then
-			xPlayer.removeAccountMoney('money', data.price)
+		-- Security: look up price from server config, never trust client
+		local shopConfig = shared.MovableShops[data.type]
+		if not shopConfig then
+			print(('[Murderface Shops Security] Player %s attempted to buy unknown movable shop type: %s'):format(source, tostring(data.type)))
+			return false
+		end
+		local serverPrice = shopConfig.price
+		if xPlayer.getAccount('money').money >= serverPrice then
+			xPlayer.removeAccountMoney('money', serverPrice)
+			data.price = serverPrice
 			data.owner = xPlayer.identifier
 			data.identifier = identifier
 			data.citizenid = xPlayer.citizenid
@@ -2030,7 +2055,14 @@ lib.callback.register("murderface-shops:jobdone", function(source,data)
 		end
 	end
 	if found then
-		local amount = data.dist * shared.shipping.payperdistance
+		-- Security: calculate distance server-side, never trust client data.dist
+		local ped = GetPlayerPed(source)
+		local playerCoords = GetEntityCoords(ped)
+		local shippingCoords = shared.shipping.coord
+		local dist = #(vector3(playerCoords.x, playerCoords.y, playerCoords.z) - vector3(shippingCoords.x, shippingCoords.y, shippingCoords.z))
+		-- Cap at reasonable max (GTA V map is ~12km across)
+		dist = math.min(dist, 15000.0)
+		local amount = dist * shared.shipping.payperdistance
 		xPlayer.addAccountMoney('money',amount)
 		return true
 	end
@@ -2048,11 +2080,18 @@ lib.callback.register("murderface-shops:confirmationfeedback", function(source,d
 end)
 
 lib.callback.register("murderface-shops:removeemployee", function(source,data)
+	local xPlayer = GetPlayerFromId(source)
+	if not xPlayer then return false end
 	local stores = GlobalState.Stores
+	if not stores[data.store] then return false end
+	-- Security: verify caller is the shop owner or admin
+	if stores[data.store].owner ~= xPlayer.identifier and not IsPlayerAceAllowed(source, 'command') then
+		print(('[Murderface Shops Security] Player %s attempted to remove employee from shop %s without ownership'):format(source, tostring(data.store)))
+		return false
+	end
 	if stores[data.store].employee[data.id] then
 		stores[data.store].employee[data.id] = nil
 		sql.update('renzu_stores','employee','shop',data.store,json.encode(stores[data.store].employee))
-		--SetResourceKvp('renzu_stores', json.encode(stores))
 		GlobalState.Stores = stores
 		return true
 	end
@@ -2432,11 +2471,34 @@ lib.callback.register('murderface-shops:ondemandpay', function(source,data)
 end)
 
 local movableentity = {}
+
+-- Security: whitelist of allowed state bag keys for client-triggered updates
+local ALLOWED_STATEBAG_KEYS = {
+	['movableshop'] = true,
+	['movableshopspawned'] = true,
+	['movableentity'] = true,
+	['selling'] = true,
+}
+
 lib.callback.register('murderface-shops:playerStateBags', function(source,value)
+	-- Security: validate input and whitelist state key name
+	if not value or type(value) ~= 'table' or not value.name or not ALLOWED_STATEBAG_KEYS[value.name] then
+		print(('[Murderface Shops Security] Player %s attempted to set unauthorized statebag key: %s'):format(source, tostring(value and value.name)))
+		return false
+	end
+	if not value.data or type(value.data) ~= 'table' then return false end
+
 	local entity = NetworkGetEntityFromNetworkId(value.entity)
+	if not entity or entity == 0 then return false end
+
 	local state = Entity(entity).state
 	value.data.ts = os.time()
 	if value.data.bagname == 'player:' then
+		-- Security: only allow setting state on own player
+		if tonumber(value.entity) ~= source then
+			print(('[Murderface Shops Security] Player %s attempted to set statebag on other player %s'):format(source, tostring(value.entity)))
+			return false
+		end
 		state = Player(tonumber(value.entity)).state
 	end
 	state:set(value.name, value.data, true)
