@@ -11,7 +11,7 @@
 			restock = vec4(-47.952449798584,-1075.3367919922,26.63140296936,70.053443908691),
 			--	cashier = vec3(-55.57,-1097.97,26.42),
 			blip = {
-				id = 402, colour = 69, scale = 0.8
+				id = 326, colour = 3, scale = 0.7
 			},
 			price = 3000000,
 			supplieritem = shared.Storeitems.VehicleShop,
@@ -50,7 +50,7 @@
 		restock = vec4(-1241.8355712891,-328.19290161133,37.422836303711,297.9235534668),
 	--	cashier = vec3(-1252.7078857422,-348.5173034668,36.90762),     
 		blip = {
-			id = 402, colour = 69, scale = 0.8
+			id = 326, colour = 3, scale = 0.7
 		},
 		price = 3000000,
 		supplieritem = MultiCategory(
@@ -95,7 +95,7 @@
 		restock = vec4(-742.36212158203,-1498.0222167969,5.022264957428,115.97137451172),
 	--	cashier = vec3(-759.65838623047,-1515.3922119141,4.976915),
 		blip = {
-			id = 402, colour = 69, scale = 0.8
+			id = 326, colour = 3, scale = 0.7
 		},
 		price = 3000000,
 		supplieritem = MultiCategory(
@@ -117,7 +117,7 @@
 		restock = vec4(0.0,0.0,0.0,0.0),
 		--cashier = vec3(-759.65838623047,-1515.3922119141,4.976915),
 		blip = {
-			id = 402, colour = 69, scale = 0.8
+			id = 326, colour = 3, scale = 0.7
 		},
 		price = 3000000,
 		supplieritem = {
@@ -148,7 +148,7 @@
 		restock = vec4(0.0,0.0,0.0,0.0),
 		--cashier = vec3(-759.65838623047,-1515.3922119141,4.976915),
 		blip = {
-			id = 402, colour = 69, scale = 0.8
+			id = 326, colour = 3, scale = 0.7
 		},
 		price = 3000000,
 		supplieritem = {
@@ -175,7 +175,7 @@
 		restock = vec4(0.0,0.0,0.0,0.0),
 		--cashier = vec3(-759.65838623047,-1515.3922119141,4.976915),
 		blip = {
-			id = 402, colour = 69, scale = 0.8
+			id = 326, colour = 3, scale = 0.7
 		},
 		price = 3000000,
 		supplieritem = {

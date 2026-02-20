@@ -464,14 +464,9 @@ CheckItemData = function(data)
 	return false
 end
 
-if not shared.oxShops and shared.inventory == 'ox_inventory' then
-	lib.callback.register('ox_inventory:openShop', function(source, data)
-		TriggerClientEvent('renzu_shop:OpenShops',source, {type = data.type, id = data.id})
-		SetTimeout(1,function()
-			TriggerClientEvent('ox_inventory:closeInventory', source) -- temporary logic. this will avoid having error notification thrown by ox_inventory due to distance checks
-		end)
-	end)
-end
+-- REMOVED: was registering 'ox_inventory:openShop' to redirect to renzu_shop:OpenShops,
+-- but ox_inventory v2.44.1+ owns that callback name itself. On FMRP this was dead code
+-- anyway — shops open via lib.zones.sphere + self.OpenShop() directly, not this callback.
 
 if shared.inventory == 'ox_inventory' then
 	exports.ox_inventory:registerHook('buyItem', function(payload)

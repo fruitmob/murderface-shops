@@ -30,7 +30,7 @@ shared.allowplayercreateitem = false
 -- Use ox_target for shop interactions?
 -- true = Modern targeting (requires ox_target) (recommended)
 -- false = Use proximity markers (old-school drawtext)
-shared.target = false
+shared.target = false  -- FMRP: proximity text UI (ox_lib showTextUI) — ox_target disabled
 
 -- ========================================
 -- FINANCING SYSTEM (Player Loans)
@@ -205,13 +205,16 @@ request('config/shipping')
 -- shared.Storeitems.LSCustoms = shared.Storeitems.AutomotiveSupply
 -- shared.Storeitems.SonsAuto = shared.Storeitems.AutomotiveSupply
 
--- insert additional datas
-if shared.inventory == 'ox_inventory' then
-	for k,v in pairs(Components) do
-		table.insert(shared.Storeitems.Ammunation,v)
-		table.insert(shared.Storeitems.BlackMarketArms,v)
-	end
-elseif shared.inventory == 'qb-inventory' then
+-- DISABLED: ox_inventory handles weapon components natively; injecting the
+-- renzu_shops Components table creates hundreds of broken shop entries
+-- (at_skin_perseus, at_skin_camo, etc.) with no item defs or images.
+-- Ammunation/BlackMarketArms items are defined in storeitems.lua instead.
+-- if shared.inventory == 'ox_inventory' then
+-- 	for k,v in pairs(Components) do
+-- 		table.insert(shared.Storeitems.Ammunation,v)
+-- 		table.insert(shared.Storeitems.BlackMarketArms,v)
+-- 	end
+if shared.inventory == 'qb-inventory' then
 	local weapons = {}
 	Components = {}
 	Citizen.CreateThreadNow(function()
@@ -448,7 +451,7 @@ if not IsDuplicityVersion() then
 
 	-- SHITY 3dME
 	RegisterCommand('bubble', function(source,args)
-		local Functions = exports.renzu_shops:Shops()
+		local Functions = exports['murderface-shops']:Shops()
 		Functions.CreateBubbleSpeechSync({id = GetPlayerServerId(PlayerId()), title = GetPlayerName(PlayerId()), message = args[1], bagname = 'player:', ms = 5000})
 	end)
 end

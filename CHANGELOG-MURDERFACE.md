@@ -7,6 +7,49 @@ All notable changes to the Murderface Fork of renzu_shops.
 
 ---
 
+## [2026-02-20] — renzu_shops — Server-Side Tuning (Phase 2.2)
+
+### New Shops
+- **SewerMarket** ("The Rat's Nest") — black_money underground market, no blip
+- **SewerBistro** ("The Underbelly") — sewer fine dining, no blip
+- **SewerChopShop** ("Underground Parts") — black_money stolen vehicle parts, no blip
+- **LocksmithShop** ("Locksmith") — keys, lockpicks, security items, blip icon 478
+
+### Economy Rebalance
+- **Mechanic parts**: major price increases across all mechanic shops (e.g. v12_engine $75k→$50k, turbocharger $12k→$17.5k, drivetrains $12-18k→$25-50k, tires $2-5k→$12.5-15k)
+- **BlackMarketGoods**: 7 new heist prerequisite items (blue_usb, kq_angle_grinder, kq_radio_encoder, fraud_laptop, fraud_printer, generator, fuelcan)
+- **YouTool**: weapon name casing fix (weapon_wrench→WEAPON_WRENCH), added gold_pan ($500)
+- **AutomotiveSupply**: removed orphaned category (never referenced by any shop)
+
+### Shop Configuration
+- **Player shop ownership disabled**: `config/ownedshops/init.lua` returns `{}` — all shops now NPC-run via defaultshops.lua
+- **Mechanic shops job-locked**: Bennys, ToxsShop, Flywheels, LSCustoms, SonsAuto restricted to `{'mechanic', 'lscustoms', 'sonsauto', 'allcare', 'bennys'}`
+- **Blip overhaul**: new colours/scales across all shop types (General→2, Ammunation→1, MechanicSupply→25, Police→0.7, VehicleShop icon 326 colour 3, food trucks→5)
+
+### Vendor Peds
+- **~30 new peds** in `client/shop_peds.lua` (~22→~52 entity slots)
+- 14 General store shopkeepers restored (needed since owned-shop ped functions no longer fire)
+- 10 Ammunation peds (rotating stripper models), 2 Black Market, 2 MechanicSupply
+- 7 Sewer MLO peds (3 vendors + 3 ambient NPCs + 1 welder), 1 Locksmith, 1 WormsFunHouse, 1 YouTool
+- Added `animDict`/`animName` support for custom ped animations
+
+### Visual / UX
+- **DrawMarker**: type 21 (cylinder) → 25 (ring), purple (192,132,252), larger (0.9), ground-level
+- **TextUI**: icon `fa-shopping-basket` → `fa-eye`, purple icon color (#c084fc), dark purple bg (#1a1025), larger font (18px)
+- **Wallet formatting**: raw numbers sent to NUI (removed `format_int` pre-formatting)
+
+### Bug Fixes
+- **Weapon components injection disabled**: `init.lua` block that injected `Components` table was creating hundreds of broken entries with no item defs/images
+- **Dead callback removed**: `ox_inventory:openShop` callback in server/main.lua was dead code (ox_inventory v2.44.1+ owns that name)
+- **Export rename**: `exports.renzu_shops:Shops()` → `exports['murderface-shops']:Shops()` (resource rename)
+
+### Files Touched
+- `config/ownedshops/init.lua`, `config/defaultshops.lua`, `config/storeitems.lua`
+- `config/movableshop.lua`, `config/ownedshops/VehicleShop.lua`
+- `client/shop_peds.lua`, `client/main.lua`, `init.lua`, `server/main.lua`
+
+---
+
 ## [2026-02-19] — renzu_shops — Visual Polish Pass (Phase 2.1)
 
 ### What Changed

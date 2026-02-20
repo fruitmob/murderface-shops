@@ -118,6 +118,15 @@ return {
 		{ lvl = 1, name = 'kq_hacker_usb', price = 10000, category = 'Goods', currency = 'black_money', stock = 5 },
 		{ lvl = 1, name = 'security_card_01', price = 50000, category = 'Goods', currency = 'black_money', stock = 5 },
 		{ lvl = 1, name = 'kq_airdrop_flare', price = 55000, category = 'Goods', currency = 'black_money', stock = 5 },
+
+		-- Heist prerequisite items (economy audit 2026-02-20)
+		{ lvl = 1, name = 'blue_usb', price = 5000, category = 'Goods', currency = 'black_money', stock = 5 },
+		{ lvl = 1, name = 'kq_angle_grinder', price = 8000, category = 'Goods', currency = 'black_money', stock = 3 },
+		{ lvl = 1, name = 'kq_radio_encoder', price = 12000, category = 'Goods', currency = 'black_money', stock = 3 },
+		{ lvl = 1, name = 'fraud_laptop', price = 10000, category = 'Goods', currency = 'black_money', stock = 3 },
+		{ lvl = 1, name = 'fraud_printer', price = 15000, category = 'Goods', currency = 'black_money', stock = 3 },
+		{ lvl = 1, name = 'generator', price = 5000, category = 'Goods', currency = 'black_money', stock = 5 },
+		{ lvl = 1, name = 'fuelcan', price = 500, category = 'Goods', currency = 'black_money' },
 	},	
 	
 	
@@ -209,8 +218,8 @@ return {
 
 		-- Tools
 		{ lvl = 1, name = 'lockpick', price = 200, category = 'tools', label = 'Lockpick' },
-		{ lvl = 1, name = 'weapon_wrench', price = 250, category = 'handheld', label = 'Wrench', metadata = { registered = false } },
-		{ lvl = 1, name = 'weapon_hammer', price = 250, category = 'handheld', label = 'Hammer', metadata = { registered = false } },
+		{ lvl = 1, name = 'WEAPON_WRENCH', price = 250, category = 'handheld', label = 'Wrench', metadata = { registered = false } },
+		{ lvl = 1, name = 'WEAPON_HAMMER', price = 250, category = 'handheld', label = 'Hammer', metadata = { registered = false } },
 		{ lvl = 1, name = 'repairkit', price = 250, category = 'tools', label = 'Repair Kit' },
 		{ lvl = 1, name = 'screwdriverset', price = 350, category = 'tools', label = 'Screwdriver Set' },
 		{ lvl = 1, name = 'crowbar', price = 150, category = 'handheld', label = 'Crowbar', metadata = { registered = false } },
@@ -235,6 +244,7 @@ return {
 		{ lvl = 1, name = 'kq_tow_rope', price = 350, category = 'tools', label = 'Tow Rope' },
 		{ lvl = 1, name = 'kq_winch', price = 850, category = 'tools', label = 'Winch' },
 		{ lvl = 1, name = 'blowtorch', price = 2500, category = 'tools', label = 'Blowtorch' },
+		{ lvl = 1, name = 'gold_pan', price = 500, category = 'tools', label = 'Gold Pan' },
 	},
 
 	HuntingSupply = {
@@ -475,56 +485,9 @@ return {
 		{ lvl = 1, name = 'vodka', category = 'Spirits', price = 150 },
 	},
 
-	AutomotiveSupply = {
-		-- Servicing Parts
-		{ lvl = 1, name = 'engine_oil', category = 'Servicing', price = 500 },
-		{ lvl = 1, name = 'tyre_replacement', category = 'Servicing', price = 800 },
-		{ lvl = 1, name = 'clutch_replacement', category = 'Servicing', price = 1200 },
-		{ lvl = 1, name = 'air_filter', category = 'Servicing', price = 200 },
-		{ lvl = 1, name = 'spark_plug', category = 'Servicing', price = 300 },
-		{ lvl = 1, name = 'brakepad_replacement', category = 'Servicing', price = 900 },
-		{ lvl = 1, name = 'suspension_parts', category = 'Servicing', price = 1500 },
-
-		-- Engines
-		{ lvl = 1, name = 'i4_engine', category = 'Engines', price = 15000 },
-		{ lvl = 1, name = 'v6_engine', category = 'Engines', price = 25000 },
-		{ lvl = 1, name = 'v8_engine', category = 'Engines', price = 40000 },
-		{ lvl = 1, name = 'v12_engine', category = 'Engines', price = 75000 },
-		{ lvl = 1, name = 'turbocharger', category = 'Engines', price = 12000 },
-
-		-- Electric Components
-		{ lvl = 1, name = 'ev_motor', category = 'Electric', price = 30000 },
-		{ lvl = 1, name = 'ev_battery', category = 'Electric', price = 20000 },
-		{ lvl = 1, name = 'ev_coolant', category = 'Electric', price = 500 },
-
-		-- Drivetrains
-		{ lvl = 1, name = 'awd_drivetrain', category = 'Drivetrain', price = 18000 },
-		{ lvl = 1, name = 'rwd_drivetrain', category = 'Drivetrain', price = 15000 },
-		{ lvl = 1, name = 'fwd_drivetrain', category = 'Drivetrain', price = 12000 },
-
-		-- Performance Tires
-		{ lvl = 1, name = 'slick_tyres', category = 'Tires', price = 3000 },
-		{ lvl = 1, name = 'semi_slick_tyres', category = 'Tires', price = 2500 },
-		{ lvl = 1, name = 'offroad_tyres', category = 'Tires', price = 2000 },
-		{ lvl = 1, name = 'bulletproof_tyres', category = 'Tires', price = 5000 },
-
-		-- Performance Parts
-		{ lvl = 1, name = 'drift_tuning_kit', category = 'Performance', price = 8000 },
-		{ lvl = 1, name = 'ceramic_brakes', category = 'Performance', price = 4500 },
-
-		-- Cosmetic Parts
-		{ lvl = 1, name = 'lighting_controller', category = 'Cosmetics', price = 1500 },
-		{ lvl = 1, name = 'stancing_kit', category = 'Cosmetics', price = 2000 },
-		{ lvl = 1, name = 'cosmetic_part', category = 'Cosmetics', price = 1000 },
-		{ lvl = 1, name = 'respray_kit', category = 'Cosmetics', price = 3000 },
-		{ lvl = 1, name = 'vehicle_wheels', category = 'Cosmetics', price = 2500 },
-		{ lvl = 1, name = 'tyre_smoke_kit', category = 'Cosmetics', price = 1800 },
-		{ lvl = 1, name = 'extras_kit', category = 'Cosmetics', price = 1200 },
-
-		-- Nitrous
-		{ lvl = 1, name = 'nitrous_bottle', category = 'Nitrous', price = 2500 },
-		{ lvl = 1, name = 'empty_nitrous_bottle', category = 'Nitrous', price = 100 },
-	},
+	-- AutomotiveSupply REMOVED — orphaned category, never referenced by any shop.
+	-- Each mechanic shop (Bennys, ToxsShop, Flywheels, LSCustoms, SonsAuto)
+	-- has its own inline item list in storeitems.lua.
 
 	-- Auto Supply Shops (Complete jg-mechanic inventory)
 	ToxsShop = {
@@ -539,24 +502,24 @@ return {
 		-- Engine Items
 		{ lvl = 1, name = 'i4_engine', category = 'Engines', price = 15000 },
 		{ lvl = 1, name = 'v6_engine', category = 'Engines', price = 25000 },
-		{ lvl = 1, name = 'v8_engine', category = 'Engines', price = 40000 },
-		{ lvl = 1, name = 'v12_engine', category = 'Engines', price = 75000 },
-		{ lvl = 1, name = 'turbocharger', category = 'Engines', price = 12000 },
+		{ lvl = 1, name = 'v8_engine', category = 'Engines', price = 37500 },
+		{ lvl = 1, name = 'v12_engine', category = 'Engines', price = 50000 },
+		{ lvl = 1, name = 'turbocharger', category = 'Engines', price = 17500 },
 		-- Electric Engines
 		{ lvl = 1, name = 'ev_motor', category = 'Electric', price = 30000 },
 		{ lvl = 1, name = 'ev_battery', category = 'Electric', price = 20000 },
 		{ lvl = 1, name = 'ev_coolant', category = 'Electric', price = 500 },
 		-- Drivetrain Items
-		{ lvl = 1, name = 'awd_drivetrain', category = 'Drivetrain', price = 18000 },
-		{ lvl = 1, name = 'rwd_drivetrain', category = 'Drivetrain', price = 15000 },
-		{ lvl = 1, name = 'fwd_drivetrain', category = 'Drivetrain', price = 12000 },
+		{ lvl = 1, name = 'awd_drivetrain', category = 'Drivetrain', price = 50000 },
+		{ lvl = 1, name = 'rwd_drivetrain', category = 'Drivetrain', price = 25000 },
+		{ lvl = 1, name = 'fwd_drivetrain', category = 'Drivetrain', price = 25000 },
 		-- Tuning Items
-		{ lvl = 1, name = 'slick_tyres', category = 'Tires', price = 3000 },
-		{ lvl = 1, name = 'semi_slick_tyres', category = 'Tires', price = 2500 },
-		{ lvl = 1, name = 'offroad_tyres', category = 'Tires', price = 2000 },
-		{ lvl = 1, name = 'bulletproof_tyres', category = 'Tires', price = 5000 },
-		{ lvl = 1, name = 'drift_tuning_kit', category = 'Performance', price = 8000 },
-		{ lvl = 1, name = 'ceramic_brakes', category = 'Performance', price = 4500 },
+		{ lvl = 1, name = 'slick_tyres', category = 'Tires', price = 12500 },
+		{ lvl = 1, name = 'semi_slick_tyres', category = 'Tires', price = 12500 },
+		{ lvl = 1, name = 'offroad_tyres', category = 'Tires', price = 12500 },
+		{ lvl = 1, name = 'bulletproof_tyres', category = 'Tires', price = 15000 },
+		{ lvl = 1, name = 'drift_tuning_kit', category = 'Performance', price = 12500 },
+		{ lvl = 1, name = 'ceramic_brakes', category = 'Performance', price = 12500 },
 		-- Cosmetic Items
 		{ lvl = 1, name = 'lighting_controller', category = 'Cosmetics', price = 1500 },
 		{ lvl = 1, name = 'stancing_kit', category = 'Cosmetics', price = 2000 },
@@ -590,21 +553,21 @@ return {
 		-- Engine Items
 		{ lvl = 1, name = 'i4_engine', category = 'Engines', price = 15000 },
 		{ lvl = 1, name = 'v6_engine', category = 'Engines', price = 25000 },
-		{ lvl = 1, name = 'v8_engine', category = 'Engines', price = 40000 },
-		{ lvl = 1, name = 'v12_engine', category = 'Engines', price = 75000 },
-		{ lvl = 1, name = 'turbocharger', category = 'Engines', price = 12000 },
+		{ lvl = 1, name = 'v8_engine', category = 'Engines', price = 37500 },
+		{ lvl = 1, name = 'v12_engine', category = 'Engines', price = 50000 },
+		{ lvl = 1, name = 'turbocharger', category = 'Engines', price = 17500 },
 		{ lvl = 1, name = 'ev_motor', category = 'Electric', price = 30000 },
 		{ lvl = 1, name = 'ev_battery', category = 'Electric', price = 20000 },
 		{ lvl = 1, name = 'ev_coolant', category = 'Electric', price = 500 },
-		{ lvl = 1, name = 'awd_drivetrain', category = 'Drivetrain', price = 18000 },
-		{ lvl = 1, name = 'rwd_drivetrain', category = 'Drivetrain', price = 15000 },
-		{ lvl = 1, name = 'fwd_drivetrain', category = 'Drivetrain', price = 12000 },
-		{ lvl = 1, name = 'slick_tyres', category = 'Tires', price = 3000 },
-		{ lvl = 1, name = 'semi_slick_tyres', category = 'Tires', price = 2500 },
-		{ lvl = 1, name = 'offroad_tyres', category = 'Tires', price = 2000 },
-		{ lvl = 1, name = 'bulletproof_tyres', category = 'Tires', price = 5000 },
-		{ lvl = 1, name = 'drift_tuning_kit', category = 'Performance', price = 8000 },
-		{ lvl = 1, name = 'ceramic_brakes', category = 'Performance', price = 4500 },
+		{ lvl = 1, name = 'awd_drivetrain', category = 'Drivetrain', price = 50000 },
+		{ lvl = 1, name = 'rwd_drivetrain', category = 'Drivetrain', price = 25000 },
+		{ lvl = 1, name = 'fwd_drivetrain', category = 'Drivetrain', price = 25000 },
+		{ lvl = 1, name = 'slick_tyres', category = 'Tires', price = 12500 },
+		{ lvl = 1, name = 'semi_slick_tyres', category = 'Tires', price = 12500 },
+		{ lvl = 1, name = 'offroad_tyres', category = 'Tires', price = 12500 },
+		{ lvl = 1, name = 'bulletproof_tyres', category = 'Tires', price = 15000 },
+		{ lvl = 1, name = 'drift_tuning_kit', category = 'Performance', price = 12500 },
+		{ lvl = 1, name = 'ceramic_brakes', category = 'Performance', price = 12500 },
 		{ lvl = 1, name = 'lighting_controller', category = 'Cosmetics', price = 1500 },
 		{ lvl = 1, name = 'stancing_kit', category = 'Cosmetics', price = 2000 },
 		{ lvl = 1, name = 'cosmetic_part', category = 'Cosmetics', price = 1000 },
@@ -633,21 +596,21 @@ return {
 		{ lvl = 1, name = 'suspension_parts', category = 'Servicing', price = 1500 },
 		{ lvl = 1, name = 'i4_engine', category = 'Engines', price = 15000 },
 		{ lvl = 1, name = 'v6_engine', category = 'Engines', price = 25000 },
-		{ lvl = 1, name = 'v8_engine', category = 'Engines', price = 40000 },
-		{ lvl = 1, name = 'v12_engine', category = 'Engines', price = 75000 },
-		{ lvl = 1, name = 'turbocharger', category = 'Engines', price = 12000 },
+		{ lvl = 1, name = 'v8_engine', category = 'Engines', price = 37500 },
+		{ lvl = 1, name = 'v12_engine', category = 'Engines', price = 50000 },
+		{ lvl = 1, name = 'turbocharger', category = 'Engines', price = 17500 },
 		{ lvl = 1, name = 'ev_motor', category = 'Electric', price = 30000 },
 		{ lvl = 1, name = 'ev_battery', category = 'Electric', price = 20000 },
 		{ lvl = 1, name = 'ev_coolant', category = 'Electric', price = 500 },
-		{ lvl = 1, name = 'awd_drivetrain', category = 'Drivetrain', price = 18000 },
-		{ lvl = 1, name = 'rwd_drivetrain', category = 'Drivetrain', price = 15000 },
-		{ lvl = 1, name = 'fwd_drivetrain', category = 'Drivetrain', price = 12000 },
-		{ lvl = 1, name = 'slick_tyres', category = 'Tires', price = 3000 },
-		{ lvl = 1, name = 'semi_slick_tyres', category = 'Tires', price = 2500 },
-		{ lvl = 1, name = 'offroad_tyres', category = 'Tires', price = 2000 },
-		{ lvl = 1, name = 'bulletproof_tyres', category = 'Tires', price = 5000 },
-		{ lvl = 1, name = 'drift_tuning_kit', category = 'Performance', price = 8000 },
-		{ lvl = 1, name = 'ceramic_brakes', category = 'Performance', price = 4500 },
+		{ lvl = 1, name = 'awd_drivetrain', category = 'Drivetrain', price = 50000 },
+		{ lvl = 1, name = 'rwd_drivetrain', category = 'Drivetrain', price = 25000 },
+		{ lvl = 1, name = 'fwd_drivetrain', category = 'Drivetrain', price = 25000 },
+		{ lvl = 1, name = 'slick_tyres', category = 'Tires', price = 12500 },
+		{ lvl = 1, name = 'semi_slick_tyres', category = 'Tires', price = 12500 },
+		{ lvl = 1, name = 'offroad_tyres', category = 'Tires', price = 12500 },
+		{ lvl = 1, name = 'bulletproof_tyres', category = 'Tires', price = 15000 },
+		{ lvl = 1, name = 'drift_tuning_kit', category = 'Performance', price = 12500 },
+		{ lvl = 1, name = 'ceramic_brakes', category = 'Performance', price = 12500 },
 		{ lvl = 1, name = 'lighting_controller', category = 'Cosmetics', price = 1500 },
 		{ lvl = 1, name = 'stancing_kit', category = 'Cosmetics', price = 2000 },
 		{ lvl = 1, name = 'cosmetic_part', category = 'Cosmetics', price = 1000 },
@@ -676,21 +639,21 @@ return {
 		{ lvl = 1, name = 'suspension_parts', category = 'Servicing', price = 1500 },
 		{ lvl = 1, name = 'i4_engine', category = 'Engines', price = 15000 },
 		{ lvl = 1, name = 'v6_engine', category = 'Engines', price = 25000 },
-		{ lvl = 1, name = 'v8_engine', category = 'Engines', price = 40000 },
-		{ lvl = 1, name = 'v12_engine', category = 'Engines', price = 75000 },
-		{ lvl = 1, name = 'turbocharger', category = 'Engines', price = 12000 },
+		{ lvl = 1, name = 'v8_engine', category = 'Engines', price = 37500 },
+		{ lvl = 1, name = 'v12_engine', category = 'Engines', price = 50000 },
+		{ lvl = 1, name = 'turbocharger', category = 'Engines', price = 17500 },
 		{ lvl = 1, name = 'ev_motor', category = 'Electric', price = 30000 },
 		{ lvl = 1, name = 'ev_battery', category = 'Electric', price = 20000 },
 		{ lvl = 1, name = 'ev_coolant', category = 'Electric', price = 500 },
-		{ lvl = 1, name = 'awd_drivetrain', category = 'Drivetrain', price = 18000 },
-		{ lvl = 1, name = 'rwd_drivetrain', category = 'Drivetrain', price = 15000 },
-		{ lvl = 1, name = 'fwd_drivetrain', category = 'Drivetrain', price = 12000 },
-		{ lvl = 1, name = 'slick_tyres', category = 'Tires', price = 3000 },
-		{ lvl = 1, name = 'semi_slick_tyres', category = 'Tires', price = 2500 },
-		{ lvl = 1, name = 'offroad_tyres', category = 'Tires', price = 2000 },
-		{ lvl = 1, name = 'bulletproof_tyres', category = 'Tires', price = 5000 },
-		{ lvl = 1, name = 'drift_tuning_kit', category = 'Performance', price = 8000 },
-		{ lvl = 1, name = 'ceramic_brakes', category = 'Performance', price = 4500 },
+		{ lvl = 1, name = 'awd_drivetrain', category = 'Drivetrain', price = 50000 },
+		{ lvl = 1, name = 'rwd_drivetrain', category = 'Drivetrain', price = 25000 },
+		{ lvl = 1, name = 'fwd_drivetrain', category = 'Drivetrain', price = 25000 },
+		{ lvl = 1, name = 'slick_tyres', category = 'Tires', price = 12500 },
+		{ lvl = 1, name = 'semi_slick_tyres', category = 'Tires', price = 12500 },
+		{ lvl = 1, name = 'offroad_tyres', category = 'Tires', price = 12500 },
+		{ lvl = 1, name = 'bulletproof_tyres', category = 'Tires', price = 15000 },
+		{ lvl = 1, name = 'drift_tuning_kit', category = 'Performance', price = 12500 },
+		{ lvl = 1, name = 'ceramic_brakes', category = 'Performance', price = 12500 },
 		{ lvl = 1, name = 'lighting_controller', category = 'Cosmetics', price = 1500 },
 		{ lvl = 1, name = 'stancing_kit', category = 'Cosmetics', price = 2000 },
 		{ lvl = 1, name = 'cosmetic_part', category = 'Cosmetics', price = 1000 },
@@ -708,6 +671,141 @@ return {
 		{ lvl = 1, name = 'mechanic_tablet', category = 'Tools', price = 8000 },
 	},
 
+	-----------------------------------------------------------------------
+	-- Sewer MLO Shops (2026-02-20)
+	-----------------------------------------------------------------------
+
+	-- "The Rat's Nest" - Sewer entrance black market
+	-- Mix of drugs, break-in tools, melee weapons, survival gear
+	-- Prices slightly below surface black markets (risk discount for the sewer)
+	SewerMarket = {
+		-- Drugs & Substances
+		{ lvl = 1, name = 'ecstasy1', price = 150, category = 'Substances', currency = 'black_money' },
+		{ lvl = 1, name = 'lsd1', price = 250, category = 'Substances', currency = 'black_money' },
+		{ lvl = 1, name = 'magicmushroom', price = 200, category = 'Substances', currency = 'black_money' },
+		{ lvl = 1, name = 'peyote', price = 350, category = 'Substances', currency = 'black_money' },
+		{ lvl = 1, name = 'weed_joint', price = 25, category = 'Substances', currency = 'black_money' },
+		{ lvl = 1, name = 'weed_blunt', price = 40, category = 'Substances', currency = 'black_money' },
+		{ lvl = 1, name = 'weed_package', price = 400, category = 'Substances', currency = 'black_money' },
+		{ lvl = 1, name = 'crack_pipe', price = 250, category = 'Substances', currency = 'black_money' },
+		{ lvl = 1, name = 'heroin_syringe', price = 800, category = 'Substances', currency = 'black_money' },
+		{ lvl = 1, name = 'xanaxpill', price = 80, category = 'Substances', currency = 'black_money' },
+
+		-- Melee Weapons
+		{ lvl = 1, name = 'WEAPON_SWITCHBLADE', price = 500, category = 'Weapons', currency = 'black_money', metadata = { registered = false } },
+		{ lvl = 1, name = 'WEAPON_KNIFE', price = 2500, category = 'Weapons', currency = 'black_money', metadata = { registered = false } },
+		{ lvl = 1, name = 'WEAPON_MACHETE', price = 6000, category = 'Weapons', currency = 'black_money', metadata = { registered = false } },
+		{ lvl = 1, name = 'WEAPON_CROWBAR', price = 500, category = 'Weapons', currency = 'black_money', metadata = { registered = false } },
+		{ lvl = 1, name = 'WEAPON_BAT', price = 1500, category = 'Weapons', currency = 'black_money', metadata = { registered = false } },
+		{ lvl = 1, name = 'WEAPON_KNUCKLE', price = 3000, category = 'Weapons', currency = 'black_money', metadata = { registered = false } },
+
+		-- Breaking & Entering Tools
+		{ lvl = 1, name = 'lockpick', price = 150, category = 'Tools', currency = 'black_money' },
+		{ lvl = 1, name = 'electronickit', price = 1000, category = 'Tools', currency = 'black_money' },
+		{ lvl = 1, name = 'drill', price = 300, category = 'Tools', currency = 'black_money' },
+		{ lvl = 1, name = 'screwdriverset', price = 250, category = 'Tools', currency = 'black_money' },
+		{ lvl = 1, name = 'radioscanner', price = 8000, category = 'Tools', currency = 'black_money' },
+
+		-- Survival & Misc
+		{ lvl = 1, name = 'armour', price = 4000, category = 'Gear', currency = 'black_money' },
+		{ lvl = 1, name = 'lighter', price = 15, category = 'Misc', currency = 'black_money' },
+		{ lvl = 1, name = 'bag', price = 4500, category = 'Gear', currency = 'black_money' },
+		{ lvl = 1, name = 'rope', price = 150, category = 'Misc', currency = 'black_money' },
+		{ lvl = 1, name = 'bandage', price = 200, category = 'Gear', currency = 'black_money' },
+	},
+
+	-- "The Underbelly" - Ironic five-star sewer dining
+	-- Premium food & cocktails at absurd markups (regular money)
+	-- The joke: Michelin-star prices, served by a hillbilly in a sewer
+	SewerBistro = {
+		-- Chef's Specials (the audacity)
+		{ lvl = 1, name = 'tiramisu', price = 1500, category = 'Chef\'s Specials' },
+		{ lvl = 1, name = 'calamari_marinara', price = 2000, category = 'Chef\'s Specials' },
+		{ lvl = 1, name = 'alla_vodka', price = 1800, category = 'Chef\'s Specials' },
+		{ lvl = 1, name = 'bolognese', price = 1600, category = 'Chef\'s Specials' },
+		{ lvl = 1, name = 'pescatore', price = 2200, category = 'Chef\'s Specials' },
+		{ lvl = 1, name = 'hamburg_steak', price = 1900, category = 'Chef\'s Specials' },
+
+		-- Desserts (sewer-chilled)
+		{ lvl = 1, name = 'chocolate_and_vanilla_gelato_ice_cream', price = 800, category = 'Desserts' },
+		{ lvl = 1, name = 'medaly_of_fresh_fruits', price = 900, category = 'Desserts' },
+		{ lvl = 1, name = 'strawberry_shortcake', price = 1000, category = 'Desserts' },
+		{ lvl = 1, name = 'oxygen_cake', price = 1200, category = 'Desserts' },
+
+		-- Signature Cocktails (shaken, not stirred, in the sewer)
+		{ lvl = 1, name = 'pina_colada', price = 800, category = 'Cocktails' },
+		{ lvl = 1, name = 'blue_lagoon', price = 750, category = 'Cocktails' },
+		{ lvl = 1, name = 'mai_tai', price = 900, category = 'Cocktails' },
+		{ lvl = 1, name = 'mojito', price = 600, category = 'Cocktails' },
+		{ lvl = 1, name = 'caipirinha', price = 700, category = 'Cocktails' },
+
+		-- Fine Spirits
+		{ lvl = 1, name = 'whiskey', price = 1200, category = 'Spirits' },
+		{ lvl = 1, name = 'wine', price = 1000, category = 'Spirits' },
+		{ lvl = 1, name = 'sake', price = 800, category = 'Spirits' },
+		{ lvl = 1, name = 'rhum', price = 900, category = 'Spirits' },
+
+		-- Coffee Service
+		{ lvl = 1, name = 'irish', price = 500, category = 'Coffee' },
+		{ lvl = 1, name = 'turkish_coffee', price = 400, category = 'Coffee' },
+		{ lvl = 1, name = 'affogato', price = 350, category = 'Coffee' },
+	},
+
+	-- "Underground Parts" - Sewer chop shop vehicle parts
+	-- Stolen parts at 50-60% of legitimate shop prices (black_money)
+	SewerChopShop = {
+		-- Stolen Engines (discount vs $15k-75k legit)
+		{ lvl = 1, name = 'i4_engine', price = 8000, category = 'Engines', currency = 'black_money', stock = 5 },
+		{ lvl = 1, name = 'v6_engine', price = 14000, category = 'Engines', currency = 'black_money', stock = 5 },
+		{ lvl = 1, name = 'v8_engine', price = 20000, category = 'Engines', currency = 'black_money', stock = 3 },
+		{ lvl = 1, name = 'v12_engine', price = 27000, category = 'Engines', currency = 'black_money', stock = 2 },
+		{ lvl = 1, name = 'turbocharger', price = 10000, category = 'Engines', currency = 'black_money', stock = 5 },
+
+		-- Hot Tires & Brakes
+		{ lvl = 1, name = 'bulletproof_tyres', price = 8000, category = 'Tires', currency = 'black_money', stock = 5 },
+		{ lvl = 1, name = 'slick_tyres', price = 7000, category = 'Tires', currency = 'black_money', stock = 8 },
+		{ lvl = 1, name = 'semi_slick_tyres', price = 7000, category = 'Tires', currency = 'black_money', stock = 8 },
+		{ lvl = 1, name = 'offroad_tyres', price = 7000, category = 'Tires', currency = 'black_money', stock = 8 },
+		{ lvl = 1, name = 'tyre_replacement', price = 400, category = 'Tires', currency = 'black_money' },
+		{ lvl = 1, name = 'ceramic_brakes', price = 7000, category = 'Brakes', currency = 'black_money', stock = 5 },
+
+		-- Performance (for getaway cars)
+		{ lvl = 1, name = 'suspension_parts', price = 800, category = 'Performance', currency = 'black_money' },
+		{ lvl = 1, name = 'drift_tuning_kit', price = 7000, category = 'Performance', currency = 'black_money', stock = 5 },
+		{ lvl = 1, name = 'nitrous_bottle', price = 1500, category = 'Nitrous', currency = 'black_money' },
+		{ lvl = 1, name = 'nitrous_install_kit', price = 1800, category = 'Nitrous', currency = 'black_money', stock = 5 },
+		{ lvl = 1, name = 'performance_part', price = 3000, category = 'Performance', currency = 'black_money', stock = 5 },
+
+		-- Utility
+		{ lvl = 1, name = 'repair_kit', price = 800, category = 'Tools', currency = 'black_money' },
+		{ lvl = 1, name = 'duct_tape', price = 100, category = 'Tools', currency = 'black_money' },
+		{ lvl = 1, name = 'cleaning_kit', price = 300, category = 'Tools', currency = 'black_money' },
+	},
+
+	-- Locksmith Shop (not in sewer)
+	-- Specialized lock & security tools at fair prices (regular money)
+	LocksmithShop = {
+		-- Core Locksmith Tools
+		{ lvl = 1, name = 'lockpick', price = 300, category = 'Locksmith' },
+		{ lvl = 1, name = 'electronickit', price = 2000, category = 'Locksmith' },
+		{ lvl = 1, name = 'screwdriverset', price = 500, category = 'Tools' },
+		{ lvl = 1, name = 'drill', price = 500, category = 'Tools' },
+		{ lvl = 1, name = 'big_drill', price = 900, category = 'Tools' },
+		{ lvl = 1, name = 'cutter', price = 250, category = 'Tools' },
+		{ lvl = 1, name = 'blowtorch', price = 3500, category = 'Tools' },
+		{ lvl = 1, name = 'crowbar', price = 250, category = 'Tools' },
+
+		-- Security & Access
+		{ lvl = 1, name = 'gatecrack', price = 30000, category = 'Security', stock = 3 },
+		{ lvl = 1, name = 'hack_usb', price = 12000, category = 'Security', stock = 5 },
+		{ lvl = 1, name = 'trojan_usb', price = 10000, category = 'Security', stock = 5 },
+		{ lvl = 1, name = 'radioscanner', price = 12000, category = 'Security', stock = 5 },
+
+		-- Misc
+		{ lvl = 1, name = 'rope', price = 100, category = 'Misc' },
+		{ lvl = 1, name = 'WEAPON_FLASHLIGHT', price = 300, category = 'Tools' },
+	},
+
 	SonsAuto = {
 		-- Same complete inventory
 		{ lvl = 1, name = 'engine_oil', category = 'Servicing', price = 500 },
@@ -719,21 +817,21 @@ return {
 		{ lvl = 1, name = 'suspension_parts', category = 'Servicing', price = 1500 },
 		{ lvl = 1, name = 'i4_engine', category = 'Engines', price = 15000 },
 		{ lvl = 1, name = 'v6_engine', category = 'Engines', price = 25000 },
-		{ lvl = 1, name = 'v8_engine', category = 'Engines', price = 40000 },
-		{ lvl = 1, name = 'v12_engine', category = 'Engines', price = 75000 },
-		{ lvl = 1, name = 'turbocharger', category = 'Engines', price = 12000 },
+		{ lvl = 1, name = 'v8_engine', category = 'Engines', price = 37500 },
+		{ lvl = 1, name = 'v12_engine', category = 'Engines', price = 50000 },
+		{ lvl = 1, name = 'turbocharger', category = 'Engines', price = 17500 },
 		{ lvl = 1, name = 'ev_motor', category = 'Electric', price = 30000 },
 		{ lvl = 1, name = 'ev_battery', category = 'Electric', price = 20000 },
 		{ lvl = 1, name = 'ev_coolant', category = 'Electric', price = 500 },
-		{ lvl = 1, name = 'awd_drivetrain', category = 'Drivetrain', price = 18000 },
-		{ lvl = 1, name = 'rwd_drivetrain', category = 'Drivetrain', price = 15000 },
-		{ lvl = 1, name = 'fwd_drivetrain', category = 'Drivetrain', price = 12000 },
-		{ lvl = 1, name = 'slick_tyres', category = 'Tires', price = 3000 },
-		{ lvl = 1, name = 'semi_slick_tyres', category = 'Tires', price = 2500 },
-		{ lvl = 1, name = 'offroad_tyres', category = 'Tires', price = 2000 },
-		{ lvl = 1, name = 'bulletproof_tyres', category = 'Tires', price = 5000 },
-		{ lvl = 1, name = 'drift_tuning_kit', category = 'Performance', price = 8000 },
-		{ lvl = 1, name = 'ceramic_brakes', category = 'Performance', price = 4500 },
+		{ lvl = 1, name = 'awd_drivetrain', category = 'Drivetrain', price = 50000 },
+		{ lvl = 1, name = 'rwd_drivetrain', category = 'Drivetrain', price = 25000 },
+		{ lvl = 1, name = 'fwd_drivetrain', category = 'Drivetrain', price = 25000 },
+		{ lvl = 1, name = 'slick_tyres', category = 'Tires', price = 12500 },
+		{ lvl = 1, name = 'semi_slick_tyres', category = 'Tires', price = 12500 },
+		{ lvl = 1, name = 'offroad_tyres', category = 'Tires', price = 12500 },
+		{ lvl = 1, name = 'bulletproof_tyres', category = 'Tires', price = 15000 },
+		{ lvl = 1, name = 'drift_tuning_kit', category = 'Performance', price = 12500 },
+		{ lvl = 1, name = 'ceramic_brakes', category = 'Performance', price = 12500 },
 		{ lvl = 1, name = 'lighting_controller', category = 'Cosmetics', price = 1500 },
 		{ lvl = 1, name = 'stancing_kit', category = 'Cosmetics', price = 2000 },
 		{ lvl = 1, name = 'cosmetic_part', category = 'Cosmetics', price = 1000 },

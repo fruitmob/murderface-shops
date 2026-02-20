@@ -17,24 +17,24 @@
 -- @ Cashier Coordinates. this can be disable by removing the cashier by commenting it via -- cashier = {}. cashier coordinates are the same with robber trigger location
 -- @ Shop Price
 -- @ Item data table for items. { name = 'burger', price = 100} or the config table the same with the sample above.
-return {
+-- FMRP 2026-02-19: Player shop ownership disabled.
+-- Shops remain accessible as NPC-run shops via defaultshops.lua.
+-- Re-enable individual entries below to restore ownership for specific shops.
+--[[
 	['General'] = request('config/ownedshops/General'),
 	['Ammunation'] = request('config/ownedshops/Ammunation'),
-	--['VehicleShop'] = request('config/ownedshops/VehicleShop'),
 	['BlackMarketArms'] = request('config/ownedshops/BlackMarketArms'),
-	--['Burgershot'] = request('config/ownedshops/Burgershot'),
 	['EclipseSupply'] = request('config/ownedshops/EclipseSupply'),
 	['Pharmacy'] = request('config/ownedshops/Pharmacy'),
 	['PoliceArmoury'] = request('config/ownedshops/PoliceArmoury'),
 	['MechanicSupply'] = request('config/ownedshops/MechanicSupply'),
-	--['BeanMachine'] = request('config/ownedshops/BeanMachine'),
-	--['PondCafe'] = request('config/ownedshops/PondCafe'),
 	['Balls8'] = request('config/ownedshops/Balls8'),
 	['ClothingShop'] = request('config/ownedshops/ClothingShop'),
 	['Petshop'] = request('config/ownedshops/Petshop'),
 	['LiquorStore'] = request('config/ownedshops/LiquorStore'),
-	['WormsFunHouse'] = request('config/ownedshops/WormsFunHouse'),  -- Added this line for WormsFunHouse
-	['BlackMarketGoods'] = request('config/ownedshops/BlackMarketGoods'), -- BM Goods 
+	['WormsFunHouse'] = request('config/ownedshops/WormsFunHouse'),
+	['BlackMarketGoods'] = request('config/ownedshops/BlackMarketGoods'),
 	['YouTool'] = request('config/ownedshops/YouTool'),
 	['HuntingSupply'] = request('config/ownedshops/HuntingSupply'),
-}
+--]]
+return {}

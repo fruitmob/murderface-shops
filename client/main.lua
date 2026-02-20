@@ -185,7 +185,7 @@ self.NearestPoint = function(data,msg,callback,server,var,delete,auto)
 
 	if not self.clerkmode then
 
-		DrawMarker(21, data.coords.x, data.coords.y, data.coords.z, 0, 0, 0, 0, 0, 0, 0.5, 0.5, 0.5, 200, 255, 255, 255, 0, 0, 1, 1, 0, 0, 0)
+		DrawMarker(25, data.coords.x, data.coords.y, data.coords.z - 1.0, 0, 0, 0, 0, 0, 0, 0.9, 0.9, 0.45, 192, 132, 252, 150, false, false, 2, false, nil, nil, false)
 
 	end
 
@@ -1828,7 +1828,7 @@ self.OpenShop = function(data)
 			open = true,
 			shop = data.shop,
 			label = data.shop.label or data.shop.name,
-			wallet = {money = self.format_int(money), black_money = self.format_int(black_money), bank = self.format_int(bank)}
+			wallet = {money = money, black_money = black_money, bank = bank}
 		}
 	})
 	SetNuiFocus(true,true)
@@ -1848,12 +1848,15 @@ end
 self.OxlibTextUi = function(msg,fa)
 	lib.showTextUI(msg, {
 		position = "left-center",
-		icon = fa or 'fas fa-shopping-basket',
+		icon = fa or 'fas fa-eye',
+		iconColor = '#c084fc',
 		style = {
 			borderRadius = 5,
-			backgroundColor = '#212121',
-			color = 'white'
-		}
+			backgroundColor = '#1a1025',
+			color = 'white',
+			fontSize = '18px',
+			padding = '12px 18px',
+		},
 	})
 end
 
@@ -2858,7 +2861,7 @@ self.MovableShopStart = function(data)
 			if sleep == 5 and offset then
 				DisableControlAction(0,75,true)
 				DisableControlAction(27, 75, true)
-				DrawMarker(21, offset, 0, 0, 0, 0, 0, 0, 0.5, 0.5, 0.5, 200, 255, 255, 255, 0, 0, 1, 1, 0, 0, 0)
+				DrawMarker(25, offset - vec3(0, 0, 1.0), 0, 0, 0, 0, 0, 0, 0.9, 0.9, 0.45, 192, 132, 252, 150, false, false, 2, false, nil, nil, false)
 			end
 			if IsControlJustPressed(0,38) then
 				if data.type == 'vehicle' and not self.incockpit then
@@ -3835,7 +3838,7 @@ self.CreateConfig = function(conf,type)
 	while true do
 		Wait(1)
 		local coord = GetEntityCoords(cache.ped)+vec3(0.0,0.2,0.02)
-		DrawMarker(21, coord.x,coord.y,coord.z, 0, 0, 0, 0, 0, 0, 0.5, 0.5, 0.5, 200, 255, 255, 255, 0, 0, 1, 1, 0, 0, 0)
+		DrawMarker(25, coord.x, coord.y, coord.z - 1.0, 0, 0, 0, 0, 0, 0, 0.9, 0.9, 0.45, 192, 132, 252, 150, false, false, 2, false, nil, nil, false)
 		if IsControlJustPressed(0,38) then
 			self.shopconfig[conf] = coord
 			break

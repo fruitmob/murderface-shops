@@ -19,7 +19,7 @@ return {
 			}
 		},
 		blip = {
-			id = 375, colour = 69, scale = 0.6
+			id = 375, colour = 5, scale = 0.6
 		},
 		pos = vec3(-0.7,0.1,-0.6),
 		rot = vec3(-1.5,2.3,-87.199999999999),
@@ -45,7 +45,7 @@ return {
 			}
 		},
 		blip = {
-			id = 375, colour = 69, scale = 0.6
+			id = 375, colour = 5, scale = 0.6
 		},
 		pos = vec3(-0.7,0.1,-0.6),
 		rot = vec3(-1.5,2.3,-87.199999999999),
@@ -71,7 +71,7 @@ return {
 			}
 		},
 		blip = {
-			id = 375, colour = 69, scale = 0.6
+			id = 375, colour = 5, scale = 0.6
 		},
 		pos = vec3(-0.7,0.1,-0.6),
 		rot = vec3(-1.5,2.3,-87.199999999999),
@@ -98,7 +98,7 @@ return {
 			}
 		},
 		blip = {
-			id = 375, colour = 69, scale = 0.6
+			id = 375, colour = 5, scale = 0.6
 		},
 		pos = vec3(0.3,-6.15,0.15),
 		rot = vec3(0.0,0.2,-182.1),
@@ -126,7 +126,7 @@ return {
 			}
 		},
 		blip = {
-			id = 375, colour = 69, scale = 0.6
+			id = 375, colour = 5, scale = 0.6
 		},
 		pos = vec3(0.4,-6.8,0.2),
 		rot = vec3(0.0,0.25,89.45),

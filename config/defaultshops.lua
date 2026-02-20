@@ -13,7 +13,7 @@ return {
 			vector3(140.65, -1977.12, 19.42),
 		},
 		blip = {
-			id = 59, colour = 69, scale = 0.8
+			id = 73, colour = 8, scale = 0.8
 		},
 	},]]--
 
@@ -22,7 +22,7 @@ return {
 		name = '8Balls',
 		groups = '8balls',
 		blip = {
-			id = 59, colour = 69, scale = 0.8
+			id = 93, colour = 27, scale = 0.7
 		},
 		locations = {
 			vector3(-1587.4376220703,-995.98486328125,13.342629432678),
@@ -42,11 +42,11 @@ return {
 	},]]--
 
 	MechanicSupply = {
-		--groups = {'mechanic','police'},
+		groups = {'mechanic', 'lscustoms', 'sonsauto', 'allcare', 'bennys'},
 		moneytype = 'money',
 		name = 'Mechanic Supply',
 		blip = {
-			id = 402, colour = 69, scale = 0.8
+			id = 402, colour = 25, scale = 0.7
 		},
 		locations = {
 			vector3(116.04, 6633.6, 32.0),  -- First location
@@ -58,7 +58,7 @@ return {
 		moneytype = 'money',
 		name = 'Shop 24/7',
 		blip = {
-			id = 59, colour = 69, scale = 0.8
+			id = 59, colour = 2, scale = 0.7
 		},
 		locations = {
 			vector3(26.28, -1347.23, 29.5),
@@ -114,7 +114,7 @@ return {
 		moneytype = 'money',  -- Accepting only cash
 		name = 'YouTool',
 		blip = {
-			id = 402, colour = 69, scale = 0.8  -- Setting the blip for the map
+			id = 402, colour = 25, scale = 0.7  -- Setting the blip for the map
 		},
 		locations = {
 			vector3(2735.89, 3464.84, 55.7),  -- Customer Shop Spot (first location)vec3(2735.89, 3464.84, 55.7)
@@ -128,7 +128,7 @@ return {
 		moneytype = 'money',
 		name = 'Ammunation',
 		blip = {
-			id = 110, colour = 69, scale = 0.8
+			id = 110, colour = 1, scale = 0.7
 		},
 		locations = {
 			vector3(21.417778015137,-1106.8083496094,29.79),
@@ -162,7 +162,7 @@ return {
 		name = 'Police Armoury',
 		groups = {'lspd', 'bcso', 'fib'},  -- Restricted to police jobs only
 		blip = {
-			id = 110, colour = 29, scale = 0.8  -- Adjust the 'id', 'colour', and 'scale' as desired
+			id = 110, colour = 29, scale = 0.7  -- Adjust the 'id', 'colour', and 'scale' as desired
 		},
 		locations = {
 			vector3(480.32, -996.67, 30.69),    -- LSPD Armory
@@ -227,6 +227,60 @@ return {
 			-- Add more locations here if needed
 		}
 	},
+	-----------------------------------------------------------------------
+	-- Sewer MLO Shops (2026-02-20) - No blips; hidden underground market
+	-----------------------------------------------------------------------
+
+	SewerMarket = {
+		moneytype = 'black_money',
+		name = 'The Rat\'s Nest',
+		-- No blip - underground market is word-of-mouth only
+		locations = {
+			vector3(175.0, -1645.0, -1.53),  -- PLACEHOLDER — update with real coords
+		},
+		targets = {
+			vector3(175.0, -1645.0, -1.53),  -- PLACEHOLDER — update with real coords
+		}
+	},
+
+	SewerBistro = {
+		moneytype = 'money',
+		name = 'The Underbelly',
+		-- No blip - sewer fine dining is an exclusive experience
+		locations = {
+			vector3(187.07, -1627.02, -1.08),  -- lowered 1.0
+		},
+		targets = {
+			vector3(187.07, -1627.02, -1.08),  -- lowered 1.0
+		}
+	},
+
+	SewerChopShop = {
+		moneytype = 'black_money',
+		name = 'Underground Parts',
+		-- No blip - stolen parts don't advertise
+		locations = {
+			vector3(161.04, -1659.39, -1.53),  -- lowered 1.0
+		},
+		targets = {
+			vector3(161.04, -1659.39, -1.53),  -- lowered 1.0
+		}
+	},
+
+	LocksmithShop = {
+		moneytype = 'money',
+		name = 'Locksmith',
+		blip = {
+			id = 478, colour = 4, scale = 0.7  -- Key icon, blue
+		},
+		locations = {
+			vector3(163.89, -1807.18, 29.32),
+		},
+		targets = {
+			vector3(163.89, -1807.18, 29.32),
+		}
+	},
+
 	HuntingSupply = {
 		moneytype = 'money',
 		name = 'Hunting Store',
@@ -349,6 +403,7 @@ return {
 	},
 
 	Bennys = {
+		groups = {'mechanic', 'lscustoms', 'sonsauto', 'allcare', 'bennys'},
 		moneytype = 'money',
 		name = 'Bennys Auto Supply',
 		-- blip removed - using game blip
@@ -361,6 +416,7 @@ return {
 	},
 
 	ToxsShop = {
+		groups = {'mechanic', 'lscustoms', 'sonsauto', 'allcare', 'bennys'},
 		moneytype = 'money',
 		name = '227 Tox\'s Auto Supply',
 		-- blip removed - using game blip
@@ -373,6 +429,7 @@ return {
 	},
 
 	Flywheels = {
+		groups = {'mechanic', 'lscustoms', 'sonsauto', 'allcare', 'bennys'},
 		moneytype = 'money',
 		name = 'Flywheels Auto Supply',
 		-- blip removed - using game blip
@@ -387,6 +444,7 @@ return {
 	LSCustoms = {
 		moneytype = 'money',
 		name = 'LS Customs Supply',
+		groups = {'mechanic', 'lscustoms', 'sonsauto', 'allcare', 'bennys'},
 		-- blip removed - using game blip
 		locations = {
 			vector3(-346.36, -107.71, 39.02),  -- LS Customs
@@ -399,6 +457,7 @@ return {
 	SonsAuto = {
 		moneytype = 'money',
 		name = 'Sons Auto Supply',
+		groups = {'mechanic', 'lscustoms', 'sonsauto', 'allcare', 'bennys'},
 		-- blip removed - using game blip
 		locations = {
 			vector3(554.95, -172.67, 54.51),  -- Sons Auto Shop
