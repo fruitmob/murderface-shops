@@ -2,25 +2,96 @@
 
 **Free, open-source advanced shop system for FiveM** — drop in, configure, sell.
 
-Converted and enhanced for the **Qbox + ox_lib + ox_inventory + ox_target** stack. Gabz MLO compatible, MySQL caching, SQL injection fixes, and custom shop support.
+Built for the **Qbox + ox_lib + ox_inventory + ox_target** stack. Gabz MLO compatible. Server-hardened. No SQL imports. No headaches.
 
-> Forked from [renzuzu/renzu_shops](https://github.com/renzuzu/renzu_shops) -- original by renzuzu
+> Forked from [renzuzu/renzu_shops](https://github.com/renzuzu/renzu_shops) — original by renzuzu
+
+---
+
+## Preview
+
+![Ammunation — full shop grid with cart and payment](screenshots/ammunation-shop.png)
+
+![Weapon attachments — extended clip, flashlight, suppressor](screenshots/weapon-attachments.png)
+
+![Weapon tints — pick your drip before you pick a fight](screenshots/weapon-tints.png)
+
+![Confirm purchase — one last chance to reconsider that impulse buy](screenshots/confirm-purchase.png)
 
 ---
 
 ## Features
 
-- **Every shop type** — 24/7, Ammunation, Liquor, Mechanic, Black Market, Vehicle, Job, and Food Trucks
-- **Player-owned shops** — Buy locations, manage inventory/pricing, hire employees, track profits
-- **Gabz MLO support** — Works with Gabz 24/7, Ammunation, mechanic shops, and other MLO interiors
-- **DRC item packs** — Bean Machine coffee shop with 29 DRC items and vendor ped
-- **Item customization** — Toppings, variants, weapon attachments via metadata
-- **MySQL caching** — 5-minute cache cuts database queries by ~95%
-- **Security fixes** — SQL injection protection, transaction locking, input sanitization
-- **Store robbery** — Rob cashiers with skill checks (30min cooldown)
-- **Movable shops** — Food trucks (Chihuahua Hot Dogs, Beefy Bills, Attack A Taco)
-- **Admin panel** — Full control over shops, stock, ownership, and finances
-- **Auto-setup** — Tables auto-create on first start, no SQL import needed
+### Shop Types
+Every store the streets of Los Santos have to offer:
+- **24/7 Supermarkets** — 14 locations. Water, snacks, and questionable life choices at 3 AM
+- **Ammunation** — 10 locations. Because sometimes diplomacy fails
+- **Liquor Stores** — 6 locations. For when the 24/7 doesn't carry your brand
+- **Mechanic Supplies** — Wrench jockeys get their own shops (job-restricted)
+- **Black Market** — Arms, goods, and a fun house in the sewers. Don't ask questions
+- **Vehicle Dealerships** — Browse, preview, and buy rides right from the UI
+- **Job Shops** — Police armory, EMS supplies, YouTool — locked behind job requirements
+- **Food Vendors** — Bean Machine, Burgershot, UwU Cafe, Pizza This, Bahama Mamas, and more (DRC item pack compatible)
+- **Movable Food Trucks** — Chihuahua Hot Dogs, Beefy Bills Burger Bar, Attack A Taco. Set up shop wherever the hungry people are
+
+### Modern NUI Shopping Experience
+Custom Vue 3 UI — not your grandma's ox_inventory RegisterShop:
+- **Category tabs** with icons — Ammo, Handguns, Shotguns, Throwables, Tints, Melee, the works
+- **Item cards** showing price, stock count, and a quick Add button
+- **Quantity picker** on every item — buy 1 bullet or buy 1,000, we don't judge
+- **Cart panel** on the right — running total with per-item +/- quantity controls and remove
+- **Cash or Bank** payment — two buttons, pick your poison
+- **Confirm purchase dialog** — one last "are you sure?" before Lester's accountant cries
+
+### Weapon Customization
+Trick out your piece without leaving the shop:
+- **Attachments** — Extended clips, flashlights, suppressors, grips, scopes, and 60+ components
+- **Weapon tints** — Pick from the full GTA V tint palette, preview before you buy
+- All attachments write to item metadata — they persist through inventory, drops, and trades
+
+### Item Customization
+- **Food variants** — Toppings, ingredients, custom labels (hot dog with extra mustard? done)
+- **Status effects** — Hunger, thirst, stress modifiers per variant
+- **Custom animations & props** — Eat, drink, and look good doing it
+
+### Player-Owned Shops
+Full empire management (enable per-location in `config/ownedshops/`):
+- Buy a location and make it yours
+- Set your own prices, stock your own inventory
+- Hire and fire employees (they get a cut — or they don't, you're the boss)
+- Track profits through the cashier and vault system
+- Customers rob you sometimes. That's just business in LS
+
+### Shipping & Delivery
+- **Fedex Express** supplier system — order stock deliveries to your shop
+- 112 delivery points across the map
+- Distance-based delivery pay (calculated server-side, no funny business)
+- Supplier discounts for bulk orders
+
+### Store Robbery
+- Rob any cashier with `ox_lib` skill checks — hope your minigame skills are better than your life choices
+- 30-minute cooldown per store. You can't rob the same 24/7 twice in a row, Trevor
+- Progress bar + animation while you clean out the register
+
+### Admin Tools
+- `/stores` — Full admin panel for managing ownership, stock, employees, and finances
+- `/addstock` — Restock shops from console (per-item or bulk)
+- Server-side ACL checks on every admin action — no one's creating shops with a modmenu
+
+### Performance & Security
+- **MySQL caching** — 5-minute TTL cache cuts database queries by ~95%
+- **Server-side price validation** — prices looked up from config, never trusted from the client
+- **Server-side distance calculation** — delivery payouts use `GetEntityCoords`, not client-reported values
+- **SQL injection protection** — parameterized queries + field whitelists throughout
+- **Purchase rate limiting** — 2-second cooldown between purchases to prevent spam
+- **State bag whitelisting** — only 4 approved keys, validated types, entity ownership enforced
+- **Transaction locking** — no race conditions on stock updates or payments
+- **Input sanitization** — every callback validates source, data types, and permissions
+
+### Auto-Setup
+- Tables auto-create on first start. No SQL imports. No migration scripts. Just `ensure` it and go.
+
+---
 
 ## Quick Start
 
@@ -31,7 +102,7 @@ Converted and enhanced for the **Qbox + ox_lib + ox_inventory + ox_target** stac
 ensure murderface-shops
 ```
 
-**3.** Restart server — walk to any 24/7, press target key, buy something. Done.
+**3.** Restart server — walk to any 24/7, press your target key, buy something. Done.
 
 All shop items must exist in `ox_inventory/data/items.lua`. Check `config/storeitems.lua` if you see missing-item warnings in console.
 
@@ -48,8 +119,10 @@ Everything lives in the `config/` folder:
 | `config/defaultshops.lua` | Shop locations, blips, names |
 | `config/ownedshops/` | Purchasable shop locations and pricing |
 | `config/jobshops/` | Job-restricted shops (police armory, EMS, etc.) |
-| `config/movableshops.lua` | Food truck configuration |
-| `data/item-customisation.lua` | Item variants, toppings, effects |
+| `config/movableshop.lua` | Food truck configuration |
+| `config/shipping.lua` | Delivery system, supplier routes, pay rates |
+| `data/item_customise.lua` | Item variants, toppings, effects |
+| `data/weaponcomponents.lua` | Weapon attachment definitions |
 
 ### Basic Settings
 
@@ -121,10 +194,11 @@ If you're running Qbox with the ox stack, you already have everything you need.
 ## What Changed From the Original
 
 - **Qbox native** — Full QBX integration with proper player wrapper and money handling
+- **Custom Vue 3 NUI** — Complete UI rewrite. Dark glassmorphism theme with neon accents, category tabs, cart panel, weapon customization modals
 - **MySQL caching** — 5-minute cache, moved GlobalState data to MySQL (was hitting 16KB limit)
-- **Security** — SQL injection protection, transaction locking, input sanitization
+- **Server-side security** — Price validation, distance calculation, ACL checks, state bag whitelisting, rate limiting, input sanitization. Cheaters get nothing
 - **Bug fixes** — All Lua syntax errors (`+=`, `-=`), shop UI closing bug, race conditions
-- **Gabz + DRC** — MLO compatibility and Bean Machine coffee shop with 29 DRC items
+- **Gabz + DRC** — MLO compatibility and full DRC restaurant vendor support
 - **Error handling** — Debug logging, item validation against ox_inventory, automatic recovery
 
 ## Troubleshooting
@@ -141,17 +215,12 @@ Set `shared.target = true` in `config/init.lua` for ox_target, or `false` for ma
 **Need to import SQL?**
 No — tables auto-create on first start.
 
+**Dark/black overlay behind the UI?**
+`backdrop-filter` is broken in FiveM's CEF. This version already has the fix baked in. If you're forking, never use `backdrop-filter: blur()` in NUI pages.
+
 See [DEPLOYMENT.md](DEPLOYMENT.md) for full testing checklist and [CONFIGURATION.md](CONFIGURATION.md) for advanced options.
 
 ---
-
-## Preview
-
-![Store UI](https://user-images.githubusercontent.com/82306584/200500266-2028d8f3-bc95-4131-888f-0d07935f90be.png)
-
-![Shop Management](https://user-images.githubusercontent.com/82306584/200500860-ab032c2a-5829-47f8-a4ce-eb9685117767.png)
-
-![Food Truck](https://user-images.githubusercontent.com/82306584/200501834-de161c46-08ca-4065-9bfa-4094828dd05f.png)
 
 ## Credits
 
