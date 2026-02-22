@@ -45,7 +45,7 @@ export function useCart() {
     nuiCallback('syncCart', { cart: cart.toLuaCart() })
   }
 
-  async function pay(method: 'money' | 'bank') {
+  async function pay(method: string) {
     await nuiCallback('payItems', {
       items: cart.toLuaCart(),
       paymentMethod: method,

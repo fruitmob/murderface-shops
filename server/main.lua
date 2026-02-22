@@ -1143,6 +1143,19 @@ lib.callback.register('murderface-shops:buyitem', function(source,data)
 		return 'invalidamount' -- Client-compatible error code
 	end
 
+	-- SECURITY: Enforce shop's configured moneytype — prevent paying with bank/cash at dirty-money shops
+	local shopConfig = shared.Shops[data.shop]
+	if shopConfig and shopConfig.moneytype then
+		local expectedMoney = shopConfig.moneytype:lower()
+		local actualMoney = moneytype:lower()
+		-- 'money' shops accept cash or bank; all other shops must match exactly
+		if expectedMoney ~= 'money' and actualMoney ~= expectedMoney then
+			print(string.format('[Murderface Shops Security] Player %s attempted to pay with %s at shop %s (expected %s)', source, actualMoney, data.shop, expectedMoney))
+			releaseLocks()
+			return 'invalidamount'
+		end
+	end
+
 	local money = GetItemCountSingle(moneytype:lower(),source)
 	if moneytype == 'bank' then
 		money  = xPlayer.getAccount('bank').money
@@ -1175,6 +1188,8 @@ lib.callback.register('murderface-shops:buyitem', function(source,data)
 			end
 		end
 		callback = {}
+		local failedItems = {}
+		local refundAmount = 0
 		for k,v in pairs(data.items) do
 			if storeowned then -- storeowned Ownableshops data handler
 				RemoveStockFromStore({shop = data.shop, metadata = v.data.metadata, index = data.index, item = v.data.name, amount = tonumber(v.count), money = moneytype:lower()})
@@ -1182,7 +1197,17 @@ lib.callback.register('murderface-shops:buyitem', function(source,data)
 				RemoveStockFromStash({owner = data.owner, booth = boothshop, addmoney = true, identifier = data.shop, metadata = v.data.metadata, item = v.data.name, amount = tonumber(v.count), price = data.data[v.data.name].price, type = data.index, money = moneytype:lower()})
 			end
 			if data.shop ~= 'VehicleShop' then -- add new item if its not a vehicle type
-				Inventory.AddItem(source,v.data.name,v.count,v.data.metadata, false)
+				local ok, added = pcall(Inventory.AddItem, source, v.data.name, v.count, v.data.metadata, false)
+				if not ok or not added then
+					-- Item failed to add — track for refund
+					local itemName = v.data.metadata and v.data.metadata.name or v.data.name
+					local itemPrice = data.data[itemName] and data.data[itemName].price or 0
+					local itemRefund = tonumber(itemPrice) * tonumber(v.count)
+					refundAmount = refundAmount + itemRefund
+					table.insert(failedItems, {name = itemName, count = v.count, refund = itemRefund, error = not ok and tostring(added) or 'AddItem returned false'})
+					print(string.format('[Murderface Shops] FAILED to add item %s x%d to player %s — will refund $%d (error: %s)',
+						v.data.name, v.count, source, itemRefund, not ok and tostring(added) or 'AddItem returned false'))
+				end
 			else -- else if vehicle type add it to player vehicles table
 				for i = 1, tonumber(v.count) do
 					local plate = GenPlate()
@@ -1221,6 +1246,17 @@ lib.callback.register('murderface-shops:buyitem', function(source,data)
 				end
 			end
 			Wait(500)
+		end
+
+		-- REFUND: If any items failed to add, refund the player
+		if refundAmount > 0 then
+			if moneytype == 'bank' then
+				xPlayer.addAccountMoney('bank', refundAmount)
+			else
+				Inventory.AddItem(source, moneytype:lower(), refundAmount)
+			end
+			print(string.format('[Murderface Shops] Refunded $%d to player %s for %d failed items', refundAmount, source, #failedItems))
+			TriggerClientEvent('rtx_notify:Notify', source, 'Shop', 'Some items could not be added. You were refunded $' .. refundAmount, 5000, 'warning')
 		end
 		local stores = GlobalState.Stores
 		if storeowned and data.finance and stores[storeowned] then

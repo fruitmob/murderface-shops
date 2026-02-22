@@ -684,3 +684,15 @@
   min-height: 480px !important;
   border-radius: 8px !important;
 }
+
+/* Dirty money payment button (2026-02-22) */
+.pay-dirty[data-v-c4d8d39c] {
+  background: linear-gradient(135deg, #4a1a2e 0%, #7c2d4e 100%);
+  color: #f0c8d8;
+  box-shadow: 0 2px 12px rgba(180, 50, 90, 0.15);
+}
+.pay-dirty[data-v-c4d8d39c]:hover {
+  background: linear-gradient(135deg, #6a2040 0%, #a03860 100%);
+  box-shadow: 0 4px 24px rgba(180, 50, 90, 0.35);
+  transform: translateY(-1px);
+}

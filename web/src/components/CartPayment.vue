@@ -17,18 +17,31 @@ const { pay } = useCart()
     </div>
 
     <div class="payment-buttons" v-if="cart.totalCount > 0">
-      <button class="pay-btn pay-cash" @click="pay('money')">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-        </svg>
-        Pay Cash
-      </button>
-      <button class="pay-btn pay-bank" @click="pay('bank')">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/>
-        </svg>
-        Pay Bank
-      </button>
+      <!-- Normal shops: Cash + Bank -->
+      <template v-if="shop.moneyType === 'money'">
+        <button class="pay-btn pay-cash" @click="pay('money')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+          Pay Cash
+        </button>
+        <button class="pay-btn pay-bank" @click="pay('bank')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/>
+          </svg>
+          Pay Bank
+        </button>
+      </template>
+
+      <!-- Dirty money / special currency shops -->
+      <template v-else>
+        <button class="pay-btn pay-dirty" @click="pay(shop.moneyType)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+          Pay Dirty $
+        </button>
+      </template>
     </div>
   </div>
 </template>
@@ -101,6 +114,17 @@ const { pay } = useCart()
 .pay-bank:hover {
   background: linear-gradient(135deg, #2e508e 0%, #4280c8 100%);
   box-shadow: 0 4px 24px rgba(74, 124, 192, 0.25);
+  transform: translateY(-1px);
+}
+
+.pay-dirty {
+  background: linear-gradient(135deg, #4a1a2e 0%, #7c2d4e 100%);
+  color: #f0c8d8;
+  box-shadow: 0 2px 12px rgba(180, 50, 90, 0.15);
+}
+.pay-dirty:hover {
+  background: linear-gradient(135deg, #6a2040 0%, #a03860 100%);
+  box-shadow: 0 4px 24px rgba(180, 50, 90, 0.35);
   transform: translateY(-1px);
 }
 </style>

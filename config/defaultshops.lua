@@ -160,7 +160,7 @@ return {
 	PoliceArmoury = {
 		moneytype = 'money',
 		name = 'Police Armoury',
-		groups = {'lspd', 'bcso', 'fib'},  -- Restricted to police jobs only
+		groups = {'lspd', 'bcso', 'fib', 'sapr', 'sasp'},  -- Restricted to police jobs only
 		blip = {
 			id = 110, colour = 29, scale = 0.7  -- Adjust the 'id', 'colour', and 'scale' as desired
 		},
