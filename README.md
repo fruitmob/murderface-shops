@@ -222,7 +222,7 @@ No — tables auto-create on first start.
 **Dark/black overlay behind the UI?**
 `backdrop-filter` is broken in FiveM's CEF. This version already has the fix baked in. If you're forking, never use `backdrop-filter: blur()` in NUI pages.
 
-See [DEPLOYMENT.md](DEPLOYMENT.md) for full testing checklist and [CONFIGURATION.md](CONFIGURATION.md) for advanced options.
+See [CHANGELOG](CHANGELOG-MURDERFACE.md) for full version history.
 
 ---
 

@@ -4,11 +4,10 @@ game 'gta5'
 --use_experimental_fxv2_oal 'yes'
 
 author       'Murderface (FMRP)'
-version      '3.0.0'
+version      '3.2.0'
 license      'MIT'
 repository   'https://github.com/fruitmob/murderface-shops'
 description  'murderface-shops - Advanced shop system for FiveM (Qbox Edition) - QBX support, MySQL caching, security fixes, and custom shops.'
---shared_script '@renzu_shield/init.lua' -- legacy/disabled
 
 shared_scripts {
     '@ox_lib/init.lua',
