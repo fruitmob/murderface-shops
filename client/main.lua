@@ -1677,12 +1677,9 @@ self.OpenShop = function(data)
 	-- shop data of defaults shops
 	if not self.Active or  not self.Active.shop then return end
 
-	-- Debug: Log what we're trying to load
-	print('[Murderface Shops Debug] Opening shop type:', data.type)
-	print('[Murderface Shops Debug] shared.Storeitems exists?', shared.Storeitems ~= nil)
-	print('[Murderface Shops Debug] shared.Storeitems[' .. tostring(data.type) .. '] exists?', shared.Storeitems and shared.Storeitems[data.type] ~= nil)
-	if shared.Storeitems and shared.Storeitems[data.type] then
-		print('[Murderface Shops Debug] Inventory item count:', #shared.Storeitems[data.type])
+	if shared.debug then
+		print('[Murderface Shops] Opening shop type:', data.type)
+		print('[Murderface Shops] shared.Storeitems[' .. tostring(data.type) .. ']:', shared.Storeitems and shared.Storeitems[data.type] and #shared.Storeitems[data.type] .. ' items' or 'nil')
 	end
 
 	data.shop.inventory = data.shop.inventory or shared.Storeitems[data.type] or {}
@@ -1690,9 +1687,8 @@ self.OpenShop = function(data)
 
 	-- Verify inventory was loaded
 	if not self.Active.shop.inventory or #self.Active.shop.inventory == 0 then
-		print('[Murderface Shops ERROR] Failed to load inventory for shop type:', data.type)
-		print('[Murderface Shops ERROR] This usually means the shop has no items defined in storeitems.lua')
-		return -- Don't open shop if there's no inventory
+		print('^1[Murderface Shops] No inventory for shop type: ' .. tostring(data.type) .. ' — check storeitems.lua^0')
+		return
 	end
 	self.Active.shop.type = data.type
 	self.Active.shop.StoreName = data.shop.StoreName
@@ -1802,13 +1798,11 @@ self.OpenShop = function(data)
 		end
 	end
 
-	-- CRITICAL FIX: Ensure inventory is always set, even if owned shop wasn't found
+	-- Fallback: ensure inventory is set even if owned shop wasn't found
 	if not self.Active.shop.inventory or #self.Active.shop.inventory == 0 then
-		print('[Murderface Shops] WARNING: Shop inventory was empty, using fallback')
 		self.Active.shop.inventory = data.shop.inventory or {}
-		if #self.Active.shop.inventory == 0 then
-			print('[Murderface Shops] ERROR: No inventory available for shop:', data.shop.label or data.shop.name or 'Unknown')
-			print('[Murderface Shops] Shop type:', data.type, 'Index:', data.index)
+		if shared.debug and #self.Active.shop.inventory == 0 then
+			print('^3[Murderface Shops] Empty inventory fallback for: ' .. tostring(data.shop.label or data.type) .. '^0')
 		end
 	end
 
@@ -4395,18 +4389,10 @@ self.Proccessed = function(data)
 	lib.callback.await('murderface-shops:proccessed',100, data)
 end
 
--- Debug: Verify client/main.lua loaded completely
-print('^3[Murderface Shops]^0 client/main.lua loaded successfully')
-
 -- Initialize the shops after all functions are defined
 CreateThread(function()
-	Wait(500) -- Small delay to ensure all scripts are loaded
-	print('^3[Murderface Shops]^0 Initializing Handlers and StartUp...')
-	if self.Handlers then
-		self.Handlers()
-	end
-	if self.StartUp then
-		self.StartUp()
-	end
-	print('^2[Murderface Shops]^0 Initialization complete!')
+	Wait(500)
+	if self.Handlers then self.Handlers() end
+	if self.StartUp then self.StartUp() end
+	if shared.debug then print('^2[Murderface Shops]^0 Client initialized') end
 end)

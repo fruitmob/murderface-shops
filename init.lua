@@ -2,6 +2,13 @@ ESX,QBCORE = nil, nil
 shared = {}
 
 -- ========================================
+-- DEBUG MODE
+-- ========================================
+-- Enable verbose logging for development/troubleshooting
+-- Prints shop loading, inventory validation, purchase attempts, etc.
+shared.debug = false
+
+-- ========================================
 -- LANGUAGE SETTINGS
 -- ========================================
 -- Change language file (config/locales/%s.lua)

@@ -514,12 +514,16 @@ RemoveStockFromStore = function(data)
 	local success = false
 
 	-- SECURITY: Transaction locking to prevent race conditions
+	-- Lock key format: "ShopType:ShopIndex:ItemName" (e.g. "Ammunation:1:pistol_ammo")
+	-- Ensures only one purchase of the same item at the same shop can process at a time
 	local lockKey = data.shop..':'..data.index..':'..data.item
 	local locks = GlobalState.ShopLocks or {}
 
 	-- Check if item is locked by another transaction
 	if locks[lockKey] then
-		print(string.format('[Murderface Shops] Transaction blocked - item %s is locked', lockKey))
+		if shared.debug then
+			print(('[Murderface Shops] Transaction blocked — %s is locked'):format(lockKey))
+		end
 		return false
 	end
 
@@ -568,8 +572,9 @@ RemoveStockFromStore = function(data)
 						end
 						success = true
 					else
-						-- Insufficient stock
-						print(string.format('[Murderface Shops] Insufficient stock for %s - requested: %d, available: %d', lockKey, data.amount, currentStock))
+						if shared.debug then
+							print(('[Murderface Shops] Insufficient stock: %s — requested %d, available %d'):format(lockKey, data.amount, currentStock))
+						end
 					end
 					break
 				end
@@ -913,7 +918,9 @@ lib.callback.register('murderface-shops:buyitem', function(source,data)
 	-- SECURITY: Rate limiting (2s cooldown per player)
 	local now = GetGameTimer()
 	if purchaseCooldowns[source] and (now - purchaseCooldowns[source]) < PURCHASE_COOLDOWN_MS then
-		print(('[Murderface Shops Security] Player %s rate-limited on purchase'):format(source))
+		if shared.debug then
+			print(('[Murderface Shops] Player %s rate-limited on purchase'):format(source))
+		end
 		return 'invalidamount'
 	end
 	purchaseCooldowns[source] = now

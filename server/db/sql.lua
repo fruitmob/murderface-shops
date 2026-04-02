@@ -52,6 +52,11 @@ local db = setmetatable({},{
 })
 local Sql = db()
 
+-- Wait for oxmysql to be ready before running DDL
+MySQL.ready(function()
+	if shared.debug then print('[Murderface Shops] MySQL ready — checking tables') end
+end)
+
 local success, result = pcall(MySQL.scalar.await, 'SELECT 1 FROM renzu_stores')
 
 if not success then
