@@ -5,7 +5,7 @@ game 'gta5'
 
 author       'Murderface (FMRP)'
 version      '3.0.0'
-license      'LGPL-3.0-or-later'
+license      'MIT'
 repository   'https://github.com/fruitmob/murderface-shops'
 description  'murderface-shops - Advanced shop system for FiveM (Qbox Edition) - QBX support, MySQL caching, security fixes, and custom shops.'
 --shared_script '@renzu_shield/init.lua' -- legacy/disabled

@@ -1,4 +1,8 @@
-# murderface-shops (Qbox + ox Fork)
+# murderface-shops
+
+[![License](https://img.shields.io/github/license/fruitmob/murderface-shops)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/fruitmob/murderface-shops)](https://github.com/fruitmob/murderface-shops/releases)
+[![GitHub Stars](https://img.shields.io/github/stars/fruitmob/murderface-shops)](https://github.com/fruitmob/murderface-shops)
 
 **Free, open-source advanced shop system for FiveM** — drop in, configure, sell.
 
@@ -227,6 +231,17 @@ See [DEPLOYMENT.md](DEPLOYMENT.md) for full testing checklist and [CONFIGURATION
 - **Original script**: [renzuzu](https://github.com/renzuzu) (original renzu_shops)
 - **Qbox conversion & enhancements**: [FruitMob RP](https://github.com/fruitmob)
 
+## Contributing
+
+PRs welcome — bug fixes, new shop types, UI improvements, or framework compatibility.
+
+1. Fork the repo and create a branch from `master`
+2. Make your changes — keep them focused on a single feature or fix
+3. Test in-game on a Qbox server with ox_inventory
+4. Open a PR with a clear description of what changed and why
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for code style guidelines.
+
 ## License
 
-GPL-3.0 — same as the original.
+[MIT](LICENSE)

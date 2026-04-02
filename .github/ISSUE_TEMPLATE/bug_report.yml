@@ -1,0 +1,87 @@
+name: Bug Report
+description: Report a bug or unexpected behavior
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug! Please fill out the sections below so we can reproduce and fix it.
+
+  - type: input
+    id: version
+    attributes:
+      label: Script Version
+      description: Which commit or version are you running?
+      placeholder: e.g. v3.0.0, commit abc1234
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: A clear description of the bug.
+      placeholder: Tell us what went wrong...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What should have happened instead?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: How can we trigger this bug?
+      placeholder: |
+        1. Walk to a 24/7 shop
+        2. Open the shop menu
+        3. Try to buy water
+        4. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: errors
+    attributes:
+      label: Server/client console errors
+      description: Paste any error output from the F8 console or server terminal.
+      render: text
+
+  - type: dropdown
+    id: framework
+    attributes:
+      label: Framework
+      options:
+        - Qbox (qbx_core)
+        - QBCore (qb-core)
+        - ESX
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: ox_inventory_version
+    attributes:
+      label: ox_inventory version
+      placeholder: e.g. 2.42.3
+
+  - type: dropdown
+    id: target
+    attributes:
+      label: Target system
+      options:
+        - ox_target
+        - qb-target
+        - Markers (no target)
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Screenshots, config changes, MLO name, etc.
