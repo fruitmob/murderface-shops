@@ -69,6 +69,10 @@ end
 self.LoadDefaultShops = function()
 	for k,shop in pairs(shared.Shops) do
 		if shop.locations then
+			if shop.ped then
+				shop.ped()
+				shop.ped = nil
+			end
 			local coordinates = shared.target and shop.targets or shop.locations
 			for shopindex,v in ipairs(coordinates) do
 				if not shared.oxShops or k == 'VehicleShop' then

@@ -20,17 +20,22 @@ local db = setmetatable({},{
 			return MySQL.query(str:format(name,where),{update})
 		end
 
+		-- Only save these DB columns (skip function refs from config)
+		local dbColumns = {owner=true, money=true, items=true, employee=true, cashier=true, customitems=true, job=true}
+
 		self.save = function(data)
 			Citizen.CreateThreadNow(function()
 				for shopname,v in pairs(data) do
 					local select = MySQL.query.await('SELECT * FROM `renzu_stores` WHERE `shop` = ?', {shopname})
 					if select then
 						for k,v in pairs(v) do
+							if not dbColumns[k] then goto skip end -- skip non-DB fields (functions, etc)
 							if type(v) == 'table' then
 								self.update('renzu_stores',k,'shop',shopname,json.encode(v))
-							else
+							elseif type(v) ~= 'function' then
 								self.update('renzu_stores',k,'shop',shopname,v)
 							end
+							::skip::
 						end
 					else
 						self.insert('renzu_stores',{

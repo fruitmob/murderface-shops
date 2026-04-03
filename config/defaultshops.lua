@@ -20,12 +20,14 @@ return {
 	['Balls8'] = {
 		moneytype = 'money',
 		name = '8Balls',
-		groups = '8balls',
 		blip = {
 			id = 93, colour = 27, scale = 0.7
 		},
 		locations = {
-			vector3(-1587.4376220703,-995.98486328125,13.342629432678),
+			vector3(-1587.5, -993.33, 13.08),  -- Manual placement
+		},
+		targets = {
+			vector3(-1587.5, -993.33, 13.08),
 		}
 	},
 
@@ -49,8 +51,9 @@ return {
 			id = 402, colour = 25, scale = 0.7
 		},
 		locations = {
-			vector3(116.04, 6633.6, 32.0),  -- First location
-			vector3(1698.25, 3590.15, 35.62)  -- Second location (same as the ped location)
+			vector3(116.04, 6633.6, 32.0),  -- First location (already offset from ped)
+			vector3(1696.91, 3589.48, 35.62),  -- Second location offset in front of ped (h=116.42)
+			vector3(1203.64, 2646.94, 37.81),  -- LS Customs Sandy Shores (h=46.77)
 		}
 	},
 
@@ -61,36 +64,42 @@ return {
 			id = 59, colour = 2, scale = 0.7
 		},
 		locations = {
-			vector3(26.28, -1347.23, 29.5),
-			vector3(-3039.6, 586.23, 7.91),
-			vector3(-3242.19, 1001.76, 12.83),
-			vector3(1729.59, 6414.65, 35.04),
-			vector3(1698.02, 4924.47, 42.06),
-			vector3(1961.64, 3740.97, 32.34),
-			vector3(547.37, 2670.93, 42.16),
-			vector3(2678.88, 3281.01, 55.24),
-			vector3(2557.19, 382.63, 108.62),
-			vector3(374.3, 325.92, 103.57),
-			vector3(1163.61, -323.94, 69.21),
-			vector3(-1820.72, 792.4, 138.12),
-			vector3(-707.79, -914.61, 19.22),
-			vector3(-48.83, -1757.59, 29.42),
+			vector3(29.72, -1344.16, 29.5),           -- #125
+			vector3(-3043.49, 588.38, 7.91),           -- #804
+			vector3(-3245.02, 1005.27, 12.83),           -- #905
+			vector3(1733.80, 6415.69, 35.04),           -- #3030
+			vector3(1697.68, 4924.30, 42.06),           -- LTD #2013
+			vector3(1962.91, 3745.42, 32.34),           -- #1036
+			vector3(544.51, 2667.60, 42.16),           -- #928
+			vector3(2677.97, 3285.49, 55.24),           -- #957
+			vector3(2554.30, 386.10, 108.62),           -- #402
+			vector3(378.38, 328.19, 103.57),           -- #574
+			vector3(1163.99, -324.12, 69.21),           -- LTD #411
+			vector3(-1819.98, 792.71, 138.08),           -- LTD #817R
+			vector3(-706.83, -914.59, 19.22),           -- LTD #366
+			vector3(-48.21, -1758.43, 29.42),           -- LTD #817D
+			vector3(161.23, 6640.96, 31.7),           -- Paleto
+			vector3(814.38, -782.57, 26.17),           -- Downtown Vinewood (no ped)
+			vector3(2005.40, 3784.14, 32.2),           -- Sandy Shores (no ped)
 		},
 		targets = {
-			vector3(26.28, -1347.49, 29.5),
-			vector3(-3038.7204589844,585.35150146484,7.9046649932861),
-			vector3(-3241.5505371094,1000.6616210938,12.826445579529),
-			vector3(1728.2154541016,6414.3764648438,35.055946350098),
-			vector3(1697.5864257813,4924.0048828125,42.059429168701),
-			vector3(1960.9213867188,3739.9482421875,32.339492797852),
-			vector3(548.30883789063,2671.8112792969,42.152244567871),
-			vector3(2678.9006347656,3279.7360839844,55.259853363037),
-			vector3(2557.8576660156,381.53189086914,108.6187210083),
-			vector3(373.07611083984,325.69644165039,103.58511352539),
-			vector3(1164.1829833984,-323.73614501953,69.200874328613),
-			vector3(-1819.8, 793.15, 139.16),
-			vector3(-706.65, -914.6, 20.26),
-			vector3(-44.3, -1749.82, 29.42),
+			vector3(29.72, -1344.16, 29.5),           -- #125
+			vector3(-3043.49, 588.38, 7.91),           -- #804
+			vector3(-3245.02, 1005.27, 12.83),           -- #905
+			vector3(1733.80, 6415.69, 35.04),           -- #3030
+			vector3(1697.68, 4924.30, 42.06),           -- LTD #2013
+			vector3(1962.91, 3745.42, 32.34),           -- #1036
+			vector3(544.51, 2667.60, 42.16),           -- #928
+			vector3(2677.97, 3285.49, 55.24),           -- #957
+			vector3(2554.30, 386.10, 108.62),           -- #402
+			vector3(378.38, 328.19, 103.57),           -- #574
+			vector3(1163.99, -324.12, 69.21),           -- LTD #411
+			vector3(-1819.98, 792.71, 138.08),           -- LTD #817R
+			vector3(-706.83, -914.59, 19.22),           -- LTD #366
+			vector3(-48.21, -1758.43, 29.42),           -- LTD #817D
+			vector3(161.23, 6640.96, 31.7),           -- Paleto
+			vector3(814.38, -782.57, 26.17),           -- Downtown Vinewood (no ped)
+			vector3(2005.40, 3784.14, 32.2),           -- Sandy Shores (no ped)
 		}
 	},
 
@@ -123,36 +132,38 @@ return {
 			vector3(2738.26, 3481.36, 55.7)  -- Added target location
 		}
 	},
-
 	Ammunation = {
 		moneytype = 'money',
 		name = 'Ammunation',
 		blip = {
-			id = 110, colour = 1, scale = 0.7
+			id = 110, colour = 69, scale = 0.7
 		},
+		-- "locations" = store interact point (press E) when ox_target is OFF
+		-- "targets"   = store interact point (press E) when ox_target is ON
+		-- Ped spawns are in shop_peds.lua (Ammunation section)
 		locations = {
-			vector3(21.417778015137,-1106.8083496094,29.79),
-			vector3(-662.79046630859,-935.12713623047,21.82),
-			vector3(810.58520507813,-2157.458984375,29.61),
-			vector3(1693.1014404297,3759.5517578125,34.70),
-			vector3(-330.88055419922,6083.3168945313,31.45),
-			vector3(252.47393798828,-49.140110015869,69.94),
-			vector3(2568.6403808594,294.39981079102,108.73),
-			vector3(-1118.3720703125,2697.9167480469,18.55),
-			vector3(842.66595458984,-1033.5245361328,28.19),
-			vector3(1434.76, 3029.22, 40.78) -- Corrected shop interaction point for customers
+			vector3(21.83, -1106.97, 29.8),           -- #1 Downtown
+			vector3(-662.54, -935.26, 21.83),          -- #2 Little Seoul
+			vector3(810.46, -2157.22, 29.61),          -- #3 East LS
+			vector3(1692.87, 3759.01, 34.7),          -- #4 Sandy Shores
+			vector3(-330.62, 6083.47, 31.46),          -- #5 Paleto Bay
+			vector3(252.33, -49.67, 69.94),            -- #6 Pillbox
+			vector3(2568.17, 294.38, 108.74),          -- #7 Chumash
+			vector3(-1118.12, 2698.21, 18.59),         -- #8 Route 68
+			vector3(842.68, -1033.59, 28.2),          -- #9 Rockford
+			vector3(1434.76, 3029.22, 40.78)           -- #10 Patoche Sandy Shores
 		},
 		targets = {
-			vector3(22.223720550537,-1106.1149902344,29.797040939331),
-			vector3(-662.64953613281,-934.39453125,21.82918548584),
-			vector3(810.5126953125,-2158.2407226563,29.619028091431),
-			vector3(1692.6358642578,3760.1484375,34.705295562744),
-			vector3(-331.31820678711,6084.0048828125,31.454734802246),
-			vector3(253.2212677002,-49.650302886963,69.941062927246),
-			vector3(2568.4680175781,293.5110168457,108.73485565186),
-			vector3(-1118.8206787109,2698.6801757813,18.554098129272),
-			vector3(842.81329345703,-1034.3870849609,28.194812774658),
-			vector3(1432.9, 3028.63, 40.79) -- Corrected shop purchase point
+			vector3(21.83, -1106.97, 29.8),           -- #1 Downtown
+			vector3(-662.54, -935.26, 21.83),          -- #2 Little Seoul
+			vector3(810.46, -2157.22, 29.61),          -- #3 East LS
+			vector3(1692.87, 3759.01, 34.7),          -- #4 Sandy Shores
+			vector3(-330.62, 6083.47, 31.46),          -- #5 Paleto Bay
+			vector3(252.33, -49.67, 69.94),            -- #6 Pillbox
+			vector3(2568.17, 294.38, 108.74),          -- #7 Chumash
+			vector3(-1118.12, 2698.21, 18.59),         -- #8 Route 68
+			vector3(842.68, -1033.59, 28.2),          -- #9 Rockford
+			vector3(1432.9, 3028.63, 40.79)            -- #10 Patoche Sandy Shores
 		}
 	},
 	
@@ -165,16 +176,16 @@ return {
 			id = 110, colour = 29, scale = 0.7  -- Adjust the 'id', 'colour', and 'scale' as desired
 		},
 		locations = {
-			vector3(480.32, -996.67, 30.69),    -- LSPD Armory
-			vector3(1838.46, 3682.79, 38.94),   -- BCSO Armory
-			vector3(386.16, 793.36, 190.49),    -- SAPR Armory
-			vector3(363.49, -1599.8, 25.45)     -- FIB Armory
+			vector3(478.82, -996.67, 30.69),    -- LSPD Armory - offset in front of ped (h=90)
+			vector3(1836.96, 3682.79, 38.94),   -- BCSO Armory - offset in front of ped (h=90)
+			vector3(384.66, 793.36, 190.49),    -- SAPR Armory - offset in front of ped (h=90)
+			vector3(361.99, -1599.8, 25.45)     -- FIB Armory - offset in front of ped (h=90)
 		},
 		targets = {
-			vector3(480.32, -996.67, 30.69),    -- Interaction point for LSPD Armory
-			vector3(1838.46, 3682.79, 38.94),   -- Interaction point for BCSO Armory
-			vector3(386.16, 793.36, 190.49),    -- Interaction point for SAPR Armory
-			vector3(363.49, -1599.8, 25.45)     -- Interaction point for FIB Armory
+			vector3(478.82, -996.67, 30.69),    -- LSPD Armory
+			vector3(1836.96, 3682.79, 38.94),   -- BCSO Armory
+			vector3(384.66, 793.36, 190.49),    -- SAPR Armory
+			vector3(361.99, -1599.8, 25.45)     -- FIB Armory
 		},
 	},
 	
@@ -205,7 +216,7 @@ return {
 		moneytype = 'black_money',
 		name = 'Black Market (Arms)',
 		locations = {
-			vector3(591.57434082031,-3279.8911132813,6.06),
+			vector3(590.08, -3280.04, 6.06),  -- Offset in front of ped (h=95.83)
 			--vector3(896.27, -1828.21, 22.34),
 		}
 	},
@@ -223,50 +234,36 @@ return {
 		moneytype = 'black_money',
 		name = 'Black Market (Goods)',
 		locations = {
-			vector3(2843.14, 1456.81, 24.86),  -- Location from your old snippet
-			-- Add more locations here if needed
+			vector3(2841.80, 1457.48, 24.86),  -- Offset in front of ped (h=63.44)
 		}
 	},
 	-----------------------------------------------------------------------
 	-- Sewer MLO Shops (2026-02-20) - No blips; hidden underground market
 	-----------------------------------------------------------------------
 
-	SewerMarket = {
+	--[[SewerMarket = {
 		moneytype = 'black_money',
 		name = 'The Rat\'s Nest',
 		-- No blip - underground market is word-of-mouth only
 		locations = {
-			vector3(175.0, -1645.0, -1.53),  -- PLACEHOLDER — update with real coords
+			vector3(193.35, -1680.32, -1.53),  -- Offset in front of ped (h=56.69)
 		},
 		targets = {
-			vector3(175.0, -1645.0, -1.53),  -- PLACEHOLDER — update with real coords
+			vector3(193.35, -1680.32, -1.53),
 		}
-	},
+	},]]-- -- FMRP: sewer MLO pulled
 
-	SewerBistro = {
+	-- FMRP: commented out - sewer MLO pulled
+	--[[SewerBistro = {
 		moneytype = 'money',
 		name = 'The Underbelly',
-		-- No blip - sewer fine dining is an exclusive experience
 		locations = {
-			vector3(187.07, -1627.02, -1.08),  -- lowered 1.0
+			vector3(187.19, -1628.52, -1.08),
 		},
 		targets = {
-			vector3(187.07, -1627.02, -1.08),  -- lowered 1.0
+			vector3(187.19, -1628.52, -1.08),
 		}
-	},
-
-	SewerChopShop = {
-		moneytype = 'black_money',
-		name = 'Underground Parts',
-		-- No blip - stolen parts don't advertise
-		locations = {
-			vector3(161.04, -1659.39, -1.53),  -- lowered 1.0
-		},
-		targets = {
-			vector3(161.04, -1659.39, -1.53),  -- lowered 1.0
-		}
-	},
-
+	},]]--
 	LocksmithShop = {
 		moneytype = 'money',
 		name = 'Locksmith',
@@ -274,20 +271,33 @@ return {
 			id = 478, colour = 4, scale = 0.7  -- Key icon, blue
 		},
 		locations = {
-			vector3(163.89, -1807.18, 29.32),
+			vector3(164.94, -1806.11, 28.32),  -- Offset in front of ped (h=315.74)
 		},
 		targets = {
-			vector3(163.89, -1807.18, 29.32),
+			vector3(164.94, -1806.11, 28.32),
 		}
 	},
 
-	HuntingSupply = {
+	-- FMRP: Commented out — gg_hunting v2.0.6 handles this location now
+	-- HuntingSupply = {
+	-- 	moneytype = 'money',
+	-- 	name = 'Hunting Store',
+	-- 	locations = {
+	-- 		vector3(-679.42, 5834.03, 17.33),  -- First location
+	-- 		vector3(3811.91, 4481.35, 6.49),   -- Second location
+	-- 	},
+	-- },
+
+	UpnAtom = {
 		moneytype = 'money',
-		name = 'Hunting Store',
+		name = 'Up-n-Atom Vendor',
+		-- blip removed - using DRC script blip
 		locations = {
-			vector3(-679.42, 5834.03, 17.33),  -- First location
-			vector3(3811.91, 4481.35, 6.49),   -- Second location
+			vector3(88.54, 287.85, 110.21),  -- Customer side of counter (h=280.75)
 		},
+		targets = {
+			vector3(88.54, 287.85, 110.21),
+		}
 	},
 
 	Burgershot = {
@@ -295,11 +305,10 @@ return {
 		name = 'Burgershot Vendor',
 		-- blip removed - using DRC script blip
 		locations = {
-			vector3(-1189.45, -895.56, 13.8),  -- Burgershot Vespucci
-			-- Add more Burgershot locations here
+			vector3(-1190.30, -894.32, 13.8),  -- Offset in front of ped (h=34.39)
 		},
 		targets = {
-			vector3(-1189.45, -895.56, 13.8),  -- Interaction point
+			vector3(-1190.30, -894.32, 13.8),
 		}
 	},
 
@@ -308,49 +317,46 @@ return {
 		name = 'UwU Cafe Vendor',
 		-- blip removed - using DRC script blip
 		locations = {
-			vector3(-576.3, -1059.59, 22.34),  -- UwU Cat Cafe
-			-- Add more UwU Cafe locations here
+			vector3(-576.63, -1061.05, 22.34),  -- Offset in front of ped (h=167.36)
 		},
 		targets = {
-			vector3(-576.3, -1059.59, 22.34),  -- Interaction point
+			vector3(-576.63, -1061.05, 22.34),
 		}
 	},
 
-	BeanMachine = {
+	-- FMRP: commented out - no Bean Machine MLO installed, DRC stopped
+	--[[BeanMachine = {
 		moneytype = 'money',
 		name = 'Bean Machine Vendor',
-		-- blip removed - using DRC script blip
 		locations = {
-			vector3(123.27, -1035.99, 29.28),  -- Bean Machine Downtown
-			-- Add more Bean Machine locations here
+			vector3(121.81, -1035.64, 29.28),
 		},
 		targets = {
-			vector3(123.27, -1035.99, 29.28),  -- Interaction point
+			vector3(121.81, -1035.64, 29.28),
 		}
-	},
+	},]]--
 
-	PizzaThis = {
+	-- FMRP: commented out - no Pizza This MLO installed, DRC stopped
+	--[[PizzaThis = {
 		moneytype = 'money',
 		name = 'Pizza This Vendor',
-		-- blip removed - using DRC script blip
 		locations = {
-			vector3(812.07, -753.16, 26.78),  -- Pizza This
-			-- Add more Pizza This locations here
+			vector3(810.58, -753.03, 26.78),
 		},
 		targets = {
-			vector3(812.07, -753.16, 26.78),  -- Interaction point
+			vector3(810.58, -753.03, 26.78),
 		}
-	},
+	},]]--
 
 	Pearls = {
 		moneytype = 'money',
 		name = 'Pearls Seafood Vendor',
 		-- blip removed - using DRC script blip
 		locations = {
-			vector3(-1832.65, -1187.03, 14.31),  -- Pearls Seafood Restaurant
+			vector3(-1831.34, -1187.76, 14.31),  -- Offset in front of ped (h=241.08)
 		},
 		targets = {
-			vector3(-1832.65, -1187.03, 14.31),  -- Interaction point
+			vector3(-1831.34, -1187.76, 14.31),
 		}
 	},
 
@@ -359,34 +365,34 @@ return {
 		name = 'Bahama Mamas Vendor',
 		-- blip removed - using DRC script blip
 		locations = {
-			vector3(-1399.96, -601.38, 30.32),  -- Bahama Mamas Nightclub
+			vector3(-1398.54, -601.86, 30.32),  -- Offset in front of ped (h=251.44)
 		},
 		targets = {
-			vector3(-1399.96, -601.38, 30.32),  -- Interaction point
+			vector3(-1398.54, -601.86, 30.32),
 		}
 	},
 
-	KoiRestaurant = {
+	-- FMRP: commented out - no Koi MLO installed, DRC stopped
+	--[[KoiRestaurant = {
 		moneytype = 'money',
 		name = 'Koi Restaurant Vendor',
-		-- blip removed - using DRC script blip
 		locations = {
-			vector3(-1036.01, -1485.27, 4.58),  -- Koi Restaurant
+			vector3(-1037.33, -1484.57, 4.58),
 		},
 		targets = {
-			vector3(-1036.01, -1485.27, 4.58),  -- Interaction point
+			vector3(-1037.33, -1484.57, 4.58),
 		}
-	},
+	},]]--
 
 	Tequilala = {
 		moneytype = 'money',
 		name = 'Tequi-la-la Vendor',
 		-- blip removed - using DRC script blip
 		locations = {
-			vector3(-561.91, 286.58, 82.18),  -- Tequi-la-la Nightclub
+			vector3(-560.48, 286.14, 82.18),  -- Offset in front of ped (h=252.99)
 		},
 		targets = {
-			vector3(-561.91, 286.58, 82.18),  -- Interaction point
+			vector3(-560.48, 286.14, 82.18),
 		}
 	},
 
@@ -395,76 +401,487 @@ return {
 		name = 'Vanilla Unicorn Vendor',
 		-- blip removed - using DRC script blip
 		locations = {
-			vector3(129.23, -1283.59, 29.27),  -- Vanilla Unicorn Strip Club
+			vector3(127.92, -1284.33, 29.27),  -- Offset in front of ped (h=119.36)
 		},
 		targets = {
-			vector3(129.23, -1283.59, 29.27),  -- Interaction point
+			vector3(127.92, -1284.33, 29.27),
 		}
 	},
-
-	Bennys = {
-		groups = {'mechanic', 'lscustoms', 'sonsauto', 'allcare', 'bennys'},
-		moneytype = 'money',
-		name = 'Bennys Auto Supply',
-		-- blip removed - using game blip
-		locations = {
-			vector3(-201.06, -1318.55, 31.09),  -- Bennys Original Motor Works
-		},
-		targets = {
-			vector3(-201.06, -1318.55, 31.09),  -- Interaction point
-		}
-	},
-
 	ToxsShop = {
 		groups = {'mechanic', 'lscustoms', 'sonsauto', 'allcare', 'bennys'},
 		moneytype = 'money',
 		name = '227 Tox\'s Auto Supply',
 		-- blip removed - using game blip
 		locations = {
-			vector3(806.0, -827.26, 26.34),  -- 227 Tox's Shop
+			vector3(804.50, -827.31, 26.34),  -- Offset in front of ped (h=91.94)
 		},
 		targets = {
-			vector3(806.0, -827.26, 26.34),  -- Interaction point
+			vector3(804.50, -827.31, 26.34),
+		}
+	},
+	-----------------------------------------------------------------------
+	-- New Shops (2026-02-22)
+	-----------------------------------------------------------------------
+
+	FarmSupply = {
+		moneytype = 'money',
+		name = 'Farm Supply',
+		blip = {
+			id = 478, colour = 25, scale = 0.7  -- Store icon, green
+		},
+		locations = {
+			vector3(1657.02, 4874.62, 42.04),  -- Offset in front of ped (h=278.52)
+		},
+		targets = {
+			vector3(1657.02, 4874.62, 42.04),
 		}
 	},
 
-	Flywheels = {
-		groups = {'mechanic', 'lscustoms', 'sonsauto', 'allcare', 'bennys'},
+	MeatLocker = {
 		moneytype = 'money',
-		name = 'Flywheels Auto Supply',
-		-- blip removed - using game blip
+		name = 'Meat Locker',
+		blip = {
+			id = 207, colour = 1, scale = 0.7  -- Steak icon, red
+		},
 		locations = {
-			vector3(1769.49, 3323.62, 41.44),  -- Flywheels Garage
+			vector3(-126.03, 1895.14, 197.33),  -- Offset in front of ped (h=181.49)
 		},
 		targets = {
-			vector3(1769.49, 3323.62, 41.44),  -- Interaction point
+			vector3(-126.03, 1895.14, 197.33),
 		}
 	},
 
-	LSCustoms = {
+	TechShop = {
 		moneytype = 'money',
-		name = 'LS Customs Supply',
-		groups = {'mechanic', 'lscustoms', 'sonsauto', 'allcare', 'bennys'},
-		-- blip removed - using game blip
+		name = 'Tech Shop',
+		blip = {
+			id = 521, colour = 26, scale = 0.7  -- Computer icon, light blue
+		},
 		locations = {
-			vector3(-346.36, -107.71, 39.02),  -- LS Customs
+			vector3(-914.67, -151.06, 46.27),  -- Offset in front of ped (h=210.99)
 		},
 		targets = {
-			vector3(-346.36, -107.71, 39.02),  -- Interaction point
+			vector3(-914.67, -151.06, 46.27),
 		}
 	},
 
-	SonsAuto = {
+	PetShop = {
 		moneytype = 'money',
-		name = 'Sons Auto Supply',
-		groups = {'mechanic', 'lscustoms', 'sonsauto', 'allcare', 'bennys'},
-		-- blip removed - using game blip
+		name = 'Pet Shop',
+		blip = {
+			id = 273, colour = 46, scale = 0.7  -- Paw print icon, dark green
+		},
 		locations = {
-			vector3(554.95, -172.67, 54.51),  -- Sons Auto Shop
+			vector3(-1470.75, -133.61, 51.09),  -- LS Pet Shop (h=352.29)
+			vector3(561.55, 2752.74, 42.16),    -- Sandy Shores Pet Shop (h=182.96)
 		},
 		targets = {
-			vector3(554.95, -172.67, 54.51),  -- Interaction point
+			vector3(-1470.75, -133.61, 51.09),
+			vector3(561.55, 2752.74, 42.16),
+		},
+		ped = function()
+			local model = `a_f_y_vinewood_01`
+			lib.requestModel(model)
+			-- LS location
+			local ped1 = CreatePed(4, model, -1470.75, -133.61, 50.09, 352.29, false, true)
+			while not DoesEntityExist(ped1) do Wait(1) end
+			SetBlockingOfNonTemporaryEvents(ped1, true)
+			SetEntityInvincible(ped1, true)
+			FreezeEntityPosition(ped1, true)
+			-- Sandy Shores location
+			local ped2 = CreatePed(4, model, 561.55, 2752.74, 41.16, 182.96, false, true)
+			while not DoesEntityExist(ped2) do Wait(1) end
+			SetBlockingOfNonTemporaryEvents(ped2, true)
+			SetEntityInvincible(ped2, true)
+			FreezeEntityPosition(ped2, true)
+		end,
+	},
+
+	DigiDen = {
+		moneytype = 'money',
+		name = 'Digi Den',
+		blip = {
+			id = 521, colour = 26, scale = 0.7  -- Computer icon, light blue
+		},
+		locations = {
+			vector3(1133.61, -469.38, 66.49),  -- Upstairs, offset in front of ped (h=169.42)
+			vector3(384.36, -831.3, 29.29),    -- Second location (h=270.19)
+		},
+		targets = {
+			vector3(1133.61, -469.38, 66.49),
+			vector3(384.36, -831.3, 29.29),
 		}
+	},
+
+	DigiDenBasement = {
+		moneytype = 'black_money',
+		name = 'Digi Den Basement',
+		-- No blip - hidden underground tech black market
+		locations = {
+			vector3(1134.44, -466.92, 62.81),  -- Downstairs, offset in front of ped (h=79.35)
+		},
+		targets = {
+			vector3(1134.44, -466.92, 62.81),
+		}
+	},
+
+	Hookies = {
+		moneytype = 'money',
+		name = 'Hookies Bait & Seafood',
+		blip = {
+			id = 68, colour = 3, scale = 0.7  -- Boat icon, light blue
+		},
+		locations = {
+			vector3(-2178.52, 4279.11, 49.18),  -- Offset in front of ped (h=59.04)
+		},
+		targets = {
+			vector3(-2178.52, 4279.11, 49.18),
+		}
+	},
+
+	SeagullRaceway = {
+		moneytype = 'money',
+		name = 'Seagull Raceway Pit Stop',
+		blip = {
+			id = 326, colour = 1, scale = 0.7  -- Racing flag icon, red
+		},
+		locations = {
+			vector3(1338.16, 6650.85, 10.4),  -- Offset in front of ped (h=174.56)
+		},
+		targets = {
+			vector3(1338.16, 6650.85, 10.4),
+		}
+	},
+	-----------------------------------------------------------------------
+	-- Rick's Garage Lab (2026-03-10) - Chumash area garage
+	-- Rick & Morty themed scientist selling illicit compounds & lab supplies
+	-----------------------------------------------------------------------
+
+	PortalLab = {
+		moneytype = 'black_money',
+		name = "Rick's Garage Lab",
+		-- No blip - you find Rick, Rick doesn't find you
+		locations = {
+			vector3(-3198.48, 1174.35, 9.71),  -- Garage lab (h=257.29)
+		},
+		targets = {
+			vector3(-3198.48, 1174.35, 9.71),
+		}
+	},
+
+	-----------------------------------------------------------------------
+	-- Casino Bar (2026-03-10) - Second casino location
+	-----------------------------------------------------------------------
+
+	CasinoBar = {
+		moneytype = 'money',
+		name = 'Casino Bar',
+		-- blip disabled: casino already has its own map blip
+		locations = {
+			vector3(1113.5, -2316.73, 24.45),
+		},
+		targets = {
+			vector3(1113.5, -2316.73, 24.45),
+		}
+	},
+
+	-----------------------------------------------------------------------
+	-- The Rusty Spoke (2026-03-10) - Trailer park biker bar, Grapeseed area
+	-----------------------------------------------------------------------
+
+	BikerBar = {
+		moneytype = 'money',
+		name = 'The Rusty Spoke',
+		blip = {
+			id = 52, colour = 40, scale = 0.8  -- Bar/drink icon, orange
+		},
+		locations = {
+			vector3(2194.83, 5581.68, 53.36),  -- Trailer park bar (h=177.64)
+		},
+		targets = {
+			vector3(2194.83, 5581.68, 53.36),
+		}
+	},
+	-----------------------------------------------------------------------
+	-- Alamo Isle Cafe (2026-03-10) - Island cafe/restaurant, Alamo Sea
+	-----------------------------------------------------------------------
+
+	AlamoIsle = {
+		moneytype = 'money',
+		name = 'Alamo Isle Cafe',
+		blip = {
+			id = 47, colour = 69, scale = 0.7  -- Restaurant icon, teal
+		},
+		locations = {
+			vector3(229.44, 3998.06, 50.15),  -- 1 unit in front of ped (h=54.73)
+		},
+		targets = {
+			vector3(229.44, 3998.06, 50.15),
+		},
+		ped = function()
+			local model = `s_f_y_bartender_01`
+			lib.requestModel(model)
+			local ped = CreatePed(4, model, 230.26, 3997.48, 49.15, 54.73, false, true)
+			while not DoesEntityExist(ped) do Wait(1) end
+			SetBlockingOfNonTemporaryEvents(ped, true)
+			SetEntityInvincible(ped, true)
+			FreezeEntityPosition(ped, true)
+		end,
+	},
+
+	-----------------------------------------------------------------------
+	-- The Old House (2026-03-10) - Creepy black market, no blip
+	-----------------------------------------------------------------------
+
+	CreepyHouse = {
+		moneytype = 'black_money',
+		name = 'The Old House',
+		-- No blip - word of mouth only
+		locations = {
+			vector3(1532.79, 1687.10, 113.36),  -- 1 unit in front of ped (h=33.18)
+		},
+		targets = {
+			vector3(1532.79, 1687.10, 113.36),
+		},
+		ped = function()
+			local model = `u_m_y_zombie_01`
+			lib.requestModel(model)
+			local ped = CreatePed(4, model, 1533.34, 1686.26, 112.36, 33.18, false, true)
+			while not DoesEntityExist(ped) do Wait(1) end
+			SetBlockingOfNonTemporaryEvents(ped, true)
+			SetEntityInvincible(ped, true)
+			FreezeEntityPosition(ped, true)
+		end,
+	},
+	CoolBeans = {
+		moneytype = 'money',
+		name = 'Cool Beans',
+		blip = {
+			id = 47, colour = 49, scale = 0.7  -- Restaurant icon, brown
+		},
+		locations = {
+			vector3(-1218.15, -1493.84, 3.37),  -- 1 unit in front of ped (h=28.79)
+		},
+		targets = {
+			vector3(-1218.15, -1493.84, 3.37),
+		},
+	},
+	TruthOrganic = {
+		moneytype = 'money',
+		name = 'Truth Organic',
+		blip = {
+			id = 478, colour = 25, scale = 0.7  -- Store icon, green-yellow
+		},
+		locations = {
+			vector3(-1226.04, -1483.99, 3.37),  -- 1 unit in front of ped (h=33.87)
+		},
+		targets = {
+			vector3(-1226.04, -1483.99, 3.37),
+		},
+	},
+	-----------------------------------------------------------------------
+	-- Arcade Bar (2026-03-11) - Near Pug Paintball entrance
+	-----------------------------------------------------------------------
+
+	-----------------------------------------------------------------------
+	-- Fight Medic (2026-03-13) - Underground boxing ring medical supplies
+	-----------------------------------------------------------------------
+
+	FightMedic = {
+		moneytype = 'money',
+		name = 'Fight Medic',
+		blip = {
+			id = 153, colour = 1, scale = 0.7  -- Ambulance icon, red
+		},
+		locations = {
+			vector3(-519.15, -1724.85, 19.16),
+		},
+		targets = {
+			vector3(-519.15, -1724.85, 19.16),
+		},
+	},
+	CyberBar = {
+		moneytype = 'money',
+		name = 'Cyber Bar',
+		blip = {
+			id = 93, colour = 48, scale = 0.7  -- Bar icon, neon blue
+		},
+		locations = {
+			vector3(335.75, -915.12, 29.26),  -- Cyber Bar (h=179.83)
+		},
+		targets = {
+			vector3(335.75, -915.12, 29.26),
+		},
+	},
+
+	CyberClub = {
+		moneytype = 'black_money',
+		name = 'Cyber Club',
+		-- No blip - secret underground nightclub
+		locations = {
+			vector3(377.30, -935.36, 25.59),  -- Underground nightclub beneath Cyber Bar (h=2.74)
+		},
+		targets = {
+			vector3(377.30, -935.36, 25.59),
+		},
+	},
+	-----------------------------------------------------------------------
+	-- White Widow (2026-03-14) - Weed seed & supply shop
+	-----------------------------------------------------------------------
+
+	WhiteWidow = {
+		moneytype = 'money',
+		name = 'White Widow',
+		blip = {
+			id = 496, colour = 2, scale = 0.7  -- Weed icon, green
+		},
+		locations = {
+			vector3(187.60, -242.03, 54.07),  -- White Widow storefront (h=248.69)
+		},
+		targets = {
+			vector3(187.60, -242.03, 54.07),
+		},
+		ped = function()
+			local model = `a_f_y_hipster_02`
+			lib.requestModel(model)
+			local ped = CreatePed(4, model, 188.40, -241.50, 53.07, 248.69, false, true)
+			while not DoesEntityExist(ped) do Wait(1) end
+			SetBlockingOfNonTemporaryEvents(ped, true)
+			SetEntityInvincible(ped, true)
+			FreezeEntityPosition(ped, true)
+			TaskStartScenarioInPlace(ped, 'WORLD_HUMAN_SMOKING', 0, true)
+		end,
+	},
+
+
+	-----------------------------------------------------------------------
+	-- White Widow South (weed dispensary)
+	-----------------------------------------------------------------------
+	WhiteWidowSouth = {
+		moneytype = 'money',
+		name = 'White Widow',
+		blip = {
+			id = 496, colour = 2, scale = 0.7  -- Weed icon, green
+		},
+		locations = {
+			vector3(229.21, -1955.96, 23.06),
+		},
+		targets = {
+			vector3(229.21, -1955.96, 23.06),
+		},
+		ped = function()
+			local model = `a_f_y_fitness_01`
+			lib.requestModel(model)
+			local ped = CreatePed(4, model, 228.47, -1955.28, 22.06, 227.38, false, true)
+			while not DoesEntityExist(ped) do Wait(1) end
+			SetBlockingOfNonTemporaryEvents(ped, true)
+			SetEntityInvincible(ped, true)
+			FreezeEntityPosition(ped, true)
+			TaskStartScenarioInPlace(ped, 'WORLD_HUMAN_SMOKING', 0, true)
+		end,
+	},
+
+
+	-----------------------------------------------------------------------
+	-- Pier 76 Car Club Lounge
+	-----------------------------------------------------------------------
+	Pier76Lounge = {
+		moneytype = 'money',
+		name = 'Pier 76 Lounge',
+		locations = {
+			vector3(527.99, -3088.65, 6.08),
+		},
+		targets = {
+			vector3(527.99, -3088.65, 6.08),
+		},
+		ped = function()
+			local model = `a_f_y_topless_01`
+			lib.requestModel(model)
+			local ped = CreatePed(4, model, 527.97, -3089.65, 5.08, 359.14, false, true)
+			while not DoesEntityExist(ped) do Wait(1) end
+			SetBlockingOfNonTemporaryEvents(ped, true)
+			SetEntityInvincible(ped, true)
+			FreezeEntityPosition(ped, true)
+			TaskStartScenarioInPlace(ped, 'WORLD_HUMAN_HANG_OUT_STREET', 0, true)
+		end,
+	},
+
+
+	-----------------------------------------------------------------------
+	-- Pier 76 Mech Shop (self-service)
+	-----------------------------------------------------------------------
+	Pier76MechShop = {
+		moneytype = 'money',
+		name = 'Pier 76 Mech Shop',
+		locations = {
+			vector3(547.22, -3076.82, -1.87),
+		},
+		targets = {
+			vector3(547.22, -3076.82, -1.87),
+		},
+		ped = function()
+			local model = `a_f_y_fitness_01`
+			lib.requestModel(model)
+			local ped = CreatePed(4, model, 547.29, -3077.82, -2.87, 4.25, false, true)
+			while not DoesEntityExist(ped) do Wait(1) end
+			SetBlockingOfNonTemporaryEvents(ped, true)
+			SetEntityInvincible(ped, true)
+			FreezeEntityPosition(ped, true)
+			TaskStartScenarioInPlace(ped, 'WORLD_HUMAN_WELDING', 0, true)
+		end,
+	},
+
+
+
+	-----------------------------------------------------------------------
+	-- Leap Frog Cafe
+	-----------------------------------------------------------------------
+	LeapFrogCafe = {
+		moneytype = 'money',
+		name = 'Leap Frog Cafe',
+		blip = {
+			id = 621, colour = 2, scale = 0.6
+		},
+		locations = {
+			vector3(1116.52, -643.08, 56.82),
+		},
+		targets = {
+			vector3(1116.52, -643.08, 56.82),
+		},
+		ped = function()
+			local model = `a_f_y_bevhills_01`
+			lib.requestModel(model)
+			local ped = CreatePed(4, model, 1116.44, -642.08, 55.82, 184.6, false, true)
+			while not DoesEntityExist(ped) do Wait(1) end
+			SetBlockingOfNonTemporaryEvents(ped, true)
+			SetEntityInvincible(ped, true)
+			FreezeEntityPosition(ped, true)
+			TaskStartScenarioInPlace(ped, 'WORLD_HUMAN_AA_COFFEE', 0, true)
+		end,
+	},
+
+	-----------------------------------------------------------------------
+	-- Wipeout Pit Stop
+	-----------------------------------------------------------------------
+	WipeoutPitStop = {
+		moneytype = 'money',
+		name = 'Wipeout Pit Stop',
+		locations = {
+			vector3(-881.79, -2860.43, -39.75),
+		},
+		targets = {
+			vector3(-881.79, -2860.43, -39.75),
+		},
+		ped = function()
+			local model = `a_f_y_fitness_01`
+			lib.requestModel(model)
+			local ped = CreatePed(4, model, -880.79, -2860.46, -40.75, 88.25, false, true)
+			while not DoesEntityExist(ped) do Wait(1) end
+			SetBlockingOfNonTemporaryEvents(ped, true)
+			SetEntityInvincible(ped, true)
+			FreezeEntityPosition(ped, true)
+			TaskStartScenarioInPlace(ped, 'WORLD_HUMAN_HANG_OUT_STREET', 0, true)
+		end,
 	},
 
 }
